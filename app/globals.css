@@ -1,0 +1,243 @@
+:root {
+  --ink: #1c2733;
+  --blueprint: #12233f;
+  --paper: #edf2f8;
+  --grid-line: #9db8cf;
+  --accent: #e8823c;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body), sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-body), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: inherit;
+}
+
+/* ── NAVBAR ── */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2.5rem;
+  background-color: var(--white);
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+}
+
+.navbar-logo {
+  width: 36px;
+  height: 36px;
+  background-color: var(--blueprint);
+  color: var(--white);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.navbar-mark {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2.25rem;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.navbar-links a:hover {
+  color: var(--accent);
+}
+
+/* ── FOOTER ── */
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 1.5rem 2.5rem;
+  background-color: var(--blueprint);
+  margin-top: 4rem;
+}
+
+.footer-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--grid-line);
+  text-transform: uppercase;
+}
+
+.footer-value {
+  font-size: 0.85rem;
+  color: var(--white);
+  margin-top: 2px;
+}
+
+.footer-social-link {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: var(--white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: lowercase;
+  transition: background-color 0.15s;
+}
+
+.footer-social-link:hover {
+  background-color: var(--accent);
+}
+
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(120deg, #0b1b33 0%, #12233f 45%, #2a4d7a 100%);
+  color: var(--white);
+  padding: 5rem 2.5rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.hero-breadcrumb {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--grid-line);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 0.75rem;
+  position: relative;
+  max-width: 700px;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: var(--grid-line);
+  position: relative;
+  margin: 0;
+}
+
+/* ── SHARED UTILITIES ── */
+.eyebrow {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.tech-card {
+  background: var(--white);
+  border: 1px solid var(--grid-line);
+  border-radius: 2px;
+  position: relative;
+  padding: 1.5rem;
+}
+
+.tech-card::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--blueprint);
+  border-left: 2px solid var(--blueprint);
+}
+
+.tech-card::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid var(--blueprint);
+  border-right: 2px solid var(--blueprint);
+}
+
+.btn-primary {
+  background-color: var(--blueprint);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 2px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
