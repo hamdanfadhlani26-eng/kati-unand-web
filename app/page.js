@@ -50,28 +50,7 @@ export default function Home() {
           </ol>
         </section>
 
-        <section style={{ marginBottom: "3rem" }}>
-          <div className="eyebrow">Kepengurusan</div>
-          <h2 style={sectionTitle}>Struktur Organisasi</h2>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-              gap: "1rem",
-              marginTop: "1rem",
-            }}
-          >
-            <OrgCard jabatan="Ketua" nama="Nama Ketua" />
-            <OrgCard jabatan="Wakil Ketua" nama="Nama Wakil Ketua" />
-            <OrgCard jabatan="Sekretaris" nama="Nama Sekretaris" />
-            <OrgCard jabatan="Bendahara" nama="Nama Bendahara" />
-            <OrgCard jabatan="Koordinator Humas" nama="Nama Koordinator" />
-            <OrgCard jabatan="Koordinator Talent Pool" nama="Nama Koordinator" />
-          </div>
-          <p style={{ fontSize: "0.85rem", color: "#888", marginTop: "1rem", fontStyle: "italic" }}>
-            *Struktur organisasi masih placeholder, akan diperbarui.
-          </p>
-        </section>
+
 
         <section>
           <div className="eyebrow">Dokumentasi</div>
@@ -223,23 +202,7 @@ function FeaturedAlumniCard({ alumni }) {
 
 
 
-function OrgCard({ jabatan, nama }) {
-  return (
-    <div className="tech-card" style={{ textAlign: "center" }}>
-      <div
-        style={{
-          width: "60px",
-          height: "60px",
-          borderRadius: "50%",
-          backgroundColor: "#e5e7eb",
-          margin: "0 auto 0.5rem",
-        }}
-      />
-      <div style={{ fontWeight: "bold", fontSize: "0.9rem" }}>{nama}</div>
-      <div style={{ fontSize: "0.8rem", color: "#e8823c" }}>{jabatan}</div>
-    </div>
-  );
-}
+
 
 const sectionTitle = {
   fontSize: "1.5rem",

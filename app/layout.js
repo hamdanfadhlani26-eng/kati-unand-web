@@ -34,7 +34,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <a href="/" className="navbar-brand">
-        <div className="navbar-logo">KI</div>
+        <img src="/logo-kati.jpeg" alt="Logo KATI UNAND" style={{ height: "40px", objectFit: "contain" }} />
         <span className="navbar-mark">KATI UNAND</span>
       </a>
       <div className="navbar-links">
