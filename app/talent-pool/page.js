@@ -168,7 +168,6 @@ export default function TalentPool() {
     return (
         <div>
             <div className="hero">
-                <div className="hero-breadcrumb">Beranda / Talent Pool</div>
                 <h1 className="hero-title">Talent Pool</h1>
                 <p className="hero-subtitle">
                     Temukan talenta fresh graduate Teknik Industri Unand sesuai kebutuhan perusahaanmu

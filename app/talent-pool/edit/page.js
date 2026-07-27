@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import PhotoCropper from "../PhotoCropper";
 import { BIDANG_MINAT_OPTIONS } from "@/lib/bidangMinat";
@@ -15,6 +16,7 @@ function sanitizeFileName(fileName) {
 const emptyExperience = { role: "", tempat: "" };
 
 export default function EditTalentPage() {
+    const router = useRouter();
     const [step, setStep] = useState("lookup"); // lookup | form
     const [email, setEmail] = useState("");
     const [noHp, setNoHp] = useState("");
@@ -165,7 +167,10 @@ export default function EditTalentPage() {
 
             if (updateError) throw updateError;
 
-            setSaveMessage("Perubahan berhasil disimpan!");
+            setSaveMessage("Perubahan berhasil disimpan! Mengalihkan...");
+            setTimeout(() => {
+                router.push("/talent-pool");
+            }, 1500);
         } catch (err) {
             console.error(err);
             setSaveMessage("Terjadi kesalahan: " + err.message);
@@ -178,7 +183,6 @@ export default function EditTalentPage() {
         return (
             <div>
                 <div className="hero">
-                    <div className="hero-breadcrumb">Beranda / Talent Pool / Edit</div>
                     <h1 className="hero-title">Edit Profil Talent</h1>
                     <p className="hero-subtitle">Masukkan email dan no HP yang kamu gunakan saat mendaftar</p>
                 </div>
@@ -219,7 +223,6 @@ export default function EditTalentPage() {
     return (
         <div>
             <div className="hero">
-                <div className="hero-breadcrumb">Beranda / Talent Pool / Edit</div>
                 <h1 className="hero-title">Edit Profil Talent</h1>
                 <p className="hero-subtitle">Ubah data kamu di bawah ini, lalu simpan</p>
             </div>
