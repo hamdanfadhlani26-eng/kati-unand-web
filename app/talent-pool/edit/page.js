@@ -153,6 +153,7 @@ export default function EditTalentPage() {
                 ...form,
                 bidang_minat: bidangMinat,
                 experience: cleanedExperiences,
+                updated_at: new Date().toISOString(),
             };
             if (foto_url !== undefined) updatePayload.foto_url = foto_url;
             if (cv_url !== undefined) updatePayload.cv_url = cv_url;

@@ -21,6 +21,7 @@ export default function TalentList() {
         const { data, error } = await supabase
             .from("talent_pool")
             .select("*")
+            .order("updated_at", { ascending: false, nullsFirst: false })
             .order("created_at", { ascending: false });
         if (!error) setTalents(data);
         setLoading(false);

@@ -149,6 +149,7 @@ export default function TalentPool() {
                     experience: cleanedExperiences,
                     foto_url,
                     cv_url,
+                    updated_at: new Date().toISOString(),
                 },
             ]);
             if (insertError) throw insertError;
