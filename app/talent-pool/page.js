@@ -4,18 +4,13 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import TalentList from "./TalentList";
 import PhotoCropper from "./PhotoCropper";
-import { BIDANG_MINAT_OPTIONS, getBidangStyle } from "@/lib/bidangMinat";
+import { BIDANG_MINAT_OPTIONS } from "@/lib/bidangMinat";
 
 function sanitizeFileName(fileName) {
     const ext = fileName.split(".").pop();
     const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf("."));
     const cleaned = nameWithoutExt.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 50);
     return `${cleaned}.${ext}`;
-}
-
-function generatePin() {
-    // 6 digit kode unik, mudah diingat & diketik user
-    return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 const emptyExperience = { role: "", tempat: "" };
@@ -37,14 +32,13 @@ export default function TalentPool() {
     const [bidangMinat, setBidangMinat] = useState([]);
     const [experiences, setExperiences] = useState([{ ...emptyExperience }]);
 
-    const [fotoFile, setFotoFile] = useState(null); // blob final setelah crop
+    const [fotoFile, setFotoFile] = useState(null);
     const [fotoPreview, setFotoPreview] = useState(null);
-    const [rawImageForCrop, setRawImageForCrop] = useState(null); // dataURL sebelum crop
+    const [rawImageForCrop, setRawImageForCrop] = useState(null);
     const [cvFile, setCvFile] = useState(null);
 
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
-    const [successPin, setSuccessPin] = useState(null);
     const [refreshKey, setRefreshKey] = useState(0);
 
     function handleChange(e) {
@@ -112,7 +106,6 @@ export default function TalentPool() {
     async function handleSubmit(e) {
         e.preventDefault();
         setMessage("");
-        setSuccessPin(null);
 
         if (!form.consent) {
             setMessage("Kamu harus menyetujui data ditampilkan publik terlebih dahulu.");
@@ -147,8 +140,6 @@ export default function TalentPool() {
                 .filter((exp) => exp.role.trim() !== "" || exp.tempat.trim() !== "")
                 .slice(0, 4);
 
-            const pin = generatePin();
-
             const { error: insertError } = await supabase.from("talent_pool").insert([
                 {
                     ...form,
@@ -156,12 +147,10 @@ export default function TalentPool() {
                     experience: cleanedExperiences,
                     foto_url,
                     cv_url,
-                    edit_pin: pin,
                 },
             ]);
             if (insertError) throw insertError;
 
-            setSuccessPin(pin);
             setMessage("Berhasil! Profil kamu sudah masuk ke Talent Pool.");
             resetForm();
             setRefreshKey((k) => k + 1);
@@ -208,11 +197,13 @@ export default function TalentPool() {
                         <div>
                             <label>Email *</label>
                             <input type="email" name="email" value={form.email} onChange={handleChange} required style={inputStyle} />
+                            <p style={hintStyle}>Ingat baik-baik, dipakai nanti untuk mengedit profil kamu</p>
                         </div>
 
                         <div>
                             <label>No HP *</label>
                             <input type="text" name="no_hp" value={form.no_hp} onChange={handleChange} required style={inputStyle} />
+                            <p style={hintStyle}>Ingat baik-baik, dipakai nanti untuk mengedit profil kamu</p>
                         </div>
 
                         <div>
@@ -390,27 +381,6 @@ export default function TalentPool() {
                         </button>
 
                         {message && <p>{message}</p>}
-
-                        {successPin && (
-                            <div
-                                style={{
-                                    backgroundColor: "#fff7ed",
-                                    border: "1px solid #e8823c",
-                                    borderRadius: "6px",
-                                    padding: "1rem",
-                                }}
-                            >
-                                <p style={{ margin: 0, fontWeight: 700, color: "#12233f" }}>Simpan kode ini baik-baik:</p>
-                                <p style={{ fontSize: "1.5rem", fontWeight: 800, letterSpacing: "2px", color: "#e8823c", margin: "0.4rem 0" }}>
-                                    {successPin}
-                                </p>
-                                <p style={{ margin: 0, fontSize: "0.85rem", color: "#555" }}>
-                                    Kode ini dipakai untuk mengedit profil kamu nanti di halaman{" "}
-                                    <a href="/talent-pool/edit">Edit Profil</a>. Kami tidak menyimpan kode ini di tempat lain, jadi
-                                    jangan sampai hilang.
-                                </p>
-                            </div>
-                        )}
                     </form>
                 </details>
 

@@ -17,7 +17,7 @@ const emptyExperience = { role: "", tempat: "" };
 export default function EditTalentPage() {
     const [step, setStep] = useState("lookup"); // lookup | form
     const [email, setEmail] = useState("");
-    const [pin, setPin] = useState("");
+    const [noHp, setNoHp] = useState("");
     const [lookupError, setLookupError] = useState("");
     const [lookupLoading, setLookupLoading] = useState(false);
 
@@ -43,13 +43,13 @@ export default function EditTalentPage() {
             .from("talent_pool")
             .select("*")
             .eq("email", email.trim())
-            .eq("edit_pin", pin.trim())
+            .eq("no_hp", noHp.trim())
             .maybeSingle();
 
         setLookupLoading(false);
 
         if (error || !data) {
-            setLookupError("Email atau kode PIN tidak cocok. Coba periksa lagi.");
+            setLookupError("Email atau No HP tidak cocok dengan data yang terdaftar. Coba periksa lagi.");
             return;
         }
 
@@ -123,7 +123,7 @@ export default function EditTalentPage() {
         setSaving(true);
 
         try {
-            let foto_url = undefined; // undefined = jangan diubah kalau tidak ganti foto
+            let foto_url = undefined;
 
             if (fotoFile) {
                 const fotoName = `talent_${Date.now()}_foto.jpg`;
@@ -178,7 +178,7 @@ export default function EditTalentPage() {
                 <div className="hero">
                     <div className="hero-breadcrumb">Beranda / Talent Pool / Edit</div>
                     <h1 className="hero-title">Edit Profil Talent</h1>
-                    <p className="hero-subtitle">Masukkan email dan kode PIN yang kamu terima saat mendaftar</p>
+                    <p className="hero-subtitle">Masukkan email dan no HP yang kamu gunakan saat mendaftar</p>
                 </div>
 
                 <div style={{ padding: "3rem 2rem", maxWidth: "420px", margin: "0 auto" }}>
@@ -194,15 +194,15 @@ export default function EditTalentPage() {
                             />
                         </div>
                         <div>
-                            <label>Kode PIN (6 digit)</label>
+                            <label>No HP</label>
                             <input
                                 type="text"
-                                value={pin}
-                                onChange={(e) => setPin(e.target.value)}
+                                value={noHp}
+                                onChange={(e) => setNoHp(e.target.value)}
                                 required
-                                maxLength={6}
                                 style={inputStyle}
                             />
+                            <p style={hintStyle}>Isi persis seperti saat kamu mendaftar</p>
                         </div>
                         <button type="submit" disabled={lookupLoading} className="btn-primary">
                             {lookupLoading ? "Memeriksa..." : "Lanjutkan"}
@@ -232,11 +232,13 @@ export default function EditTalentPage() {
                     <div>
                         <label>Email *</label>
                         <input type="email" name="email" value={form.email} onChange={handleChange} required style={inputStyle} />
+                        <p style={hintStyle}>Kalau email diganti, gunakan email baru ini saat edit berikutnya</p>
                     </div>
 
                     <div>
                         <label>No HP *</label>
                         <input type="text" name="no_hp" value={form.no_hp} onChange={handleChange} required style={inputStyle} />
+                        <p style={hintStyle}>Kalau No HP diganti, gunakan nomor baru ini saat edit berikutnya</p>
                     </div>
 
                     <div>
