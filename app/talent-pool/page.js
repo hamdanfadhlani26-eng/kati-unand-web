@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import TalentList from "./TalentList";
+import PhotoCropper from "./PhotoCropper";
+import { BIDANG_MINAT_OPTIONS, getBidangStyle } from "@/lib/bidangMinat";
 
 function sanitizeFileName(fileName) {
     const ext = fileName.split(".").pop();
@@ -11,24 +13,38 @@ function sanitizeFileName(fileName) {
     return `${cleaned}.${ext}`;
 }
 
+function generatePin() {
+    // 6 digit kode unik, mudah diingat & diketik user
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+const emptyExperience = { role: "", tempat: "" };
+
 export default function TalentPool() {
     const [form, setForm] = useState({
         nama: "",
         email: "",
         no_hp: "",
+        wa_number: "",
         deskripsi_diri: "",
         final_project: "",
-        experience: "",
-        bidang_minat: "",
+        portfolio: "",
         linkedin_url: "",
         instagram_url: "",
         consent: false,
     });
 
-    const [fotoFile, setFotoFile] = useState(null);
+    const [bidangMinat, setBidangMinat] = useState([]);
+    const [experiences, setExperiences] = useState([{ ...emptyExperience }]);
+
+    const [fotoFile, setFotoFile] = useState(null); // blob final setelah crop
+    const [fotoPreview, setFotoPreview] = useState(null);
+    const [rawImageForCrop, setRawImageForCrop] = useState(null); // dataURL sebelum crop
     const [cvFile, setCvFile] = useState(null);
+
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const [successPin, setSuccessPin] = useState(null);
     const [refreshKey, setRefreshKey] = useState(0);
 
     function handleChange(e) {
@@ -36,9 +52,67 @@ export default function TalentPool() {
         setForm((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
     }
 
+    function toggleBidang(label) {
+        setBidangMinat((prev) =>
+            prev.includes(label) ? prev.filter((b) => b !== label) : [...prev, label]
+        );
+    }
+
+    function handleExpChange(index, field, value) {
+        setExperiences((prev) => {
+            const next = [...prev];
+            next[index] = { ...next[index], [field]: value };
+            return next;
+        });
+    }
+
+    function addExperience() {
+        if (experiences.length >= 4) return;
+        setExperiences((prev) => [...prev, { ...emptyExperience }]);
+    }
+
+    function removeExperience(index) {
+        setExperiences((prev) => prev.filter((_, i) => i !== index));
+    }
+
+    function handlePhotoSelect(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => setRawImageForCrop(reader.result);
+        reader.readAsDataURL(file);
+    }
+
+    function handleCropDone(blob) {
+        setFotoFile(blob);
+        setFotoPreview(URL.createObjectURL(blob));
+        setRawImageForCrop(null);
+    }
+
+    function resetForm() {
+        setForm({
+            nama: "",
+            email: "",
+            no_hp: "",
+            wa_number: "",
+            deskripsi_diri: "",
+            final_project: "",
+            portfolio: "",
+            linkedin_url: "",
+            instagram_url: "",
+            consent: false,
+        });
+        setBidangMinat([]);
+        setExperiences([{ ...emptyExperience }]);
+        setFotoFile(null);
+        setFotoPreview(null);
+        setCvFile(null);
+    }
+
     async function handleSubmit(e) {
         e.preventDefault();
         setMessage("");
+        setSuccessPin(null);
 
         if (!form.consent) {
             setMessage("Kamu harus menyetujui data ditampilkan publik terlebih dahulu.");
@@ -52,8 +126,10 @@ export default function TalentPool() {
             let cv_url = null;
 
             if (fotoFile) {
-                const fotoName = `talent_${Date.now()}_${sanitizeFileName(fotoFile.name)}`;
-                const { error: fotoError } = await supabase.storage.from("Photo").upload(fotoName, fotoFile);
+                const fotoName = `talent_${Date.now()}_foto.jpg`;
+                const { error: fotoError } = await supabase.storage
+                    .from("Photo")
+                    .upload(fotoName, fotoFile, { contentType: "image/jpeg" });
                 if (fotoError) throw fotoError;
                 const { data: fotoPublicUrl } = supabase.storage.from("Photo").getPublicUrl(fotoName);
                 foto_url = fotoPublicUrl.publicUrl;
@@ -67,26 +143,27 @@ export default function TalentPool() {
                 cv_url = cvPublicUrl.publicUrl;
             }
 
+            const cleanedExperiences = experiences
+                .filter((exp) => exp.role.trim() !== "" || exp.tempat.trim() !== "")
+                .slice(0, 4);
+
+            const pin = generatePin();
+
             const { error: insertError } = await supabase.from("talent_pool").insert([
-                { ...form, foto_url, cv_url },
+                {
+                    ...form,
+                    bidang_minat: bidangMinat,
+                    experience: cleanedExperiences,
+                    foto_url,
+                    cv_url,
+                    edit_pin: pin,
+                },
             ]);
             if (insertError) throw insertError;
 
+            setSuccessPin(pin);
             setMessage("Berhasil! Profil kamu sudah masuk ke Talent Pool.");
-            setForm({
-                nama: "",
-                email: "",
-                no_hp: "",
-                deskripsi_diri: "",
-                final_project: "",
-                experience: "",
-                bidang_minat: "",
-                linkedin_url: "",
-                instagram_url: "",
-                consent: false,
-            });
-            setFotoFile(null);
-            setCvFile(null);
+            resetForm();
             setRefreshKey((k) => k + 1);
         } catch (err) {
             console.error(err);
@@ -107,6 +184,13 @@ export default function TalentPool() {
             </div>
 
             <div style={{ padding: "3rem 2rem", maxWidth: "900px", margin: "0 auto" }}>
+                <div style={{ marginBottom: "1rem", fontSize: "0.9rem" }}>
+                    Sudah pernah daftar dan mau ubah data?{" "}
+                    <a href="/talent-pool/edit" style={{ color: "#e8823c", fontWeight: 600 }}>
+                        Edit profil kamu di sini →
+                    </a>
+                </div>
+
                 <details style={{ marginBottom: "2.5rem" }}>
                     <summary style={{ cursor: "pointer", fontWeight: 600, color: "#12233f" }}>
                         + Daftar ke Talent Pool
@@ -132,38 +216,136 @@ export default function TalentPool() {
                         </div>
 
                         <div>
-                            <label>Bidang Minat</label>
-                            <select name="bidang_minat" value={form.bidang_minat} onChange={handleChange} style={inputStyle}>
-                                <option value="">Pilih bidang minat</option>
-                                <option value="PPIC">PPIC</option>
-                                <option value="Lean / Continuous Improvement">Lean / Continuous Improvement</option>
-                                <option value="Supply Chain & Logistics">Supply Chain & Logistics</option>
-                                <option value="Quality Assurance / Quality Control">Quality Assurance / Quality Control</option>
-                                <option value="Procurement / Purchasing">Procurement / Purchasing</option>
-                                <option value="Manufacturing / Production Engineering">Manufacturing / Production Engineering</option>
-                                <option value="Maintenance & Reliability Engineering">Maintenance & Reliability Engineering</option>
-                                <option value="Ergonomi & K3">Ergonomi & K3</option>
-                                <option value="Project Management">Project Management</option>
-                                <option value="Business Development">Business Development</option>
-                                <option value="Human Capital / HR">Human Capital / HR</option>
-                                <option value="Data Analyst / Business Intelligence">Data Analyst / Business Intelligence</option>
-                                <option value="Lainnya">Lainnya</option>
-                            </select>
+                            <label>Nomor WhatsApp (untuk dihubungi langsung) *</label>
+                            <input
+                                type="text"
+                                name="wa_number"
+                                placeholder="Contoh: 6281234567890"
+                                value={form.wa_number}
+                                onChange={handleChange}
+                                required
+                                style={inputStyle}
+                            />
+                            <p style={hintStyle}>Gunakan format 62xxxxxxxxxx (tanpa tanda + atau 0 di depan)</p>
                         </div>
 
                         <div>
-                            <label>Ceritakan Tentang Dirimu</label>
-                            <textarea name="deskripsi_diri" value={form.deskripsi_diri} onChange={handleChange} rows={4} style={inputStyle} />
+                            <label>Bidang Minat (bisa pilih lebih dari satu) *</label>
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginTop: "0.4rem" }}>
+                                {BIDANG_MINAT_OPTIONS.map((b) => {
+                                    const active = bidangMinat.includes(b.label);
+                                    return (
+                                        <button
+                                            type="button"
+                                            key={b.label}
+                                            onClick={() => toggleBidang(b.label)}
+                                            style={{
+                                                padding: "0.4rem 0.9rem",
+                                                borderRadius: "999px",
+                                                border: active ? `2px solid ${b.text}` : "1px solid #ddd",
+                                                backgroundColor: active ? b.bg : "#fafafa",
+                                                color: active ? b.text : "#666",
+                                                fontSize: "0.82rem",
+                                                fontWeight: 600,
+                                                cursor: "pointer",
+                                            }}
+                                        >
+                                            {b.label}
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </div>
 
                         <div>
-                            <label>Final Project / Tugas Akhir</label>
-                            <textarea name="final_project" value={form.final_project} onChange={handleChange} rows={3} style={inputStyle} />
+                            <label>Ceritakan Tentang Dirimu (maks 300 karakter)</label>
+                            <textarea
+                                name="deskripsi_diri"
+                                value={form.deskripsi_diri}
+                                onChange={handleChange}
+                                rows={3}
+                                maxLength={300}
+                                style={inputStyle}
+                            />
+                            <p style={hintStyle}>{form.deskripsi_diri.length}/300</p>
                         </div>
 
                         <div>
-                            <label>Pengalaman (Magang/Kerja/Organisasi)</label>
-                            <textarea name="experience" value={form.experience} onChange={handleChange} rows={3} style={inputStyle} />
+                            <label>Final Project / Tugas Akhir (maks 300 karakter)</label>
+                            <textarea
+                                name="final_project"
+                                value={form.final_project}
+                                onChange={handleChange}
+                                rows={3}
+                                maxLength={300}
+                                style={inputStyle}
+                            />
+                            <p style={hintStyle}>{form.final_project.length}/300</p>
+                        </div>
+
+                        <div>
+                            <label>Portfolio (opsional) — link website, YouTube, dll</label>
+                            <textarea
+                                name="portfolio"
+                                value={form.portfolio}
+                                onChange={handleChange}
+                                rows={2}
+                                maxLength={200}
+                                placeholder="Contoh: Dashboard Maintenance System — youtube.com/..."
+                                style={inputStyle}
+                            />
+                        </div>
+
+                        <div>
+                            <label>Pengalaman (maks 4)</label>
+                            {experiences.map((exp, i) => (
+                                <div key={i} style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem", alignItems: "center" }}>
+                                    <input
+                                        type="text"
+                                        placeholder="Peran (mis. Intern)"
+                                        value={exp.role}
+                                        onChange={(e) => handleExpChange(i, "role", e.target.value)}
+                                        style={{ ...inputStyle, marginTop: 0, flex: 1 }}
+                                        maxLength={60}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Tempat (mis. PT Semen Padang)"
+                                        value={exp.tempat}
+                                        onChange={(e) => handleExpChange(i, "tempat", e.target.value)}
+                                        style={{ ...inputStyle, marginTop: 0, flex: 1 }}
+                                        maxLength={60}
+                                    />
+                                    {experiences.length > 1 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => removeExperience(i)}
+                                            style={{ border: "none", background: "none", color: "#c00", cursor: "pointer", fontSize: "1.1rem" }}
+                                            title="Hapus"
+                                        >
+                                            ✕
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                            {experiences.length < 4 && (
+                                <button
+                                    type="button"
+                                    onClick={addExperience}
+                                    style={{
+                                        marginTop: "0.5rem",
+                                        border: "1px dashed #12233f",
+                                        background: "none",
+                                        color: "#12233f",
+                                        padding: "0.4rem 0.8rem",
+                                        borderRadius: "6px",
+                                        fontSize: "0.85rem",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    + Tambah Pengalaman
+                                </button>
+                            )}
                         </div>
 
                         <div>
@@ -178,7 +360,17 @@ export default function TalentPool() {
 
                         <div>
                             <label>Upload Foto</label>
-                            <input type="file" accept="image/*" onChange={(e) => setFotoFile(e.target.files[0])} />
+                            <input type="file" accept="image/*" onChange={handlePhotoSelect} />
+                            {fotoPreview && (
+                                <div style={{ marginTop: "0.5rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                                    <img
+                                        src={fotoPreview}
+                                        alt="Preview"
+                                        style={{ width: "70px", height: "70px", borderRadius: "50%", objectFit: "cover" }}
+                                    />
+                                    <span style={{ fontSize: "0.8rem", color: "#666" }}>Foto siap diunggah</span>
+                                </div>
+                            )}
                         </div>
 
                         <div>
@@ -198,11 +390,40 @@ export default function TalentPool() {
                         </button>
 
                         {message && <p>{message}</p>}
+
+                        {successPin && (
+                            <div
+                                style={{
+                                    backgroundColor: "#fff7ed",
+                                    border: "1px solid #e8823c",
+                                    borderRadius: "6px",
+                                    padding: "1rem",
+                                }}
+                            >
+                                <p style={{ margin: 0, fontWeight: 700, color: "#12233f" }}>Simpan kode ini baik-baik:</p>
+                                <p style={{ fontSize: "1.5rem", fontWeight: 800, letterSpacing: "2px", color: "#e8823c", margin: "0.4rem 0" }}>
+                                    {successPin}
+                                </p>
+                                <p style={{ margin: 0, fontSize: "0.85rem", color: "#555" }}>
+                                    Kode ini dipakai untuk mengedit profil kamu nanti di halaman{" "}
+                                    <a href="/talent-pool/edit">Edit Profil</a>. Kami tidak menyimpan kode ini di tempat lain, jadi
+                                    jangan sampai hilang.
+                                </p>
+                            </div>
+                        )}
                     </form>
                 </details>
 
                 <TalentList key={refreshKey} />
             </div>
+
+            {rawImageForCrop && (
+                <PhotoCropper
+                    imageSrc={rawImageForCrop}
+                    onCancel={() => setRawImageForCrop(null)}
+                    onCropDone={handleCropDone}
+                />
+            )}
         </div>
     );
 }
@@ -213,4 +434,11 @@ const inputStyle = {
     border: "1px solid #ccc",
     borderRadius: "4px",
     marginTop: "0.25rem",
+};
+
+const hintStyle = {
+    fontSize: "0.75rem",
+    color: "#999",
+    margin: "0.2rem 0 0",
+    textAlign: "right",
 };

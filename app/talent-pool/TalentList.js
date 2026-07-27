@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { BIDANG_MINAT_OPTIONS, getBidangStyle } from "@/lib/bidangMinat";
+import { WhatsAppIcon, InstagramIcon, LinkedInIcon } from "./SocialIcons";
 
 export default function TalentList() {
     const [talents, setTalents] = useState([]);
@@ -26,7 +28,8 @@ export default function TalentList() {
 
     const filtered = talents.filter((t) => {
         const matchNama = t.nama.toLowerCase().includes(searchNama.toLowerCase());
-        const matchBidang = searchBidang === "" || t.bidang_minat === searchBidang;
+        const bidangList = Array.isArray(t.bidang_minat) ? t.bidang_minat : [];
+        const matchBidang = searchBidang === "" || bidangList.includes(searchBidang);
         return matchNama && matchBidang;
     });
 
@@ -60,19 +63,11 @@ export default function TalentList() {
                     style={{ ...filterInput, flex: "1 1 240px" }}
                 >
                     <option value="">Semua bidang minat</option>
-                    <option value="PPIC">PPIC</option>
-                    <option value="Lean / Continuous Improvement">Lean / Continuous Improvement</option>
-                    <option value="Supply Chain & Logistics">Supply Chain & Logistics</option>
-                    <option value="Quality Assurance / Quality Control">Quality Assurance / Quality Control</option>
-                    <option value="Procurement / Purchasing">Procurement / Purchasing</option>
-                    <option value="Manufacturing / Production Engineering">Manufacturing / Production Engineering</option>
-                    <option value="Maintenance & Reliability Engineering">Maintenance & Reliability Engineering</option>
-                    <option value="Ergonomi & K3">Ergonomi & K3</option>
-                    <option value="Project Management">Project Management</option>
-                    <option value="Business Development">Business Development</option>
-                    <option value="Human Capital / HR">Human Capital / HR</option>
-                    <option value="Data Analyst / Business Intelligence">Data Analyst / Business Intelligence</option>
-                    <option value="Lainnya">Lainnya</option>
+                    {BIDANG_MINAT_OPTIONS.map((b) => (
+                        <option key={b.label} value={b.label}>
+                            {b.label}
+                        </option>
+                    ))}
                 </select>
             </div>
 
@@ -95,10 +90,52 @@ export default function TalentList() {
     );
 }
 
-function TalentRow({ talent, onSelect }) {
-    const desc = talent.deskripsi_diri || "";
-    const shortDesc = desc.length > 220 ? desc.slice(0, 220).trim() + "..." : desc;
+function BidangTags({ list, size = "normal" }) {
+    if (!Array.isArray(list) || list.length === 0) return null;
+    const padding = size === "small" ? "0.25rem 0.7rem" : "0.3rem 0.8rem";
+    const fontSize = size === "small" ? "0.75rem" : "0.8rem";
+    return (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+            {list.map((label) => {
+                const style = getBidangStyle(label);
+                return (
+                    <span
+                        key={label}
+                        style={{
+                            backgroundColor: style.bg,
+                            color: style.text,
+                            padding,
+                            borderRadius: "999px",
+                            fontSize,
+                            fontWeight: 600,
+                            whiteSpace: "nowrap",
+                        }}
+                    >
+                        {label}
+                    </span>
+                );
+            })}
+        </div>
+    );
+}
 
+function ExperienceList({ experience }) {
+    const list = Array.isArray(experience) ? experience : [];
+    if (list.length === 0) return null;
+    return (
+        <ul style={{ margin: "0.3rem 0 0", paddingLeft: "1.1rem", color: "#444", fontSize: "0.88rem", lineHeight: 1.6 }}>
+            {list.map((exp, i) => (
+                <li key={i}>
+                    {exp.role}
+                    {exp.role && exp.tempat ? " — " : ""}
+                    {exp.tempat}
+                </li>
+            ))}
+        </ul>
+    );
+}
+
+function TalentRow({ talent, onSelect }) {
     return (
         <div
             style={{
@@ -113,10 +150,10 @@ function TalentRow({ talent, onSelect }) {
         >
             <div
                 style={{
-                    width: "160px",
-                    height: "160px",
+                    width: "120px",
+                    height: "120px",
                     flexShrink: 0,
-                    borderRadius: "4px",
+                    borderRadius: "50%",
                     overflow: "hidden",
                     backgroundColor: "#e5e7eb",
                 }}
@@ -137,6 +174,7 @@ function TalentRow({ talent, onSelect }) {
                             justifyContent: "center",
                             color: "#9ca3af",
                             fontSize: "0.8rem",
+                            textAlign: "center",
                         }}
                     >
                         Tidak ada foto
@@ -144,99 +182,83 @@ function TalentRow({ talent, onSelect }) {
                 )}
             </div>
 
-            <div style={{ flex: 1, minWidth: "200px", display: "flex", flexDirection: "column" }}>
-                <div style={{ fontWeight: 700, fontSize: "1.2rem", color: "#12233f" }}>{talent.nama}</div>
-                {talent.bidang_minat && (
-                    <div style={{ fontSize: "0.9rem", color: "#e8823c", fontWeight: 600, marginTop: "0.15rem" }}>
-                        {talent.bidang_minat}
+            <div style={{ flex: 1, minWidth: "220px", display: "flex", flexDirection: "column" }}>
+                <div style={{ fontWeight: 700, fontSize: "1.15rem", color: "#12233f" }}>{talent.nama}</div>
+
+                <div style={{ marginTop: "0.4rem" }}>
+                    <BidangTags list={talent.bidang_minat} />
+                </div>
+
+                {talent.experience && (
+                    <div style={{ marginTop: "0.5rem" }}>
+                        <span style={microLabel}>Pengalaman</span>
+                        <ExperienceList experience={talent.experience} />
                     </div>
                 )}
-                {shortDesc && (
-                    <p style={{ fontSize: "0.9rem", color: "#444", lineHeight: 1.6, marginTop: "0.6rem", flex: 1 }}>
-                        {shortDesc}
-                    </p>
+
+                {talent.portfolio && (
+                    <div style={{ marginTop: "0.5rem" }}>
+                        <span style={microLabel}>Portfolio</span>
+                        <p style={{ margin: "0.2rem 0 0", fontSize: "0.85rem", color: "#444" }}>{talent.portfolio}</p>
+                    </div>
                 )}
 
-                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "0.75rem" }}>
-                    <button
-                        onClick={onSelect}
-                        style={{
-                            border: "1px solid #12233f",
-                            backgroundColor: "transparent",
-                            color: "#12233f",
-                            padding: "0.5rem 1.1rem",
-                            borderRadius: "20px",
-                            fontSize: "0.85rem",
-                            fontWeight: 600,
-                            cursor: "pointer",
-                        }}
-                    >
+                <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginTop: "0.9rem" }}>
+                    <button onClick={onSelect} style={detailButtonStyle}>
                         Selengkapnya →
                     </button>
 
-                    {talent.linkedin_url && <SocialIcon url={talent.linkedin_url} label="in" title="LinkedIn" />}
-                    {talent.instagram_url && <SocialIcon url={talent.instagram_url} label="ig" title="Instagram" />}
+                    {talent.wa_number && (
+                        <SocialIconLink href={`https://wa.me/${talent.wa_number}`} title="WhatsApp" color="#25D366">
+                            <WhatsAppIcon />
+                        </SocialIconLink>
+                    )}
+                    {talent.linkedin_url && (
+                        <SocialIconLink href={talent.linkedin_url} title="LinkedIn" color="#0A66C2">
+                            <LinkedInIcon />
+                        </SocialIconLink>
+                    )}
+                    {talent.instagram_url && (
+                        <SocialIconLink href={talent.instagram_url} title="Instagram" color="#E1306C">
+                            <InstagramIcon />
+                        </SocialIconLink>
+                    )}
                 </div>
             </div>
         </div>
     );
 }
 
-function SocialIcon({ url, label, title }) {
+function SocialIconLink({ href, title, color, children }) {
     return (
-        <a href={url} target="_blank" rel="noreferrer" onClick={stopClick} style={socialIconStyle} title={title}>
-            {label}
+        <a
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            title={title}
+            style={{
+                width: "34px",
+                height: "34px",
+                borderRadius: "50%",
+                backgroundColor: color,
+                color: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textDecoration: "none",
+            }}
+        >
+            {children}
         </a>
     );
 }
 
-function stopClick(e) {
-    e.stopPropagation();
-}
-
 function TalentModal({ talent, onClose }) {
     return (
-        <div
-            onClick={onClose}
-            style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: "rgba(0,0,0,0.5)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "1rem",
-                zIndex: 1000,
-            }}
-        >
-            <div
-                onClick={(e) => e.stopPropagation()}
-                style={{
-                    backgroundColor: "white",
-                    borderRadius: "8px",
-                    padding: "2rem",
-                    maxWidth: "500px",
-                    width: "100%",
-                    maxHeight: "85vh",
-                    overflowY: "auto",
-                    position: "relative",
-                }}
-            >
-                <button
-                    onClick={onClose}
-                    style={{
-                        position: "absolute",
-                        top: "1rem",
-                        right: "1rem",
-                        border: "none",
-                        background: "none",
-                        fontSize: "1.3rem",
-                        cursor: "pointer",
-                    }}
-                >
+        <div onClick={onClose} style={modalOverlay}>
+            <div onClick={(e) => e.stopPropagation()} style={modalBox}>
+                <button onClick={onClose} style={closeButton}>
                     ✕
                 </button>
 
@@ -247,27 +269,69 @@ function TalentModal({ talent, onClose }) {
                         style={{ width: "110px", height: "110px", borderRadius: "50%", objectFit: "cover", marginBottom: "0.75rem" }}
                     />
                     <h2 style={{ margin: 0 }}>{talent.nama}</h2>
-                    <p style={{ color: "#e8823c", fontWeight: "bold", margin: "0.25rem 0" }}>{talent.bidang_minat || "-"}</p>
+                    <div style={{ marginTop: "0.5rem", display: "flex", justifyContent: "center" }}>
+                        <BidangTags list={talent.bidang_minat} size="small" />
+                    </div>
                 </div>
+
+                <DetailItem label="Tentang" value={talent.deskripsi_diri} />
+                <DetailItem label="Final Project" value={talent.final_project} />
+                {talent.portfolio && <DetailItem label="Portfolio" value={talent.portfolio} />}
+                {Array.isArray(talent.experience) && talent.experience.length > 0 && (
+                    <div style={{ marginBottom: "0.75rem" }}>
+                        <div style={detailLabelStyle}>Pengalaman</div>
+                        <ExperienceList experience={talent.experience} />
+                    </div>
+                )}
 
                 <DetailItem label="Email" value={talent.email} />
                 <DetailItem label="No HP" value={talent.no_hp} />
-                <DetailItem label="Tentang" value={talent.deskripsi_diri} />
-                <DetailItem label="Final Project" value={talent.final_project} />
-                <DetailItem label="Pengalaman" value={talent.experience} />
 
-                {talent.linkedin_url && <DetailItem label="LinkedIn" value={<LinkText url={talent.linkedin_url} />} />}
-                {talent.instagram_url && <DetailItem label="Instagram" value={<LinkText url={talent.instagram_url} />} />}
+                <div style={{ display: "flex", gap: "0.6rem", marginTop: "1rem", flexWrap: "wrap" }}>
+                    {talent.wa_number && (
+                        <ContactChip href={`https://wa.me/${talent.wa_number}`} color="#25D366" label="WhatsApp">
+                            <WhatsAppIcon />
+                        </ContactChip>
+                    )}
+                    {talent.linkedin_url && (
+                        <ContactChip href={talent.linkedin_url} color="#0A66C2" label="LinkedIn">
+                            <LinkedInIcon />
+                        </ContactChip>
+                    )}
+                    {talent.instagram_url && (
+                        <ContactChip href={talent.instagram_url} color="#E1306C" label="Instagram">
+                            <InstagramIcon />
+                        </ContactChip>
+                    )}
+                </div>
+
                 {talent.cv_url && <CvButton url={talent.cv_url} />}
             </div>
         </div>
     );
 }
 
-function LinkText({ url }) {
+function ContactChip({ href, color, label, children }) {
     return (
-        <a href={url} target="_blank" rel="noreferrer">
-            {url}
+        <a
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                backgroundColor: color,
+                color: "#fff",
+                padding: "0.4rem 0.8rem",
+                borderRadius: "999px",
+                fontSize: "0.8rem",
+                fontWeight: 600,
+                textDecoration: "none",
+            }}
+        >
+            {children}
+            {label}
         </a>
     );
 }
@@ -279,6 +343,42 @@ function CvButton({ url }) {
         </a>
     );
 }
+
+function DetailItem({ label, value }) {
+    if (!value) return null;
+    return (
+        <div style={{ marginBottom: "0.75rem" }}>
+            <div style={detailLabelStyle}>{label}</div>
+            <div style={{ fontSize: "0.95rem", color: "#222" }}>{value}</div>
+        </div>
+    );
+}
+
+const microLabel = {
+    fontSize: "0.7rem",
+    color: "#999",
+    fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: "0.03em",
+};
+
+const detailLabelStyle = {
+    fontSize: "0.75rem",
+    color: "#888",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+};
+
+const detailButtonStyle = {
+    border: "1px solid #12233f",
+    backgroundColor: "transparent",
+    color: "#12233f",
+    padding: "0.5rem 1.1rem",
+    borderRadius: "20px",
+    fontSize: "0.85rem",
+    fontWeight: 600,
+    cursor: "pointer",
+};
 
 const cvButtonStyle = {
     display: "block",
@@ -292,34 +392,44 @@ const cvButtonStyle = {
     fontWeight: "bold",
 };
 
-function DetailItem({ label, value }) {
-    if (!value) return null;
-    return (
-        <div style={{ marginBottom: "0.75rem" }}>
-            <div style={{ fontSize: "0.75rem", color: "#888", fontWeight: "bold", textTransform: "uppercase" }}>{label}</div>
-            <div style={{ fontSize: "0.95rem", color: "#222" }}>{value}</div>
-        </div>
-    );
-}
+const modalOverlay = {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "1rem",
+    zIndex: 1000,
+};
+
+const modalBox = {
+    backgroundColor: "white",
+    borderRadius: "8px",
+    padding: "2rem",
+    maxWidth: "500px",
+    width: "100%",
+    maxHeight: "85vh",
+    overflowY: "auto",
+    position: "relative",
+};
+
+const closeButton = {
+    position: "absolute",
+    top: "1rem",
+    right: "1rem",
+    border: "none",
+    background: "none",
+    fontSize: "1.3rem",
+    cursor: "pointer",
+};
 
 const filterInput = {
     padding: "0.6rem 0.8rem",
     border: "1px solid #ccc",
     borderRadius: "4px",
     fontSize: "0.9rem",
-};
-
-const socialIconStyle = {
-    width: "34px",
-    height: "34px",
-    borderRadius: "50%",
-    backgroundColor: "#12233f",
-    color: "#fff",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "0.75rem",
-    fontWeight: 700,
-    textDecoration: "none",
-    textTransform: "lowercase",
 };
