@@ -2,25 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-
-function sanitizeFileName(fileName) {
-    const ext = fileName.split(".").pop();
-    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf("."));
-    const cleaned = nameWithoutExt.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 50);
-    return `${cleaned}.${ext}`;
-}
+import PhotoCropper from "./PhotoCropper";
+import { WhatsAppIcon, InstagramIcon, LinkedInIcon } from "./SocialIcons";
 
 export default function ProfilAlumni() {
     const [form, setForm] = useState({
         nama: "",
+        email: "",
+        no_hp: "",
         angkatan: "",
         tempat_kerja: "",
         jabatan: "",
         deskripsi: "",
+        wa_number: "",
         linkedin_url: "",
         instagram_url: "",
     });
     const [fotoFile, setFotoFile] = useState(null);
+    const [fotoPreview, setFotoPreview] = useState(null);
+    const [rawImageForCrop, setRawImageForCrop] = useState(null);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
@@ -46,6 +46,20 @@ export default function ProfilAlumni() {
         setForm((prev) => ({ ...prev, [name]: value }));
     }
 
+    function handlePhotoSelect(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => setRawImageForCrop(reader.result);
+        reader.readAsDataURL(file);
+    }
+
+    function handleCropDone(blob) {
+        setFotoFile(blob);
+        setFotoPreview(URL.createObjectURL(blob));
+        setRawImageForCrop(null);
+    }
+
     async function handleSubmit(e) {
         e.preventDefault();
         setMessage("");
@@ -55,10 +69,10 @@ export default function ProfilAlumni() {
             let foto_url = null;
 
             if (fotoFile) {
-                const fotoName = `alumni_${Date.now()}_${sanitizeFileName(fotoFile.name)}`;
+                const fotoName = `alumni_${Date.now()}_foto.jpg`;
                 const { error: fotoError } = await supabase.storage
                     .from("Photo")
-                    .upload(fotoName, fotoFile);
+                    .upload(fotoName, fotoFile, { contentType: "image/jpeg" });
                 if (fotoError) throw fotoError;
 
                 const { data: fotoPublicUrl } = supabase.storage
@@ -75,14 +89,18 @@ export default function ProfilAlumni() {
             setMessage("Berhasil! Profil kamu sudah ditambahkan.");
             setForm({
                 nama: "",
+                email: "",
+                no_hp: "",
                 angkatan: "",
                 tempat_kerja: "",
                 jabatan: "",
                 deskripsi: "",
+                wa_number: "",
                 linkedin_url: "",
                 instagram_url: "",
             });
             setFotoFile(null);
+            setFotoPreview(null);
             fetchAlumni();
         } catch (err) {
             console.error(err);
@@ -93,7 +111,7 @@ export default function ProfilAlumni() {
     }
 
     return (
-        <div>
+        <div style={{ position: "relative" }}>
             <div className="hero">
                 <div className="hero-breadcrumb">Beranda / Profil Alumni</div>
                 <h1 className="hero-title">Profil Alumni</h1>
@@ -101,6 +119,10 @@ export default function ProfilAlumni() {
                     Lihat sebaran alumni Teknik Industri Unand di berbagai perusahaan
                 </p>
             </div>
+
+            <a href="/profil-alumni/edit" style={editCornerButton}>
+                ✎ Edit Profil Saya
+            </a>
 
             <div style={{ padding: "3rem 2rem", maxWidth: "1100px", margin: "0 auto" }}>
                 <details style={{ marginBottom: "2.5rem" }}>
@@ -115,6 +137,12 @@ export default function ProfilAlumni() {
                         <div>
                             <label>Nama Lengkap *</label>
                             <input type="text" name="nama" value={form.nama} onChange={handleChange} required style={inputStyle} />
+                        </div>
+
+                        <div>
+                            <label>Email *</label>
+                            <input type="email" name="email" value={form.email} onChange={handleChange} required style={inputStyle} />
+                            <p style={hintStyle}>Ingat baik-baik, dipakai nanti untuk mengedit profil kamu</p>
                         </div>
 
                         <div>
@@ -138,6 +166,25 @@ export default function ProfilAlumni() {
                         </div>
 
                         <div>
+                            <label>No HP *</label>
+                            <input type="text" name="no_hp" value={form.no_hp || ""} onChange={handleChange} required style={inputStyle} />
+                            <p style={hintStyle}>Ingat baik-baik, dipakai nanti untuk mengedit profil kamu</p>
+                        </div>
+
+                        <div>
+                            <label>Nomor WhatsApp (untuk dihubungi langsung)</label>
+                            <input
+                                type="text"
+                                name="wa_number"
+                                placeholder="Contoh: 6281234567890"
+                                value={form.wa_number}
+                                onChange={handleChange}
+                                style={inputStyle}
+                            />
+                            <p style={hintStyle}>Format 62xxxxxxxxxx (tanpa + atau 0 di depan)</p>
+                        </div>
+
+                        <div>
                             <label>LinkedIn (opsional)</label>
                             <input type="text" name="linkedin_url" value={form.linkedin_url} onChange={handleChange} style={inputStyle} />
                         </div>
@@ -149,7 +196,17 @@ export default function ProfilAlumni() {
 
                         <div>
                             <label>Upload Foto</label>
-                            <input type="file" accept="image/*" onChange={(e) => setFotoFile(e.target.files[0])} />
+                            <input type="file" accept="image/*" onChange={handlePhotoSelect} />
+                            {fotoPreview && (
+                                <div style={{ marginTop: "0.5rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                                    <img
+                                        src={fotoPreview}
+                                        alt="Preview"
+                                        style={{ width: "70px", height: "70px", borderRadius: "50%", objectFit: "cover" }}
+                                    />
+                                    <span style={{ fontSize: "0.8rem", color: "#666" }}>Foto siap diunggah</span>
+                                </div>
+                            )}
                         </div>
 
                         <button type="submit" disabled={loading} className="btn-primary">
@@ -178,6 +235,14 @@ export default function ProfilAlumni() {
                     </div>
                 )}
             </div>
+
+            {rawImageForCrop && (
+                <PhotoCropper
+                    imageSrc={rawImageForCrop}
+                    onCancel={() => setRawImageForCrop(null)}
+                    onCropDone={handleCropDone}
+                />
+            )}
         </div>
     );
 }
@@ -258,22 +323,51 @@ function AlumniCard({ alumni }) {
                     </p>
                 )}
 
-                {(alumni.linkedin_url || alumni.instagram_url) && (
-                    <div style={{ marginTop: "0.75rem", display: "flex", gap: "1rem" }}>
+                {(alumni.wa_number || alumni.linkedin_url || alumni.instagram_url) && (
+                    <div style={{ marginTop: "0.9rem", display: "flex", gap: "0.6rem" }}>
+                        {alumni.wa_number && (
+                            <SocialIconLink href={`https://wa.me/${alumni.wa_number}`} title="WhatsApp" color="#25D366">
+                                <WhatsAppIcon />
+                            </SocialIconLink>
+                        )}
                         {alumni.linkedin_url && (
-                            <a href={alumni.linkedin_url} target="_blank" rel="noreferrer" style={{ fontSize: "0.82rem", color: "#12233f", fontWeight: 600 }}>
-                                LinkedIn
-                            </a>
+                            <SocialIconLink href={alumni.linkedin_url} title="LinkedIn" color="#0A66C2">
+                                <LinkedInIcon />
+                            </SocialIconLink>
                         )}
                         {alumni.instagram_url && (
-                            <a href={alumni.instagram_url} target="_blank" rel="noreferrer" style={{ fontSize: "0.82rem", color: "#12233f", fontWeight: 600 }}>
-                                Instagram
-                            </a>
+                            <SocialIconLink href={alumni.instagram_url} title="Instagram" color="#E1306C">
+                                <InstagramIcon />
+                            </SocialIconLink>
                         )}
                     </div>
                 )}
             </div>
         </div>
+    );
+}
+
+function SocialIconLink({ href, title, color, children }) {
+    return (
+        <a
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+            title={title}
+            style={{
+                width: "34px",
+                height: "34px",
+                borderRadius: "50%",
+                backgroundColor: color,
+                color: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textDecoration: "none",
+            }}
+        >
+            {children}
+        </a>
     );
 }
 
@@ -283,4 +377,25 @@ const inputStyle = {
     border: "1px solid #ccc",
     borderRadius: "4px",
     marginTop: "0.25rem",
+};
+
+const hintStyle = {
+    fontSize: "0.75rem",
+    color: "#999",
+    margin: "0.2rem 0 0",
+};
+
+const editCornerButton = {
+    position: "absolute",
+    top: "1rem",
+    right: "1.25rem",
+    backgroundColor: "rgba(255,255,255,0.15)",
+    color: "#fff",
+    border: "1px solid rgba(255,255,255,0.4)",
+    padding: "0.35rem 0.85rem",
+    borderRadius: "999px",
+    fontSize: "0.78rem",
+    fontWeight: 600,
+    textDecoration: "none",
+    zIndex: 10,
 };
