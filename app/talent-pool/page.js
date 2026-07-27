@@ -21,6 +21,7 @@ export default function TalentPool() {
         email: "",
         no_hp: "",
         wa_number: "",
+        angkatan: "",
         deskripsi_diri: "",
         final_project: "",
         portfolio: "",
@@ -89,6 +90,7 @@ export default function TalentPool() {
             email: "",
             no_hp: "",
             wa_number: "",
+            angkatan: "",
             deskripsi_diri: "",
             final_project: "",
             portfolio: "",
@@ -218,6 +220,18 @@ export default function TalentPool() {
                                 style={inputStyle}
                             />
                             <p style={hintStyle}>Gunakan format 62xxxxxxxxxx (tanpa tanda + atau 0 di depan)</p>
+                        </div>
+
+                        <div>
+                            <label>Angkatan (opsional)</label>
+                            <input
+                                type="text"
+                                name="angkatan"
+                                placeholder="misal: 2020"
+                                value={form.angkatan}
+                                onChange={handleChange}
+                                style={inputStyle}
+                            />
                         </div>
 
                         <div>

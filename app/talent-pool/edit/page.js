@@ -59,6 +59,7 @@ export default function EditTalentPage() {
             email: data.email || "",
             no_hp: data.no_hp || "",
             wa_number: data.wa_number || "",
+            angkatan: data.angkatan || "",
             deskripsi_diri: data.deskripsi_diri || "",
             final_project: data.final_project || "",
             portfolio: data.portfolio || "",
@@ -245,6 +246,11 @@ export default function EditTalentPage() {
                         <label>Nomor WhatsApp *</label>
                         <input type="text" name="wa_number" value={form.wa_number} onChange={handleChange} required style={inputStyle} />
                         <p style={hintStyle}>Format 62xxxxxxxxxx (tanpa + atau 0 di depan)</p>
+                    </div>
+
+                    <div>
+                        <label>Angkatan (opsional)</label>
+                        <input type="text" name="angkatan" value={form.angkatan} onChange={handleChange} style={inputStyle} />
                     </div>
 
                     <div>

@@ -185,8 +185,13 @@ function TalentRow({ talent, onSelect }) {
             <div style={{ flex: 1, minWidth: "220px", display: "flex", flexDirection: "column" }}>
                 <div style={{ fontWeight: 700, fontSize: "1.15rem", color: "#12233f" }}>{talent.nama}</div>
 
-                <div style={{ marginTop: "0.4rem" }}>
+                <div style={{ marginTop: "0.4rem", display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
                     <BidangTags list={talent.bidang_minat} />
+                    {talent.angkatan && (
+                        <span style={{ fontSize: "0.78rem", color: "#888", fontWeight: 600 }}>
+                            Angkatan {talent.angkatan}
+                        </span>
+                    )}
                 </div>
 
                 {talent.experience && (
@@ -269,6 +274,9 @@ function TalentModal({ talent, onClose }) {
                         style={{ width: "110px", height: "110px", borderRadius: "50%", objectFit: "cover", marginBottom: "0.75rem" }}
                     />
                     <h2 style={{ margin: 0 }}>{talent.nama}</h2>
+                    {talent.angkatan && (
+                        <p style={{ margin: "0.1rem 0 0", fontSize: "0.85rem", color: "#888" }}>Angkatan {talent.angkatan}</p>
+                    )}
                     <div style={{ marginTop: "0.5rem", display: "flex", justifyContent: "center" }}>
                         <BidangTags list={talent.bidang_minat} size="small" />
                     </div>
