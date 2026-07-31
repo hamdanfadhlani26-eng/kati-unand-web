@@ -41,6 +41,7 @@ function Navbar() {
         <a href="/">Beranda</a>
         <a href="/profil-alumni">Profil Alumni</a>
         <a href="/talent-pool">Talent Pool</a>
+        <a href="/services">Services</a>
       </div>
     </nav>
   );
