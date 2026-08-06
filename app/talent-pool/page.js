@@ -170,7 +170,7 @@ export default function TalentPool() {
             <div className="hero">
                 <h1 className="hero-title">Talent Pool</h1>
                 <p className="hero-subtitle">
-                    Temukan talenta fresh graduate Teknik Industri Unand sesuai kebutuhan perusahaanmu
+                    Temukan talenta fresh graduate terbaik sesuai kebutuhan perusahaanmu
                 </p>
             </div>
 

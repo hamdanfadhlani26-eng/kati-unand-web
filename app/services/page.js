@@ -25,7 +25,7 @@ export default function ServicesPage() {
         <div className="hero-breadcrumb">Beranda / Services</div>
         <h1 className="hero-title">Temukan Layanan yang Kamu Butuhkan</h1>
         <p className="hero-subtitle">
-          Website, konten, hingga undangan digital — dikerjakan talenta Teknik Industri Unand
+          Website, konten, hingga undangan digital — dikerjakan talenta terpercaya
         </p>
       </div>
 
