@@ -278,3 +278,7 @@ select:focus-visible {
   outline: 2px solid var(--orange);
   outline-offset: 2px;
 }
+
+@media (max-width: 700px) {
+  .value-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}

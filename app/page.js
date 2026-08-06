@@ -38,9 +38,10 @@ export default function Home() {
           <h2 style={sectionTitle}>Kenapa Pilih Alumnova?</h2>
 
           <div
+            className="value-grid"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gridTemplateColumns: "repeat(4, 1fr)",
               gap: "1.5rem",
               marginTop: "1.5rem",
             }}
