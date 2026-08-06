@@ -1,5 +1,6 @@
 import { Plus_Jakarta_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import AnimatedNavbar from "./AnimatedNavbar";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -22,27 +23,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="id" className={`${jakarta.variable} ${plexMono.variable}`}>
       <body>
-        <Navbar />
+        <AnimatedNavbar />
         <main>{children}</main>
         <Footer />
       </body>
     </html>
-  );
-}
-
-function Navbar() {
-  return (
-    <nav className="navbar">
-      <a href="/" className="navbar-brand">
-        <img src="/logo-alumnova.png" alt="Logo Alumnova" style={{ height: "40px", objectFit: "contain" }} />
-        <span className="navbar-mark">ALUMNOVA</span>
-      </a>
-      <div className="navbar-links">
-        <a href="/">Beranda</a>
-        <a href="/services">Services</a>
-        <a href="/talent-pool">Talent Pool</a>
-      </div>
-    </nav>
   );
 }
 
