@@ -11,8 +11,9 @@ export function generateStaticParams() {
   return SERVICES.map((s) => ({ slug: s.slug }));
 }
 
-export default function ServiceDetailPage({ params }) {
-  const item = getServiceBySlug(params.slug);
+export default async function ServiceDetailPage({ params }) {
+  const { slug } = await params;
+  const item = getServiceBySlug(slug);
   if (!item) return notFound();
 
   const msg = `Halo, saya ingin memesan layanan "${item.title}".`;
