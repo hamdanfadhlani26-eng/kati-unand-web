@@ -14,8 +14,8 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata = {
-  title: "KATI UNAND — Keluarga Alumni Teknik Industri Unand",
-  description: "Wadah alumni dan talent pool Teknik Industri Universitas Andalas",
+  title: "Alumnova — Jasa Digital oleh Talenta Terpercaya",
+  description: "Website, dashboard, konten, hingga undangan digital, dikerjakan talenta Teknik Industri Universitas Andalas.",
 };
 
 export default function RootLayout({ children }) {
@@ -34,14 +34,13 @@ function Navbar() {
   return (
     <nav className="navbar">
       <a href="/" className="navbar-brand">
-        <img src="/logo-kati.jpeg" alt="Logo KATI UNAND" style={{ height: "40px", objectFit: "contain" }} />
-        <span className="navbar-mark">KATI UNAND</span>
+        <img src="/logo-alumnova.png" alt="Logo Alumnova" style={{ height: "40px", objectFit: "contain" }} />
+        <span className="navbar-mark">ALUMNOVA</span>
       </a>
       <div className="navbar-links">
         <a href="/">Beranda</a>
-        <a href="/profil-alumni">Profil Alumni</a>
-        <a href="/talent-pool">Talent Pool</a>
         <a href="/services">Services</a>
+        <a href="/talent-pool">Talent Pool</a>
       </div>
     </nav>
   );
@@ -51,8 +50,8 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="footer-block">
-        <span className="footer-label">Organisasi</span>
-        <span className="footer-value">KATI — Keluarga Alumni Teknik Industri</span>
+        <span className="footer-label">Brand</span>
+        <span className="footer-value">Alumnova — Jasa Digital Talenta Teknik Industri</span>
       </div>
       <div className="footer-block">
         <span className="footer-label">Institusi</span>

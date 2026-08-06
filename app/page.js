@@ -1,208 +1,199 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+const WA_NUMBER = "6281261739191";
+
+function waLink(msg) {
+  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+}
 
 export default function Home() {
   return (
     <div>
+      {/* HERO */}
       <div className="hero">
-        <div className="hero-breadcrumb">Beranda</div>
+        <div className="hero-breadcrumb">Alumnova</div>
         <h1 className="hero-title">
-          Keluarga Alumni
+          Jasa Digital, Dikerjakan
           <br />
-          Teknik Industri
+          Talenta Terpercaya
         </h1>
-        <p className="hero-subtitle">Universitas Andalas</p>
-      </div>
-
-      <div style={{ padding: "3rem 2rem", maxWidth: "900px", margin: "0 auto" }}>
-        <section style={{ marginBottom: "3rem" }}>
-          <div className="eyebrow">Tentang</div>
-          <h2 style={sectionTitle}>Tentang KATI</h2>
-          <p style={paragraph}>
-            KATI Unand adalah wadah bagi seluruh alumni Teknik Industri Universitas Andalas
-            untuk saling terhubung, berbagi informasi, dan mendukung generasi penerus dalam
-            memasuki dunia kerja. Melalui platform ini, alumni dan mahasiswa/fresh graduate
-            dapat saling terhubung untuk pengembangan karier dan jejaring profesional.
-          </p>
-        </section>
-
-        <section style={{ marginBottom: "3rem" }}>
-          <div className="eyebrow">Arah</div>
-          <h2 style={sectionTitle}>Visi</h2>
-          <p style={paragraph}>
-            Menjadi wadah pemersatu dan pengembang jejaring alumni Teknik Industri Universitas
-            Andalas yang solid, profesional, dan memberikan kontribusi nyata bagi almamater,
-            dunia industri, dan masyarakat.
-          </p>
-        </section>
-
-        <section style={{ marginBottom: "3rem" }}>
-          <div className="eyebrow">Langkah</div>
-          <h2 style={sectionTitle}>Misi</h2>
-          <ol style={{ paddingLeft: "1.2rem", color: "#333", lineHeight: "1.9" }}>
-            <li>Mempererat tali silaturahmi dan membangun jejaring antar alumni Teknik Industri Unand dari berbagai angkatan.</li>
-            <li>Menjembatani hubungan antara alumni dengan mahasiswa aktif, khususnya dalam hal informasi dunia kerja dan pengembangan karier.</li>
-            <li>Memfasilitasi pertukaran informasi lowongan kerja dan kebutuhan talenta antara alumni/perusahaan dengan fresh graduate.</li>
-            <li>Mendukung pengembangan kompetensi anggota melalui berbagi pengalaman, mentoring, dan kolaborasi profesional.</li>
-            <li>Berkontribusi aktif terhadap almamater dan program studi Teknik Industri Universitas Andalas.</li>
-          </ol>
-        </section>
-
-
-
-        <section>
-          <div className="eyebrow">Dokumentasi</div>
-          <h2 style={sectionTitle}>Galeri</h2>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-              gap: "1rem",
-              marginTop: "1rem",
-            }}
-          >
-            <div style={photoPlaceholder}>Foto 1</div>
-            <div style={photoPlaceholder}>Foto 2</div>
-            <div style={photoPlaceholder}>Foto 3</div>
-          </div>
-        </section>
-      </div>
-
-      <FeaturedAlumni />
-    </div>
-  );
-}
-
-/* ── FEATURED ALUMNI ── */
-function FeaturedAlumni() {
-  const [list, setList] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetch() {
-      const { data } = await supabase
-        .from("alumni_profiles")
-        .select("id, nama, jabatan, tempat_kerja, angkatan, foto_url")
-        .order("created_at", { ascending: false })
-        .limit(3);
-      if (data) setList(data);
-      setLoading(false);
-    }
-    fetch();
-  }, []);
-
-  return (
-    <section style={{ backgroundColor: "#f8fafc", borderTop: "1px solid #e2e8f0", padding: "3.5rem 2rem" }}>
-      <div style={{ maxWidth: "900px", margin: "0 auto" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "1.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
-          <div>
-            <div className="eyebrow">Komunitas</div>
-            <h2 style={{ ...sectionTitle, marginBottom: 0 }}>Featured Alumni</h2>
-          </div>
-          <a
-            href="/profil-alumni"
-            style={{
-              fontSize: "0.9rem",
-              fontWeight: 600,
-              color: "#12233f",
-              textDecoration: "none",
-              border: "1px solid #12233f",
-              padding: "0.45rem 1rem",
-              borderRadius: "20px",
-              whiteSpace: "nowrap",
-            }}
-          >
-            Lihat Semua →
+        <p className="hero-subtitle">
+          Website, dashboard, konten, hingga undangan digital — dikerjakan oleh talenta
+          Teknik Industri Universitas Andalas.
+        </p>
+        <div style={{ marginTop: "1.5rem", display: "flex", gap: "0.75rem", justifyContent: "center", flexWrap: "wrap" }}>
+          <a href="/services" style={ctaPrimary}>
+            Lihat Semua Layanan
+          </a>
+          <a href={waLink("Halo, saya ingin konsultasi kebutuhan jasa digital.")} target="_blank" rel="noreferrer" style={ctaSecondary}>
+            Konsultasi Gratis
           </a>
         </div>
+      </div>
 
-        {loading ? (
-          <p style={{ color: "#888" }}>Memuat data alumni...</p>
-        ) : list.length === 0 ? (
-          <p style={{ color: "#888" }}>Belum ada alumni yang terdaftar.</p>
-        ) : (
+      <div style={{ padding: "3.5rem 2rem", maxWidth: "1000px", margin: "0 auto" }}>
+        {/* KENAPA ALUMNOVA */}
+        <section style={{ marginBottom: "3.5rem" }}>
+          <div className="eyebrow">Kenapa Kami</div>
+          <h2 style={sectionTitle}>Kenapa Pilih Alumnova?</h2>
+
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-              gap: "1.25rem",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: "1.5rem",
+              marginTop: "1.5rem",
             }}
           >
-            {list.map((a) => (
-              <FeaturedAlumniCard key={a.id} alumni={a} />
-            ))}
+            <ValueCard
+              icon="🎓"
+              title="Dikerjakan Ahlinya"
+              desc="Bukan sekadar freelancer acak — dikerjakan lulusan & mahasiswa Teknik Industri yang paham proses bisnis, bukan cuma teknis."
+            />
+            <ValueCard
+              icon="💬"
+              title="Komunikasi Langsung"
+              desc="Konsultasi dan revisi langsung via WhatsApp, cepat direspon, tanpa birokrasi rumit."
+            />
+            <ValueCard
+              icon="💰"
+              title="Harga Terjangkau"
+              desc="Cocok untuk UMKM & personal — kualitas tetap dijaga tanpa harga agency besar."
+            />
+            <ValueCard
+              icon="⚡"
+              title="Bukti Nyata"
+              desc="Website ini sendiri, dari perencanaan sampai deploy, adalah hasil kerja tim kami."
+            />
           </div>
-        )}
-      </div>
-    </section>
-  );
-}
+        </section>
 
-function FeaturedAlumniCard({ alumni }) {
-  return (
-    <div
-      className="tech-card"
-      style={{ display: "flex", gap: "1rem", alignItems: "flex-start", padding: "1.25rem" }}
-    >
-      <div
-        style={{
-          width: "64px",
-          height: "64px",
-          flexShrink: 0,
-          borderRadius: "50%",
-          overflow: "hidden",
-          backgroundColor: "#e5e7eb",
-        }}
-      >
-        {alumni.foto_url ? (
-          <img
-            src={alumni.foto_url}
-            alt={alumni.nama}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-        ) : (
+        {/* LAYANAN UNGGULAN */}
+        <section style={{ marginBottom: "3.5rem" }}>
+          <div className="eyebrow">Layanan</div>
+          <h2 style={sectionTitle}>Layanan Unggulan</h2>
+
           <div
             style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#12233f",
-              color: "#fff",
-              fontWeight: 700,
-              fontSize: "1.1rem",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gap: "1.25rem",
+              marginTop: "1.5rem",
             }}
           >
-            {alumni.nama?.charAt(0).toUpperCase()}
+            <ServicePreviewCard title="Website & Web App" desc="Company profile, landing page, hingga sistem custom." price="Mulai Rp400.000" />
+            <ServicePreviewCard title="Undangan Digital" desc="Pernikahan, ulang tahun, dengan RSVP online." price="Mulai Rp150.000" />
+            <ServicePreviewCard title="Video & Konten" desc="Video editing, copywriting, konten AI-generated." price="Mulai Rp75.000" />
           </div>
-        )}
-      </div>
 
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontWeight: 700, fontSize: "1rem", color: "#12233f", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-          {alumni.nama}
-        </div>
-        {(alumni.jabatan || alumni.tempat_kerja) && (
-          <div style={{ fontSize: "0.82rem", color: "#555", marginTop: "0.1rem" }}>
-            {alumni.jabatan}{alumni.jabatan && alumni.tempat_kerja ? " · " : ""}{alumni.tempat_kerja}
+          <div style={{ textAlign: "center", marginTop: "1.75rem" }}>
+            <a href="/services" style={ctaPrimary}>
+              Lihat Semua Layanan →
+            </a>
           </div>
-        )}
-        {alumni.angkatan && (
-          <div className="eyebrow" style={{ marginTop: "0.4rem" }}>
-            Angkatan {alumni.angkatan}
+        </section>
+
+        {/* CARA KERJA */}
+        <section style={{ marginBottom: "3.5rem" }}>
+          <div className="eyebrow">Proses</div>
+          <h2 style={sectionTitle}>Cara Kerja</h2>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+              gap: "1.25rem",
+              marginTop: "1.5rem",
+            }}
+          >
+            <StepCard number="1" title="Konsultasi" desc="Chat via WhatsApp, ceritakan kebutuhanmu." />
+            <StepCard number="2" title="Penawaran" desc="Dapat estimasi harga & waktu pengerjaan." />
+            <StepCard number="3" title="Pengerjaan" desc="Tim kami kerjakan sesuai kesepakatan." />
+            <StepCard number="4" title="Selesai" desc="Revisi bila perlu, lalu hasil akhir diserahkan." />
           </div>
-        )}
+        </section>
+
+        {/* CTA PENUTUP */}
+        <section
+          style={{
+            backgroundColor: "#12233f",
+            borderRadius: "10px",
+            padding: "2.5rem 2rem",
+            textAlign: "center",
+          }}
+        >
+          <h2 style={{ color: "#fff", margin: "0 0 0.5rem", fontSize: "1.4rem" }}>
+            Siap mulai proyekmu?
+          </h2>
+          <p style={{ color: "#cbd5e1", margin: "0 0 1.25rem" }}>
+            Konsultasi kebutuhanmu, gratis tanpa komitmen.
+          </p>
+          <a
+            href={waLink("Halo, saya ingin konsultasi kebutuhan jasa digital.")}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              display: "inline-block",
+              backgroundColor: "#25D366",
+              color: "#fff",
+              padding: "0.75rem 1.75rem",
+              borderRadius: "999px",
+              fontWeight: 700,
+              textDecoration: "none",
+            }}
+          >
+            Chat via WhatsApp
+          </a>
+        </section>
       </div>
     </div>
   );
 }
 
+function ValueCard({ icon, title, desc }) {
+  return (
+    <div className="tech-card" style={{ padding: "1.25rem" }}>
+      <div style={{ fontSize: "1.6rem", marginBottom: "0.5rem" }}>{icon}</div>
+      <div style={{ fontWeight: 700, color: "#12233f", marginBottom: "0.35rem" }}>{title}</div>
+      <div style={{ fontSize: "0.87rem", color: "#555", lineHeight: 1.6 }}>{desc}</div>
+    </div>
+  );
+}
 
+function ServicePreviewCard({ title, desc, price }) {
+  return (
+    <div className="tech-card" style={{ padding: "1.25rem" }}>
+      <div style={{ fontWeight: 700, color: "#12233f", marginBottom: "0.35rem" }}>{title}</div>
+      <div style={{ fontSize: "0.87rem", color: "#555", lineHeight: 1.6, marginBottom: "0.75rem" }}>{desc}</div>
+      <div style={{ fontSize: "0.8rem", color: "#e8823c", fontWeight: 700 }}>{price}</div>
+    </div>
+  );
+}
 
-
+function StepCard({ number, title, desc }) {
+  return (
+    <div style={{ textAlign: "center" }}>
+      <div
+        style={{
+          width: "40px",
+          height: "40px",
+          borderRadius: "50%",
+          backgroundColor: "#e8823c",
+          color: "#fff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontWeight: 700,
+          margin: "0 auto 0.6rem",
+        }}
+      >
+        {number}
+      </div>
+      <div style={{ fontWeight: 700, color: "#12233f", fontSize: "0.92rem" }}>{title}</div>
+      <div style={{ fontSize: "0.82rem", color: "#666", marginTop: "0.25rem" }}>{desc}</div>
+    </div>
+  );
+}
 
 const sectionTitle = {
   fontSize: "1.5rem",
@@ -212,19 +203,25 @@ const sectionTitle = {
   color: "#12233f",
 };
 
-const paragraph = {
-  fontSize: "1rem",
-  lineHeight: "1.7",
-  color: "#333",
+const ctaPrimary = {
+  display: "inline-block",
+  backgroundColor: "#e8823c",
+  color: "#fff",
+  padding: "0.7rem 1.5rem",
+  borderRadius: "999px",
+  fontWeight: 700,
+  textDecoration: "none",
+  fontSize: "0.9rem",
 };
 
-const photoPlaceholder = {
-  height: "150px",
-  backgroundColor: "#f3f4f6",
-  borderRadius: "2px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: "#9ca3af",
+const ctaSecondary = {
+  display: "inline-block",
+  backgroundColor: "transparent",
+  color: "#12233f",
+  border: "2px solid #12233f",
+  padding: "0.65rem 1.5rem",
+  borderRadius: "999px",
+  fontWeight: 700,
+  textDecoration: "none",
   fontSize: "0.9rem",
 };

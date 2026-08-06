@@ -2,9 +2,21 @@
 
 import { useState } from "react";
 
-const WA_NUMBER = "6281234567890"; // GANTI dengan nomor WA kamu
+const WA_NUMBER = "6281261739191";
 
 const SERVICES = [
+  {
+    category: "Event",
+    color: { bg: "#fef3c7", text: "#92400e" },
+    items: [
+      {
+        title: "Undangan Digital",
+        desc: "Undangan pernikahan, ulang tahun, atau acara lain — website interaktif, RSVP online, galeri foto.",
+        price: "Mulai Rp150.000",
+        eta: "2-4 hari",
+      },
+    ],
+  },
   {
     category: "Digital Presence",
     color: { bg: "#e0f2fe", text: "#075985" },
