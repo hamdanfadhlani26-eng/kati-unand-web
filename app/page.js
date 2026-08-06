@@ -49,7 +49,7 @@ export default function Home() {
             <ValueCard
               icon="🎓"
               title="Dikerjakan Ahlinya"
-              desc="Bukan sekadar freelancer acak — dikerjakan lulusan & mahasiswa Teknik Industri yang paham proses bisnis, bukan cuma teknis."
+              desc="Bukan sekadar freelancer acak — dikerjakan oleh talenta terseleksi yang paham proses bisnis, bukan cuma teknis."
             />
             <ValueCard
               icon="💬"
