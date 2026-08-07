@@ -315,7 +315,7 @@ function AlumniCard({ alumni }) {
                         {isLong && (
                             <span
                                 onClick={() => setExpanded(!expanded)}
-                                style={{ color: "#e8823c", fontWeight: 600, cursor: "pointer", marginLeft: "4px" }}
+                                style={{ color: "#2563eb", fontWeight: 600, cursor: "pointer", marginLeft: "4px" }}
                             >
                                 {expanded ? " Tampilkan lebih sedikit" : " Baca selengkapnya"}
                             </span>

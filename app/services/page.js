@@ -10,6 +10,34 @@ function waLink(msg) {
   return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 
+function IconSearch() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2">
+      <circle cx="11" cy="11" r="7" />
+      <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconEmpty() {
+  return (
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5">
+      <circle cx="11" cy="11" r="7" />
+      <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
+      <path d="M9 9l4 4M13 9l-4 4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconClock() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export default function ServicesPage() {
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [search, setSearch] = useState("");
@@ -22,56 +50,25 @@ export default function ServicesPage() {
 
   return (
     <div>
-      {/* ── Hero ── */}
       <div className="hero">
-        <motion.div
-          className="hero-breadcrumb"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <motion.div className="hero-breadcrumb" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           Beranda / Services
         </motion.div>
-        <motion.h1
-          className="hero-title"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-        >
+        <motion.h1 className="hero-title" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}>
           Temukan Layanan yang{" "}
-          <motion.span
-            style={{ color: "#e8823c", display: "inline-block" }}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
+          <motion.span style={{ color: "#2563eb", display: "inline-block" }} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.4 }}>
             Kamu Butuhkan
           </motion.span>
         </motion.h1>
-        <motion.p
-          className="hero-subtitle"
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.25 }}
-        >
+        <motion.p className="hero-subtitle" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }}>
           Website, konten, hingga undangan digital — dikerjakan talenta terpercaya
         </motion.p>
       </div>
 
       <div style={{ padding: "2.5rem 2rem", maxWidth: "1100px", margin: "0 auto" }}>
-
-        {/* ── Search bar ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-          style={{ position: "relative" }}
-        >
-          <span style={{
-            position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)",
-            color: "#999", fontSize: "1rem", pointerEvents: "none",
-          }}>
-            🔍
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }} style={{ position: "relative" }}>
+          <span style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", display: "flex" }}>
+            <IconSearch />
           </span>
           <input
             type="text"
@@ -80,7 +77,7 @@ export default function ServicesPage() {
             onChange={(e) => setSearch(e.target.value)}
             style={{
               width: "100%",
-              padding: "0.85rem 1rem 0.85rem 2.5rem",
+              padding: "0.85rem 1rem 0.85rem 2.6rem",
               border: "1.5px solid #e2e8f0",
               borderRadius: "10px",
               fontSize: "0.95rem",
@@ -89,8 +86,8 @@ export default function ServicesPage() {
               boxSizing: "border-box",
             }}
             onFocus={(e) => {
-              e.target.style.borderColor = "#e8823c";
-              e.target.style.boxShadow = "0 0 0 3px rgba(232,130,60,0.12)";
+              e.target.style.borderColor = "#2563eb";
+              e.target.style.boxShadow = "0 0 0 3px rgba(37,99,235,0.12)";
             }}
             onBlur={(e) => {
               e.target.style.borderColor = "#e2e8f0";
@@ -99,13 +96,7 @@ export default function ServicesPage() {
           />
         </motion.div>
 
-        {/* ── Category filters ── */}
-        <motion.div
-          style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem", margin: "1.25rem 0 2rem" }}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.25 }}
-        >
+        <motion.div style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem", margin: "1.25rem 0 2rem" }} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.25 }}>
           {CATEGORIES.map((cat, i) => (
             <motion.button
               key={cat}
@@ -118,14 +109,14 @@ export default function ServicesPage() {
               style={{
                 padding: "0.45rem 1.2rem",
                 borderRadius: "999px",
-                border: activeCategory === cat ? "2px solid #12233f" : "1.5px solid #e2e8f0",
-                backgroundColor: activeCategory === cat ? "#12233f" : "#fff",
+                border: activeCategory === cat ? "2px solid #0f172a" : "1.5px solid #e2e8f0",
+                backgroundColor: activeCategory === cat ? "#0f172a" : "#fff",
                 color: activeCategory === cat ? "#fff" : "#555",
                 fontSize: "0.85rem",
                 fontWeight: 600,
                 cursor: "pointer",
                 transition: "all 0.2s ease",
-                boxShadow: activeCategory === cat ? "0 4px 12px rgba(18,35,63,0.2)" : "none",
+                boxShadow: activeCategory === cat ? "0 4px 12px rgba(15,23,42,0.2)" : "none",
               }}
             >
               {cat}
@@ -133,26 +124,11 @@ export default function ServicesPage() {
           ))}
         </motion.div>
 
-        {/* ── Count ── */}
-        <motion.p
-          style={{ fontSize: "0.85rem", color: "#888", marginBottom: "1.25rem" }}
-          animate={{ opacity: 1 }}
-          key={filtered.length}
-          initial={{ opacity: 0.5 }}
-          transition={{ duration: 0.2 }}
-        >
-          <span style={{ fontWeight: 700, color: "#e8823c" }}>{filtered.length}</span> layanan ditemukan
+        <motion.p style={{ fontSize: "0.85rem", color: "#888", marginBottom: "1.25rem" }} animate={{ opacity: 1 }} key={filtered.length} initial={{ opacity: 0.5 }} transition={{ duration: 0.2 }}>
+          <span style={{ fontWeight: 700, color: "#2563eb" }}>{filtered.length}</span> layanan ditemukan
         </motion.p>
 
-        {/* ── Cards grid ── */}
-        <motion.div
-          layout
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))",
-            gap: "1.25rem",
-          }}
-        >
+        <motion.div layout style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: "1.25rem" }}>
           <AnimatePresence mode="popLayout">
             {filtered.map((item, i) => (
               <ServiceCard key={item.slug} item={item} index={i} />
@@ -160,65 +136,32 @@ export default function ServicesPage() {
           </AnimatePresence>
         </motion.div>
 
-        {/* ── Empty state ── */}
         <AnimatePresence>
           {filtered.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              style={{ textAlign: "center", padding: "3rem 0", color: "#999" }}
-            >
-              <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>🔎</div>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} style={{ textAlign: "center", padding: "3rem 0", color: "#999" }}>
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: "0.6rem" }}>
+                <IconEmpty />
+              </div>
               <p>Tidak ada layanan yang cocok dengan pencarian.</p>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* ── CTA Box ── */}
         <motion.div
-          style={{
-            marginTop: "3rem",
-            padding: "2rem",
-            background: "linear-gradient(135deg, #0f1e38 0%, #12233f 100%)",
-            borderRadius: "14px",
-            textAlign: "center",
-            position: "relative",
-            overflow: "hidden",
-          }}
+          style={{ marginTop: "3rem", padding: "2rem", background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", borderRadius: "14px", textAlign: "center", position: "relative", overflow: "hidden" }}
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.55 }}
         >
-          {/* glow decoration */}
-          <div style={{
-            position: "absolute", inset: 0, pointerEvents: "none",
-            background: "radial-gradient(ellipse at 50% 0%, rgba(232,130,60,0.18) 0%, transparent 65%)",
-          }} />
-          <p style={{ margin: "0 0 0.5rem", color: "#94a3b8", fontSize: "0.88rem", position: "relative" }}>
-            Tidak menemukan yang kamu cari?
-          </p>
-          <p style={{ margin: "0 0 1.25rem", color: "#fff", fontWeight: 700, fontSize: "1.05rem", position: "relative" }}>
-            Konsultasikan langsung kebutuhanmu — gratis!
-          </p>
+          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "radial-gradient(ellipse at 50% 0%, rgba(37,99,235,0.18) 0%, transparent 65%)" }} />
+          <p style={{ margin: "0 0 0.5rem", color: "#94a3b8", fontSize: "0.88rem", position: "relative" }}>Tidak menemukan yang kamu cari?</p>
+          <p style={{ margin: "0 0 1.25rem", color: "#fff", fontWeight: 700, fontSize: "1.05rem", position: "relative" }}>Konsultasikan langsung kebutuhanmu — gratis!</p>
           <motion.a
             href={waLink("Halo, saya ingin konsultasi kebutuhan jasa digital.")}
             target="_blank"
             rel="noreferrer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              backgroundColor: "#25D366",
-              color: "#fff",
-              padding: "0.75rem 1.75rem",
-              borderRadius: "999px",
-              fontWeight: 700,
-              textDecoration: "none",
-              position: "relative",
-              boxShadow: "0 4px 18px rgba(37,211,102,0.35)",
-            }}
+            style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", backgroundColor: "#25D366", color: "#fff", padding: "0.75rem 1.75rem", borderRadius: "999px", fontWeight: 700, textDecoration: "none", position: "relative", boxShadow: "0 4px 18px rgba(37,211,102,0.35)" }}
             whileHover={{ scale: 1.05, boxShadow: "0 8px 28px rgba(37,211,102,0.5)" }}
             whileTap={{ scale: 0.97 }}
           >
@@ -250,7 +193,7 @@ function ServiceCard({ item, index }) {
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        border: "1px solid rgba(18,35,63,0.08)",
+        border: "1px solid rgba(15,23,42,0.08)",
         borderRadius: "12px",
         overflow: "hidden",
         backgroundColor: "#fff",
@@ -259,17 +202,12 @@ function ServiceCard({ item, index }) {
         textDecoration: "none",
         color: "inherit",
         transition: "box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease",
-        boxShadow: hov ? "0 20px 40px rgba(18,35,63,0.13)" : "0 2px 8px rgba(18,35,63,0.05)",
+        boxShadow: hov ? "0 20px 40px rgba(15,23,42,0.13)" : "0 2px 8px rgba(15,23,42,0.05)",
         transform: hov ? "translateY(-6px)" : "translateY(0)",
-        borderColor: hov ? "rgba(232,130,60,0.35)" : "rgba(18,35,63,0.08)",
+        borderColor: hov ? "rgba(37,99,235,0.35)" : "rgba(15,23,42,0.08)",
       }}
     >
-      {/* Image */}
-      <div style={{
-        width: "100%", aspectRatio: "16 / 10",
-        backgroundColor: "#f1f5f9", overflow: "hidden",
-        position: "relative",
-      }}>
+      <div style={{ width: "100%", aspectRatio: "16 / 10", backgroundColor: "#f1f5f9", overflow: "hidden", position: "relative" }}>
         <motion.img
           src={item.image}
           alt={item.title}
@@ -278,7 +216,6 @@ function ServiceCard({ item, index }) {
           transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
           onError={(e) => { e.currentTarget.style.display = "none"; }}
         />
-        {/* Category badge overlay */}
         <motion.span
           style={{
             position: "absolute", top: "0.7rem", left: "0.7rem",
@@ -299,41 +236,22 @@ function ServiceCard({ item, index }) {
         </motion.span>
       </div>
 
-      {/* Body */}
       <div style={{ padding: "1.1rem", display: "flex", flexDirection: "column", flex: 1 }}>
-        <h3 style={{ margin: "0 0 0.4rem", fontSize: "1rem", color: "#12233f", fontWeight: 700 }}>{item.title}</h3>
+        <h3 style={{ margin: "0 0 0.4rem", fontSize: "1rem", color: "#0f172a", fontWeight: 700 }}>{item.title}</h3>
         <p style={{ margin: 0, fontSize: "0.85rem", color: "#64748b", lineHeight: 1.55, flex: 1 }}>{item.shortDesc}</p>
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "1rem" }}>
           <div>
             <div style={{ fontSize: "0.7rem", color: "#aaa", marginBottom: "2px" }}>Mulai dari</div>
-            <div style={{ fontSize: "0.97rem", fontWeight: 800, color: "#12233f" }}>
-              {item.price}
-            </div>
+            <div style={{ fontSize: "0.97rem", fontWeight: 800, color: "#0f172a" }}>{item.price}</div>
           </div>
-          <motion.div
-            style={{
-              fontSize: "0.75rem", color: "#888",
-              display: "flex", alignItems: "center", gap: "0.25rem",
-            }}
-          >
-            ⏱ {item.eta}
-          </motion.div>
+          <div style={{ fontSize: "0.75rem", color: "#888", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+            <IconClock /> {item.eta}
+          </div>
         </div>
 
-        {/* CTA hint */}
         <motion.div
-          style={{
-            marginTop: "0.85rem",
-            paddingTop: "0.75rem",
-            borderTop: "1px solid #f1f5f9",
-            fontSize: "0.8rem",
-            color: "#e8823c",
-            fontWeight: 600,
-            display: "flex",
-            alignItems: "center",
-            gap: "0.25rem",
-          }}
+          style={{ marginTop: "0.85rem", paddingTop: "0.75rem", borderTop: "1px solid #f1f5f9", fontSize: "0.8rem", color: "#2563eb", fontWeight: 600, display: "flex", alignItems: "center", gap: "0.25rem" }}
           animate={{ x: hov ? 4 : 0 }}
           transition={{ type: "spring", stiffness: 400 }}
         >

@@ -1,11 +1,18 @@
-import { Plus_Jakarta_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, IBM_Plex_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import AnimatedNavbar from "./AnimatedNavbar";
+import Navbar from "@/components/Navbar";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-body",
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["italic"],
+  variable: "--font-accent",
 });
 
 const plexMono = IBM_Plex_Mono({
@@ -21,9 +28,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="id" className={`${jakarta.variable} ${plexMono.variable}`}>
+    <html lang="id" className={`${jakarta.variable} ${plexMono.variable} ${instrumentSerif.variable}`}>
       <body>
-        <AnimatedNavbar />
+        <Navbar />
         <main>{children}</main>
         <Footer />
       </body>
@@ -36,11 +43,15 @@ function Footer() {
     <footer className="footer">
       <div className="footer-block">
         <span className="footer-label">Brand</span>
-        <span className="footer-value">Alumnova — Jasa Digital Terpercaya</span>
+        <span className="footer-value">Alumnova — Jasa Digital Talenta Teknik Industri</span>
+      </div>
+      <div className="footer-block">
+        <span className="footer-label">Institusi</span>
+        <span className="footer-value">Universitas Andalas</span>
       </div>
       <div style={{ width: "100%", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "0.75rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
         <span style={{ fontSize: "0.78rem", color: "#9db8cf" }}>
-          Powered by KATI UNAND — Ikatan Alumni Teknik Industri Universitas Andalas
+          © Hamdan Fadhlani TI-2022. All rights reserved.
         </span>
         <div style={{ display: "flex", gap: "0.6rem" }}>
           <a href="https://www.instagram.com/kati.unand?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noreferrer" className="footer-social-link" title="Instagram">

@@ -89,7 +89,7 @@ export default function AnimatedNavbar() {
                     bottom: "-2px",
                     height: "2px",
                     width: "100%",
-                    background: "#e8823c",
+                    background: "#2563eb",
                     borderRadius: "2px",
                   }}
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
@@ -107,17 +107,17 @@ export default function AnimatedNavbar() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.55 }}
-          whileHover={{ scale: 1.05, boxShadow: "0 6px 18px rgba(232,130,60,0.4)" }}
+          whileHover={{ scale: 1.05, boxShadow: "0 6px 18px rgba(37,99,235,0.4)" }}
           whileTap={{ scale: 0.97 }}
           style={{
-            backgroundColor: "#e8823c",
+            backgroundColor: "#2563eb",
             color: "#fff",
             padding: "0.45rem 1.1rem",
             borderRadius: "999px",
             fontWeight: 700,
             fontSize: "0.85rem",
             textDecoration: "none",
-            boxShadow: "0 3px 10px rgba(232,130,60,0.3)",
+            boxShadow: "0 3px 10px rgba(37,99,235,0.3)",
             transition: "box-shadow 0.2s ease",
           }}
         >

@@ -177,7 +177,7 @@ export default function TalentPool() {
             <div style={{ padding: "3rem 2rem", maxWidth: "900px", margin: "0 auto" }}>
                 <div style={{ marginBottom: "1rem", fontSize: "0.9rem" }}>
                     Sudah pernah daftar dan mau ubah data?{" "}
-                    <a href="/talent-pool/edit" style={{ color: "#e8823c", fontWeight: 600 }}>
+                    <a href="/talent-pool/edit" style={{ color: "#2563eb", fontWeight: 600 }}>
                         Edit profil kamu di sini →
                     </a>
                 </div>

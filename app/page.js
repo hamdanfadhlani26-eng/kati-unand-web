@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const WA_NUMBER = "6281261739191";
 
@@ -9,196 +9,142 @@ function waLink(msg) {
   return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 
-/* ── Reusable animation variants ── */
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0 },
-};
-
-const stagger = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
-};
-
-/* ── Animated SVG Icons ── */
-function IconAhli() {
+function IconTarget() {
   return (
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-      <motion.circle
-        cx="16" cy="10" r="6"
-        stroke="#e8823c" strokeWidth="2"
-        initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      />
-      <motion.path
-        d="M6 26c0-5.523 4.477-10 10-10s10 4.477 10 10"
-        stroke="#e8823c" strokeWidth="2" strokeLinecap="round"
-        initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-        transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-      />
-      <motion.path
-        d="M12 10l2 2 4-5"
-        stroke="#12233f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.8 }}
-      />
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.6">
+      <circle cx="12" cy="12" r="8" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="12" cy="12" r="0.6" fill="#2563eb" />
+    </svg>
+  );
+}
+function IconChat() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.6">
+      <path d="M4 5h16v11H8l-4 4V5z" strokeLinejoin="round" />
+      <path d="M8 9h8M8 12h5" strokeLinecap="round" />
+    </svg>
+  );
+}
+function IconCoin() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.6">
+      <circle cx="12" cy="12" r="8" />
+      <path d="M12 7v10M9.5 9.5c0-1.4 1.2-2 2.5-2s2.5.7 2.5 2-1.2 1.8-2.5 1.8-2.5.5-2.5 2 1.2 2 2.5 2 2.5-.6 2.5-2" strokeLinecap="round" />
+    </svg>
+  );
+}
+function IconSpark() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.6">
+      <path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18" strokeLinecap="round" />
     </svg>
   );
 }
 
-function IconKomunikasi() {
+function IconMahasiswa() {
   return (
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-      <motion.rect
-        x="3" y="5" width="26" height="18" rx="4"
-        stroke="#e8823c" strokeWidth="2"
-        initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      />
-      <motion.path
-        d="M3 23l6-4M29 23l-6-4"
-        stroke="#e8823c" strokeWidth="2" strokeLinecap="round"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-        transition={{ delay: 0.7 }}
-      />
-      <motion.circle cx="10" cy="14" r="2" fill="#12233f"
-        initial={{ scale: 0 }} animate={{ scale: 1 }}
-        transition={{ delay: 0.9, type: "spring" }}
-      />
-      <motion.circle cx="16" cy="14" r="2" fill="#12233f"
-        initial={{ scale: 0 }} animate={{ scale: 1 }}
-        transition={{ delay: 1.0, type: "spring" }}
-      />
-      <motion.circle cx="22" cy="14" r="2" fill="#12233f"
-        initial={{ scale: 0 }} animate={{ scale: 1 }}
-        transition={{ delay: 1.1, type: "spring" }}
-      />
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.6">
+      <path d="M2 9l10-5 10 5-10 5-10-5z" strokeLinejoin="round" />
+      <path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M22 9v6" strokeLinecap="round" />
+    </svg>
+  );
+}
+function IconAlumni() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.6">
+      <rect x="3" y="8" width="18" height="12" rx="2" />
+      <path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3 13h18" />
+    </svg>
+  );
+}
+function IconKampus() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.6">
+      <path d="M3 10l9-6 9 6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5 10v9h14v-9" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 19v-6h4v6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-function IconHarga() {
-  return (
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-      <motion.circle
-        cx="16" cy="16" r="13"
-        stroke="#e8823c" strokeWidth="2"
-        initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      />
-      <motion.path
-        d="M16 8v2M16 22v2M11 13.5c0-1.933 2.239-3.5 5-3.5s5 1.567 5 3.5S18.761 17 16 17s-5 1.567-5 3.5 2.239 3.5 5 3.5 5-1.567 5-3.5"
-        stroke="#12233f" strokeWidth="2" strokeLinecap="round"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-      />
-    </svg>
-  );
-}
-
-function IconBukti() {
-  return (
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-      <motion.path
-        d="M4 28V10l12-6 12 6v18"
-        stroke="#e8823c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-        initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      />
-      <motion.rect
-        x="11" y="18" width="10" height="10"
-        stroke="#12233f" strokeWidth="2"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.7 }}
-      />
-      <motion.path
-        d="M12 10l4-3 4 3"
-        stroke="#e8823c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-        transition={{ delay: 1.0 }}
-      />
-    </svg>
-  );
-}
-
-/* ── ValueCard with animated icon ── */
-function ValueCard({ Icon, title, desc, delay = 0 }) {
+function AudienceCard({ icon, tag, desc, cta, href, delay = 0 }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  const [hovered, setHovered] = useHoverState();
+  const inView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
     <motion.div
       ref={ref}
-      variants={fadeUp}
-      initial="hidden"
-      animate={inView ? "show" : "hidden"}
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      style={{
+        background: "#fff",
+        border: "1px solid rgba(15,23,42,0.07)",
+        borderRadius: "14px",
+        padding: "1.5rem",
+      }}
+    >
+      <div style={{ marginBottom: "0.6rem" }}>{icon}</div>
+      <span
+        style={{
+          display: "inline-block",
+          backgroundColor: "#eef2ff",
+          color: "#2563eb",
+          fontSize: "0.75rem",
+          fontWeight: 700,
+          padding: "0.25rem 0.7rem",
+          borderRadius: "999px",
+          marginBottom: "0.75rem",
+        }}
+      >
+        {tag}
+      </span>
+      <p style={{ fontSize: "0.9rem", color: "#475569", lineHeight: 1.65, marginBottom: "1rem" }}>{desc}</p>
+      <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" style={{ color: "#2563eb", fontWeight: 700, fontSize: "0.88rem", textDecoration: "none" }}>
+        {cta} →
+      </a>
+    </motion.div>
+  );
+}
+
+/* ── ValueCard ── */
+function ValueCard({ Icon, title, desc, delay = 0 }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.55, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
         background: "#fff",
-        border: "1px solid rgba(18,35,63,0.08)",
-        borderRadius: "12px",
+        border: "1px solid rgba(15,23,42,0.07)",
+        borderRadius: "14px",
         padding: "1.5rem 1.25rem",
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.85rem",
-        cursor: "default",
         transition: "box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease",
-        boxShadow: hovered ? "0 16px 40px rgba(18,35,63,0.12)" : "0 2px 8px rgba(18,35,63,0.04)",
+        boxShadow: hovered ? "0 16px 40px rgba(37,99,235,0.12)" : "0 2px 8px rgba(15,23,42,0.03)",
         transform: hovered ? "translateY(-5px)" : "translateY(0)",
-        borderColor: hovered ? "rgba(232,130,60,0.35)" : "rgba(18,35,63,0.08)",
+        borderColor: hovered ? "rgba(37,99,235,0.3)" : "rgba(15,23,42,0.07)",
       }}
     >
-      {/* Animated icon container */}
-      <motion.div
-        style={{
-          width: "52px",
-          height: "52px",
-          borderRadius: "12px",
-          background: "linear-gradient(135deg, #fff8f3 0%, #fde8d4 100%)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          border: "1px solid rgba(232,130,60,0.15)",
-        }}
-        animate={hovered ? { scale: 1.08, rotate: [0, -4, 4, 0] } : { scale: 1, rotate: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <Icon />
-      </motion.div>
-
-      <div>
-        <div style={{ fontWeight: 700, fontSize: "1rem", color: "#12233f", marginBottom: "0.4rem" }}>
-          {title}
-        </div>
-        <div style={{ fontSize: "0.87rem", color: "#64748b", lineHeight: 1.65 }}>
-          {desc}
-        </div>
-      </div>
+      <div style={{ marginBottom: "0.75rem" }}><Icon /></div>
+      <div style={{ fontWeight: 700, fontSize: "1rem", color: "#0f172a", marginBottom: "0.4rem" }}>{title}</div>
+      <div style={{ fontSize: "0.87rem", color: "#64748b", lineHeight: 1.65 }}>{desc}</div>
     </motion.div>
   );
 }
 
-/* ── Small hook for hover state ── */
-function useHoverState() {
-  const [hovered, setHovered] = [
-    typeof window !== "undefined" ? false : false,
-    () => {},
-  ];
-  const [state, setState] = require("react").useState(false);
-  return [state, setState];
-}
-
-/* ── Animated counter ── */
 function AnimatedNumber({ target, suffix = "" }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
-  const { useState, useEffect } = require("react");
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -207,8 +153,10 @@ function AnimatedNumber({ target, suffix = "" }) {
     const step = target / 40;
     const timer = setInterval(() => {
       start += step;
-      if (start >= target) { setCount(target); clearInterval(timer); }
-      else setCount(Math.floor(start));
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else setCount(Math.floor(start));
     }, 30);
     return () => clearInterval(timer);
   }, [inView, target]);
@@ -216,7 +164,17 @@ function AnimatedNumber({ target, suffix = "" }) {
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-/* ── Step card ── */
+function StatItem({ value, suffix, label }) {
+  return (
+    <div style={{ textAlign: "center" }}>
+      <div style={{ fontSize: "2rem", fontWeight: 800, color: "#0f172a", lineHeight: 1 }}>
+        <AnimatedNumber target={value} suffix={suffix} />
+      </div>
+      <div style={{ fontSize: "0.82rem", color: "#64748b", marginTop: "0.3rem" }}>{label}</div>
+    </div>
+  );
+}
+
 function StepCard({ number, title, desc, delay = 0 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
@@ -230,11 +188,13 @@ function StepCard({ number, title, desc, delay = 0 }) {
       style={{ textAlign: "center" }}
     >
       <motion.div
+        whileHover={{ scale: 1.12 }}
+        transition={{ type: "spring", stiffness: 300 }}
         style={{
           width: "44px",
           height: "44px",
           borderRadius: "50%",
-          background: "linear-gradient(135deg, #e8823c 0%, #d9702a 100%)",
+          background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)",
           color: "#fff",
           display: "flex",
           alignItems: "center",
@@ -242,24 +202,21 @@ function StepCard({ number, title, desc, delay = 0 }) {
           fontWeight: 800,
           fontSize: "1rem",
           margin: "0 auto 0.75rem",
-          boxShadow: "0 4px 14px rgba(232,130,60,0.35)",
+          boxShadow: "0 4px 14px rgba(37,99,235,0.35)",
         }}
-        whileHover={{ scale: 1.12 }}
-        transition={{ type: "spring", stiffness: 300 }}
       >
         {number}
       </motion.div>
-      <div style={{ fontWeight: 700, color: "#12233f", fontSize: "0.95rem", marginBottom: "0.3rem" }}>{title}</div>
+      <div style={{ fontWeight: 700, color: "#0f172a", fontSize: "0.95rem", marginBottom: "0.3rem" }}>{title}</div>
       <div style={{ fontSize: "0.83rem", color: "#64748b", lineHeight: 1.6 }}>{desc}</div>
     </motion.div>
   );
 }
 
-/* ── Service preview card ── */
 function ServicePreviewCard({ title, desc, price, delay = 0 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-  const [hov, setHov] = require("react").useState(false);
+  const [hov, setHov] = useState(false);
 
   return (
     <motion.div
@@ -271,22 +228,21 @@ function ServicePreviewCard({ title, desc, price, delay = 0 }) {
       onMouseLeave={() => setHov(false)}
       style={{
         background: "#fff",
-        border: "1px solid rgba(18,35,63,0.08)",
-        borderRadius: "12px",
+        border: "1px solid rgba(15,23,42,0.07)",
+        borderRadius: "14px",
         padding: "1.4rem",
         transition: "all 0.3s cubic-bezier(0.25,0.46,0.45,0.94)",
-        boxShadow: hov ? "0 20px 40px rgba(18,35,63,0.13)" : "0 2px 8px rgba(18,35,63,0.04)",
+        boxShadow: hov ? "0 20px 40px rgba(37,99,235,0.13)" : "0 2px 8px rgba(15,23,42,0.03)",
         transform: hov ? "translateY(-6px)" : "translateY(0)",
-        borderColor: hov ? "rgba(232,130,60,0.4)" : "rgba(18,35,63,0.08)",
-        cursor: "default",
+        borderColor: hov ? "rgba(37,99,235,0.35)" : "rgba(15,23,42,0.07)",
       }}
     >
-      <div style={{ fontWeight: 700, color: "#12233f", marginBottom: "0.4rem", fontSize: "0.97rem" }}>{title}</div>
+      <div style={{ fontWeight: 700, color: "#0f172a", marginBottom: "0.4rem", fontSize: "0.97rem" }}>{title}</div>
       <div style={{ fontSize: "0.87rem", color: "#64748b", lineHeight: 1.6, marginBottom: "0.85rem" }}>{desc}</div>
       <motion.div
-        style={{ fontSize: "0.82rem", color: "#e8823c", fontWeight: 700 }}
         animate={hov ? { x: 4 } : { x: 0 }}
         transition={{ type: "spring", stiffness: 400 }}
+        style={{ fontSize: "0.82rem", color: "#2563eb", fontWeight: 700 }}
       >
         {price} →
       </motion.div>
@@ -294,109 +250,196 @@ function ServicePreviewCard({ title, desc, price, delay = 0 }) {
   );
 }
 
-/* ── Stat item ── */
-function StatItem({ value, suffix, label }) {
-  return (
-    <div style={{ textAlign: "center" }}>
-      <div style={{ fontSize: "2rem", fontWeight: 800, color: "#12233f", lineHeight: 1 }}>
-        <AnimatedNumber target={value} suffix={suffix} />
-      </div>
-      <div style={{ fontSize: "0.82rem", color: "#64748b", marginTop: "0.3rem" }}>{label}</div>
-    </div>
-  );
-}
-
-/* ── Main page ── */
 export default function Home() {
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 60]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const imageY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const textY = useTransform(scrollYProgress, [0, 1], [0, 40]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
     <div>
+      {/* ATMOSPHERE TOP SECTION - SKY PHOTO */}
+      <div
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          aspectRatio: "16 / 7",   // ganti dari height: "340px"
+          backgroundImage: "url('/sky-hero.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* overlay gelap tipis biar teks kebaca */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(15,23,42,0.25) 0%, rgba(15,23,42,0.1) 50%, rgba(255,255,255,0.95) 100%)" }} />
+
+        <div style={{ position: "relative", zIndex: 2, height: "100%", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "0 1.5rem" }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            style={{
+              color: "#fff",
+              fontSize: "clamp(1.6rem, 4vw, 2.6rem)",
+              fontWeight: 800,
+              letterSpacing: "-0.02em",
+              textShadow: "0 2px 20px rgba(15,23,42,0.4)",
+              margin: 0,
+            }}
+          >
+            Building the Future with{" "}
+            <span style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontStyle: "italic", fontWeight: 400 }}>
+              Alumnova
+            </span>
+          </motion.h2>
+        </div>
+      </div>
+
       {/* HERO */}
-      <div className="hero" ref={heroRef} style={{ overflow: "hidden" }}>
-        <motion.div style={{ y: heroY, opacity: heroOpacity }}>
-          <motion.div
-            className="hero-breadcrumb"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            Alumnova
-          </motion.div>
+      <div
+        ref={heroRef}
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          background: "linear-gradient(180deg, #eef2ff 0%, #fafbff 100%)",
+          padding: "3.5rem 2rem 2rem",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "1180px",
+            margin: "0 auto",
+            display: "grid",
+            gridTemplateColumns: "1.1fr 1fr",
+            alignItems: "center",
+            gap: "2rem",
+          }}
+          className="hero-grid"
+        >
+          {/* Teks kiri */}
+          <motion.div style={{ y: textY, opacity: heroOpacity, textAlign: "left" }}>
+            <motion.div
+              className="eyebrow"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              Alumnova
+            </motion.div>
 
-          <motion.h1
-            className="hero-title"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            Jasa Digital, Dikerjakan
-            <br />
-            <motion.span
-              style={{ color: "#e8823c", display: "inline-block" }}
-              initial={{ opacity: 0, x: -12 }}
-              animate={{ opacity: 1, x: 0 }}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+              style={{
+                fontSize: "clamp(2rem, 4.2vw, 2.9rem)",
+                fontWeight: 800,
+                lineHeight: 1.12,
+                color: "#0f172a",
+                margin: "0.5rem 0 1rem",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Jasa Digital, Dikerjakan
+              <br />
+              <span
+                style={{
+                  color: "#2563eb",
+                  fontFamily: "'Instrument Serif', Georgia, serif",
+                  fontStyle: "italic",
+                  fontWeight: 400,
+                  fontSize: "1.08em",
+                }}
+              >
+                Talenta Terpercaya
+              </span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
+              style={{ fontSize: "1.02rem", color: "#64748b", lineHeight: 1.65, maxWidth: "460px" }}
+            >
+              Website, dashboard, konten, hingga undangan digital — dikerjakan oleh talenta terseleksi berpengalaman.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
+              style={{ marginTop: "1.75rem", display: "flex", gap: "0.75rem", flexWrap: "wrap" }}
             >
-              Talenta Terpercaya
-            </motion.span>
-          </motion.h1>
-
-          <motion.p
-            className="hero-subtitle"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            Website, dashboard, konten, hingga undangan digital — dikerjakan oleh talenta
-            terseleksi berpengalaman.
-          </motion.p>
-
-          <motion.div
-            style={{ marginTop: "2rem", display: "flex", gap: "0.75rem", justifyContent: "center", flexWrap: "wrap" }}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.45 }}
-          >
-            <motion.a
-              href="/services"
-              style={ctaPrimary}
-              whileHover={{ scale: 1.04, boxShadow: "0 8px 24px rgba(232,130,60,0.5)" }}
-              whileTap={{ scale: 0.97 }}
-            >
-              Lihat Semua Layanan
-            </motion.a>
-            <motion.a
-              href={waLink("Halo, saya ingin konsultasi kebutuhan jasa digital.")}
-              target="_blank"
-              rel="noreferrer"
-              style={ctaSecondary}
-              whileHover={{ scale: 1.04, backgroundColor: "rgba(255,255,255,0.12)" }}
-              whileTap={{ scale: 0.97 }}
-            >
-              Konsultasi Gratis
-            </motion.a>
+              <motion.a
+                href="/services"
+                whileHover={{ scale: 1.04, boxShadow: "0 8px 24px rgba(37,99,235,0.4)" }}
+                whileTap={{ scale: 0.97 }}
+                style={{
+                  backgroundColor: "#2563eb",
+                  color: "#fff",
+                  padding: "0.8rem 1.6rem",
+                  borderRadius: "999px",
+                  fontWeight: 700,
+                  textDecoration: "none",
+                  fontSize: "0.92rem",
+                  boxShadow: "0 4px 14px rgba(37,99,235,0.3)",
+                }}
+              >
+                Lihat Semua Layanan
+              </motion.a>
+              <motion.a
+                href={waLink("Halo, saya ingin konsultasi kebutuhan jasa digital.")}
+                target="_blank"
+                rel="noreferrer"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                style={{
+                  backgroundColor: "transparent",
+                  color: "#0f172a",
+                  border: "1.5px solid rgba(15,23,42,0.2)",
+                  padding: "0.78rem 1.6rem",
+                  borderRadius: "999px",
+                  fontWeight: 700,
+                  textDecoration: "none",
+                  fontSize: "0.92rem",
+                }}
+              >
+                Konsultasi Gratis
+              </motion.a>
+            </motion.div>
           </motion.div>
-        </motion.div>
+
+          {/* Gambar kanan - parallax */}
+          <motion.div
+            style={{ y: imageY, opacity: heroOpacity }}
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            <img
+              src="/hero-illustration.png"
+              alt="Ilustrasi layanan digital Alumnova"
+              style={{ width: "100%", height: "auto", display: "block" }}
+            />
+          </motion.div>
+        </div>
       </div>
 
       {/* STATS BAR */}
       <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.6 }}
         style={{
           background: "#fff",
-          borderBottom: "1px solid rgba(18,35,63,0.06)",
+          borderBottom: "1px solid rgba(15,23,42,0.06)",
           padding: "1.75rem 2rem",
           display: "flex",
           justifyContent: "center",
           gap: "4rem",
           flexWrap: "wrap",
         }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8, duration: 0.6 }}
       >
         <StatItem value={50} suffix="+" label="Proyek Selesai" />
         <StatItem value={30} suffix="+" label="Klien Puas" />
@@ -405,6 +448,49 @@ export default function Home() {
       </motion.div>
 
       <div style={{ padding: "4rem 2rem", maxWidth: "1080px", margin: "0 auto" }}>
+        {/* UNTUK SIAPA */}
+        <section style={{ marginBottom: "4rem" }}>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5 }}
+            style={{ textAlign: "center" }}
+          >
+            <div className="eyebrow">Ekosistem</div>
+            <h2 style={{ ...sectionTitle, textAlign: "center" }}>Untuk Siapa Alumnova?</h2>
+            <p style={{ color: "#64748b", marginTop: "0.4rem" }}>
+              Ekosistem yang dirancang untuk tiga pihak yang saling mendukung
+            </p>
+          </motion.div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.25rem", marginTop: "2rem" }}>
+            <AudienceCard
+              icon={<IconMahasiswa />}
+              tag="Mahasiswa"
+              desc="Bangun portofolio, dapatkan pengalaman nyata, dan buka peluang penghasilan dari keahlian yang kamu kembangkan di kampus."
+              cta="Daftar sebagai Talent"
+              href="/talent-pool"
+              delay={0}
+            />
+            <AudienceCard
+              icon={<IconAlumni />}
+              tag="Alumni & Profesional"
+              desc="Temukan talent tepercaya dari komunitas kampus, dapatkan layanan fleksibel, dan temukan partner kolaborasi yang ideal."
+              cta="Cari Talent"
+              href="/talent-pool"
+              delay={0.1}
+            />
+            <AudienceCard
+              icon={<IconKampus />}
+              tag="Kampus"
+              desc="Perkuat employability mahasiswa dan engagement alumni melalui ekosistem terukur yang terintegrasi dengan komunitas kampus."
+              cta="Jadi Mitra Kampus"
+              href={waLink("Halo, saya ingin diskusi kerja sama sebagai mitra kampus dengan Alumnova.")}
+              delay={0.2}
+            />
+          </div>
+        </section>
 
         {/* KENAPA ALUMNOVA */}
         <section style={{ marginBottom: "4rem" }}>
@@ -418,39 +504,11 @@ export default function Home() {
             <h2 style={sectionTitle}>Kenapa Pilih Alumnova?</h2>
           </motion.div>
 
-          <div
-            className="value-grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "1.25rem",
-              marginTop: "1.75rem",
-            }}
-          >
-            <ValueCard
-              Icon={IconAhli}
-              title="Dikerjakan Ahlinya"
-              desc="Dikerjakan oleh talenta terseleksi yang paham proses bisnis, bukan cuma teknis."
-              delay={0}
-            />
-            <ValueCard
-              Icon={IconKomunikasi}
-              title="Komunikasi Langsung"
-              desc="Konsultasi dan revisi langsung via WhatsApp, cepat direspon, tanpa birokrasi rumit."
-              delay={0.1}
-            />
-            <ValueCard
-              Icon={IconHarga}
-              title="Harga Terjangkau"
-              desc="Cocok untuk UMKM & personal — kualitas tetap dijaga tanpa harga agency besar."
-              delay={0.2}
-            />
-            <ValueCard
-              Icon={IconBukti}
-              title="Bukti Nyata"
-              desc="Website ini sendiri, dari perencanaan sampai deploy, adalah hasil kerja tim kami."
-              delay={0.3}
-            />
+          <div className="value-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1.25rem", marginTop: "1.75rem" }}>
+            <ValueCard Icon={IconTarget} title="Dikerjakan Ahlinya" desc="Talenta terseleksi yang paham proses bisnis, bukan cuma teknis." delay={0} />
+            <ValueCard Icon={IconChat} title="Komunikasi Langsung" desc="Konsultasi & revisi via WhatsApp, cepat direspon, tanpa birokrasi." delay={0.1} />
+            <ValueCard Icon={IconCoin} title="Harga Terjangkau" desc="Kualitas terjaga tanpa harga agency besar." delay={0.2} />
+            <ValueCard Icon={IconSpark} title="Bukti Nyata" desc="Website ini sendiri adalah hasil kerja tim kami." delay={0.3} />
           </div>
         </section>
 
@@ -466,46 +524,34 @@ export default function Home() {
             <h2 style={sectionTitle}>Layanan Unggulan</h2>
           </motion.div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: "1.25rem",
-              marginTop: "1.75rem",
-            }}
-          >
-            <ServicePreviewCard
-              title="Website & Web App"
-              desc="Company profile, landing page, hingga sistem custom."
-              price="Mulai Rp400.000"
-              delay={0}
-            />
-            <ServicePreviewCard
-              title="Undangan Digital"
-              desc="Pernikahan, ulang tahun, wisuda, dengan RSVP online."
-              price="Mulai Rp50.000"
-              delay={0.1}
-            />
-            <ServicePreviewCard
-              title="Video & Konten"
-              desc="Video editing, copywriting, konten AI-generated."
-              price="Mulai Rp75.000"
-              delay={0.2}
-            />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.25rem", marginTop: "1.75rem" }}>
+            <ServicePreviewCard title="Website & Web App" desc="Company profile, landing page, hingga sistem custom." price="Mulai Rp450.000" delay={0} />
+            <ServicePreviewCard title="Undangan Digital" desc="Pernikahan, ulang tahun, wisuda, dengan RSVP online." price="Mulai Rp175.000" delay={0.1} />
+            <ServicePreviewCard title="Video & Konten" desc="Video editing, copywriting, konten AI-generated." price="Mulai Rp85.000" delay={0.2} />
           </div>
 
           <motion.div
-            style={{ textAlign: "center", marginTop: "2rem" }}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
+            style={{ textAlign: "center", marginTop: "2rem" }}
           >
             <motion.a
               href="/services"
-              style={ctaPrimary}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
+              style={{
+                display: "inline-block",
+                backgroundColor: "#2563eb",
+                color: "#fff",
+                padding: "0.75rem 1.6rem",
+                borderRadius: "999px",
+                fontWeight: 700,
+                textDecoration: "none",
+                fontSize: "0.92rem",
+                boxShadow: "0 4px 14px rgba(37,99,235,0.3)",
+              }}
             >
               Lihat Semua Layanan →
             </motion.a>
@@ -524,83 +570,62 @@ export default function Home() {
             <h2 style={sectionTitle}>Cara Kerja</h2>
           </motion.div>
 
-          {/* Connecting line */}
           <div style={{ position: "relative", marginTop: "2rem" }}>
             <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
               style={{
                 position: "absolute",
                 top: "22px",
                 left: "12.5%",
                 right: "12.5%",
                 height: "2px",
-                background: "linear-gradient(90deg, #e8823c, #f2a668)",
+                background: "linear-gradient(90deg, #2563eb, #93c5fd)",
                 transformOrigin: "left",
               }}
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             />
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                gap: "1.25rem",
-                position: "relative",
-                zIndex: 1,
-              }}
-            >
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1.25rem", position: "relative", zIndex: 1 }}>
               <StepCard number="1" title="Konsultasi" desc="Chat via WhatsApp, ceritakan kebutuhanmu." delay={0} />
               <StepCard number="2" title="Penawaran" desc="Dapat estimasi harga & waktu pengerjaan." delay={0.12} />
               <StepCard number="3" title="Pengerjaan" desc="Tim kami kerjakan sesuai kesepakatan." delay={0.24} />
-              <StepCard number="4" title="Selesai" desc="Revisi bila perlu, lalu hasil akhir diserahkan." delay={0.36} />
+              <StepCard number="4" title="Selesai" desc="Revisi bila perlu, hasil akhir diserahkan." delay={0.36} />
             </div>
           </div>
         </section>
 
         {/* CTA PENUTUP */}
         <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6 }}
           style={{
-            background: "linear-gradient(135deg, #0f1e38 0%, #12233f 60%, #1a3358 100%)",
-            borderRadius: "16px",
+            background: "linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #1e3a8a 100%)",
+            borderRadius: "18px",
             padding: "3rem 2rem",
             textAlign: "center",
             position: "relative",
             overflow: "hidden",
           }}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6 }}
         >
-          {/* Decorative glow */}
-          <div style={{
-            position: "absolute", inset: 0, pointerEvents: "none",
-            background: "radial-gradient(ellipse at 30% 50%, rgba(232,130,60,0.15) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(232,130,60,0.1) 0%, transparent 60%)",
-          }} />
-
-          <motion.h2
-            style={{ color: "#fff", margin: "0 0 0.6rem", fontSize: "1.6rem", position: "relative" }}
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-          >
-            Siap mulai proyekmu?
-          </motion.h2>
-          <motion.p
-            style={{ color: "#94a3b8", margin: "0 0 1.5rem", position: "relative" }}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.25 }}
-          >
-            Konsultasi kebutuhanmu, gratis tanpa komitmen.
-          </motion.p>
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              background: "radial-gradient(ellipse at 30% 50%, rgba(37,99,235,0.2) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(37,99,235,0.12) 0%, transparent 60%)",
+            }}
+          />
+          <h2 style={{ color: "#fff", margin: "0 0 0.6rem", fontSize: "1.6rem", position: "relative" }}>Siap mulai proyekmu?</h2>
+          <p style={{ color: "#94a3b8", margin: "0 0 1.5rem", position: "relative" }}>Konsultasi kebutuhanmu, gratis tanpa komitmen.</p>
           <motion.a
             href={waLink("Halo, saya ingin konsultasi kebutuhan jasa digital.")}
             target="_blank"
             rel="noreferrer"
+            whileHover={{ scale: 1.05, boxShadow: "0 8px 30px rgba(37,211,102,0.5)" }}
+            whileTap={{ scale: 0.97 }}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -615,55 +640,54 @@ export default function Home() {
               position: "relative",
               boxShadow: "0 4px 20px rgba(37,211,102,0.35)",
             }}
-            whileHover={{ scale: 1.05, boxShadow: "0 8px 30px rgba(37,211,102,0.5)" }}
-            whileTap={{ scale: 0.97 }}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.35 }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-            </svg>
             Chat via WhatsApp
           </motion.a>
         </motion.section>
       </div>
+
+      <style jsx>{`
+        @media (max-width: 800px) {
+          .hero-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
+
+function cloudBlob(left, top, width, height, opacity) {
+  return {
+    position: "absolute",
+    left,
+    top,
+    width,
+    height,
+    borderRadius: "50%",
+    background: `rgba(255,255,255,${opacity})`,
+    filter: "blur(6px)",
+    pointerEvents: "none",
+  };
+}
+
+const floatingPill = {
+  backgroundColor: "rgba(255,255,255,0.9)",
+  backdropFilter: "blur(6px)",
+  border: "1px solid rgba(37,99,235,0.15)",
+  color: "#1e3a8a",
+  padding: "0.45rem 1rem",
+  borderRadius: "999px",
+  fontSize: "0.8rem",
+  fontWeight: 600,
+  boxShadow: "0 4px 14px rgba(15,23,42,0.1)",
+};
 
 const sectionTitle = {
   fontSize: "1.6rem",
   fontWeight: 800,
   marginTop: "0.4rem",
   marginBottom: 0,
-  color: "#12233f",
+  color: "#0f172a",
   letterSpacing: "-0.02em",
-};
-
-const ctaPrimary = {
-  display: "inline-block",
-  backgroundColor: "#e8823c",
-  color: "#fff",
-  padding: "0.75rem 1.6rem",
-  borderRadius: "999px",
-  fontWeight: 700,
-  textDecoration: "none",
-  fontSize: "0.92rem",
-  boxShadow: "0 4px 14px rgba(232,130,60,0.35)",
-  transition: "all 0.2s ease",
-};
-
-const ctaSecondary = {
-  display: "inline-block",
-  backgroundColor: "rgba(255,255,255,0.08)",
-  color: "#fff",
-  border: "1.5px solid rgba(255,255,255,0.25)",
-  padding: "0.73rem 1.6rem",
-  borderRadius: "999px",
-  fontWeight: 700,
-  textDecoration: "none",
-  fontSize: "0.92rem",
-  transition: "all 0.2s ease",
 };
