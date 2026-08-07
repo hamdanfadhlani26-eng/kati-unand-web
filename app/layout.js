@@ -43,15 +43,11 @@ function Footer() {
     <footer className="footer">
       <div className="footer-block">
         <span className="footer-label">Brand</span>
-        <span className="footer-value">Alumnova — Jasa Digital Talenta Teknik Industri</span>
-      </div>
-      <div className="footer-block">
-        <span className="footer-label">Institusi</span>
-        <span className="footer-value">Universitas Andalas</span>
+        <span className="footer-value">Alumnova</span>
       </div>
       <div style={{ width: "100%", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "0.75rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
         <span style={{ fontSize: "0.78rem", color: "#9db8cf" }}>
-          © Hamdan Fadhlani TI-2022. All rights reserved.
+          powered by : KATI UNAND
         </span>
         <div style={{ display: "flex", gap: "0.6rem" }}>
           <a href="https://www.instagram.com/kati.unand?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noreferrer" className="footer-social-link" title="Instagram">

@@ -341,7 +341,7 @@ export default function Home() {
                 letterSpacing: "-0.02em",
               }}
             >
-              Jasa Digital, Dikerjakan
+              Dari Jaringan Kampus
               <br />
               <span
                 style={{
@@ -352,7 +352,7 @@ export default function Home() {
                   fontSize: "1.08em",
                 }}
               >
-                Talenta Terpercaya
+                Menjadi Jaringan Peluang
               </span>
             </motion.h1>
 
@@ -362,7 +362,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.25 }}
               style={{ fontSize: "1.02rem", color: "#64748b", lineHeight: 1.65, maxWidth: "460px" }}
             >
-              Website, dashboard, konten, hingga undangan digital — dikerjakan oleh talenta terseleksi berpengalaman.
+              Temukan mahasiswa, alumni, expert, dan layanan profesional dari komunitas kampus yang terverifikasi
             </motion.p>
 
             <motion.div
