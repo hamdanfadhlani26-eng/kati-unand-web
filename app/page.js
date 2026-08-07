@@ -526,7 +526,7 @@ export default function Home() {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.25rem", marginTop: "1.75rem" }}>
             <ServicePreviewCard title="Website & Web App" desc="Company profile, landing page, hingga sistem custom." price="Mulai Rp450.000" delay={0} />
-            <ServicePreviewCard title="Undangan Digital" desc="Pernikahan, ulang tahun, wisuda, dengan RSVP online." price="Mulai Rp175.000" delay={0.1} />
+            <ServicePreviewCard title="Undangan Digital" desc="Pernikahan, ulang tahun, wisuda, dengan RSVP online." price="Mulai Rp50.000" delay={0.1} />
             <ServicePreviewCard title="Video & Konten" desc="Video editing, copywriting, konten AI-generated." price="Mulai Rp85.000" delay={0.2} />
           </div>
 
