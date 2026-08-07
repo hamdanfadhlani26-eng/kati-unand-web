@@ -142,6 +142,46 @@ function ValueCard({ Icon, title, desc, delay = 0 }) {
   );
 }
 
+/* ── NumberedCard ── */
+function NumberedCard({ number, title, desc, delay = 0 }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.55, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: "#fff",
+        border: "1px solid rgba(15,23,42,0.07)",
+        borderRadius: "14px",
+        padding: "1.5rem 1.25rem",
+        transition: "box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease",
+        boxShadow: hovered ? "0 16px 40px rgba(37,99,235,0.12)" : "0 2px 8px rgba(15,23,42,0.03)",
+        transform: hovered ? "translateY(-5px)" : "translateY(0)",
+        borderColor: hovered ? "rgba(37,99,235,0.3)" : "rgba(15,23,42,0.07)",
+      }}
+    >
+      <div style={{
+        fontWeight: 800,
+        fontSize: "1.6rem",
+        color: "#2563eb",
+        marginBottom: "0.75rem",
+        fontVariantNumeric: "tabular-nums",
+        letterSpacing: "-0.02em",
+        opacity: 0.85,
+      }}>{number}</div>
+      <div style={{ fontWeight: 700, fontSize: "1rem", color: "#0f172a", marginBottom: "0.4rem" }}>{title}</div>
+      <div style={{ fontSize: "0.87rem", color: "#64748b", lineHeight: 1.65 }}>{desc}</div>
+    </motion.div>
+  );
+}
+
 function AnimatedNumber({ target, suffix = "" }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
@@ -500,15 +540,18 @@ export default function Home() {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.5 }}
           >
-            <div className="eyebrow">Kenapa Kami</div>
-            <h2 style={sectionTitle}>Kenapa Pilih Alumnova?</h2>
+            <div className="eyebrow">Kenapa Alumnova</div>
+            <h2 style={sectionTitle}>Satu Ekosistem. Lebih Banyak Peluang.</h2>
+            <p style={{ color: "#64748b", fontSize: "1rem", lineHeight: 1.75, maxWidth: "600px", marginTop: "0.75rem" }}>
+              Alumnova mempertemukan mahasiswa, alumni, dan profesional dalam satu jaringan untuk berbagi keahlian, membangun kolaborasi, dan menciptakan peluang nyata.
+            </p>
           </motion.div>
 
           <div className="value-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1.25rem", marginTop: "1.75rem" }}>
-            <ValueCard Icon={IconTarget} title="Dikerjakan Ahlinya" desc="Talenta terseleksi yang paham proses bisnis, bukan cuma teknis." delay={0} />
-            <ValueCard Icon={IconChat} title="Komunikasi Langsung" desc="Konsultasi & revisi via WhatsApp, cepat direspon, tanpa birokrasi." delay={0.1} />
-            <ValueCard Icon={IconCoin} title="Harga Terjangkau" desc="Kualitas terjaga tanpa harga agency besar." delay={0.2} />
-            <ValueCard Icon={IconSpark} title="Bukti Nyata" desc="Website ini sendiri adalah hasil kerja tim kami." delay={0.3} />
+            <NumberedCard number="01" title="Temukan Peluang Nyata" desc="Akses project, pekerjaan, kolaborasi, dan kebutuhan profesional dari jaringan alumni dan komunitas kampus." delay={0} />
+            <NumberedCard number="02" title="Bangun Reputasi Profesional" desc="Tampilkan skill, pengalaman, portfolio, dan layanan agar lebih mudah ditemukan oleh orang yang membutuhkan keahlianmu." delay={0.1} />
+            <NumberedCard number="03" title="Terhubung dengan Jaringan Alumni" desc="Bangun koneksi lintas angkatan dan profesi untuk membuka peluang mentoring, kolaborasi, hingga bisnis." delay={0.2} />
+            <NumberedCard number="04" title="Berkembang Bersama Ekosistem" desc="Dari mahasiswa menjadi profesional, Alumnova menjadi tempat untuk belajar, berkontribusi, dan bertumbuh bersama jaringan almamater." delay={0.3} />
           </div>
         </section>
 
