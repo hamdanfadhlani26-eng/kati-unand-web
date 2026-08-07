@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { href: "/", label: "Beranda" },
   { href: "/services", label: "Services" },
   { href: "/talent-pool", label: "Talent Pool" },
+  { href: "/job-post", label: "Job Post" },
 ];
 
 export default function AnimatedNavbar() {

@@ -36,6 +36,7 @@ export default function Navbar() {
         <a href="/">Beranda</a>
         <a href="/services">Services</a>
         <a href="/talent-pool">Talent Pool</a>
+        <a href="/job-post">Job Post</a>
       </div>
     </nav>
   );
