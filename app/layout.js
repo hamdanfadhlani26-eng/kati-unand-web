@@ -22,8 +22,14 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata = {
-  title: "Alumnova — Jasa Digital oleh Talenta Terpercaya",
-  description: "Website, dashboard, konten, hingga undangan digital, dikerjakan talenta Teknik Industri Universitas Andalas.",
+  title: "Alumnova",
+  description: "Dari Jaringan Kampus, Menjadi Jaringan Peluang. Temukan mahasiswa, alumni, expert, dan layanan profesional dari komunitas kampus yang terverifikasi.",
+  openGraph: {
+    title: "Alumnova",
+    description: "Dari Jaringan Kampus, Menjadi Jaringan Peluang. Temukan mahasiswa, alumni, expert, dan layanan profesional dari komunitas kampus yang terverifikasi.",
+    url: "https://alumnova.vercel.app",
+    siteName: "Alumnova",
+  },
 };
 
 export default function RootLayout({ children }) {
