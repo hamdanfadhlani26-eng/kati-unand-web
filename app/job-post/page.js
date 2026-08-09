@@ -382,7 +382,7 @@ export default function JobPostPage() {
                   Post Lowongan Kerja
                 </h2>
                 <p style={{ margin: "0.4rem 0 0", fontSize: "0.85rem", color: "#64748b" }}>
-                  Bantu teman-temanmu dengan berbagi info loker yang kamu tahu 💙
+                  Bantu teman-temanmu dengan berbagi info loker yang kamu tahu.
                 </p>
               </div>
 
@@ -451,7 +451,7 @@ export default function JobPostPage() {
                 {/* Link */}
                 <div>
                   <label style={lbl}>Link Apply / Info Lebih Lanjut <span style={{ color: "#94a3b8", fontWeight: 400 }}>(opsional)</span></label>
-                  <input type="url" name="link_daftar" value={form.link_daftar} onChange={handleChange}
+                  <input type="text" name="link_daftar" value={form.link_daftar} onChange={handleChange}
                     placeholder="https://..." style={inp} />
                 </div>
 
@@ -479,7 +479,13 @@ export default function JobPostPage() {
                       <img src={posterPreview} alt="Preview" style={{ width: "100%", maxHeight: "240px", objectFit: "cover", display: "block" }} />
                     ) : (
                       <>
-                        <div style={{ fontSize: "2rem", marginBottom: "0.4rem" }}>🖼️</div>
+                        <div style={{ marginBottom: "0.5rem" }}>
+                          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5" style={{ margin: "0 auto", display: "block" }}>
+                            <rect x="3" y="3" width="18" height="18" rx="3"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <path d="M21 15l-5-5L5 21"/>
+                          </svg>
+                        </div>
                         <div style={{ fontSize: "0.85rem", color: "#64748b", fontWeight: 600 }}>Klik untuk upload gambar poster</div>
                         <div style={{ fontSize: "0.75rem", color: "#94a3b8", marginTop: "0.3rem" }}>JPG, PNG, WebP — maks 5 MB</div>
                       </>
@@ -507,7 +513,7 @@ export default function JobPostPage() {
                     fontFamily: "var(--font-body), sans-serif",
                     boxShadow: "0 4px 16px rgba(37,99,235,0.35)", marginTop: "0.5rem",
                   }}>
-                  {loading ? "Memposting…" : "🚀 Post Loker Sekarang"}
+                  {loading ? "Memposting…" : "Post Loker Sekarang"}
                 </motion.button>
               </form>
             </motion.div>
@@ -577,12 +583,16 @@ export default function JobPostPage() {
         ) : filtered.length === 0 ? (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
             style={{ textAlign: "center", padding: "5rem 2rem", color: "#94a3b8" }}>
-            <div style={{ fontSize: "3.5rem", marginBottom: "1rem" }}>📭</div>
+            <div style={{ marginBottom: "1rem" }}>
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5" style={{ margin: "0 auto", display: "block" }}>
+                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
             <div style={{ fontWeight: 700, fontSize: "1.1rem", color: "#64748b", marginBottom: "0.5rem" }}>
               {searchQuery || filterTipe ? "Tidak ada loker yang cocok" : "Belum ada loker yang dipost"}
             </div>
             <p style={{ fontSize: "0.88rem", margin: "0 0 1.5rem" }}>
-              {searchQuery || filterTipe ? "Coba ubah kata kunci atau filter" : "Jadilah yang pertama berbagi! 🙌"}
+              {searchQuery || filterTipe ? "Coba ubah kata kunci atau filter" : "Jadilah yang pertama berbagi."}
             </p>
             {!(searchQuery || filterTipe) && (
               <motion.button onClick={() => setFormOpen(true)}
