@@ -5,12 +5,12 @@ import { motion, useInView } from "framer-motion";
 
 /* ── Initiators data ── */
 const INITIATORS = [
-  { name: "Medi", initials: "Me", color: "#2563eb" },
-  { name: "Rodi", initials: "Ro", color: "#0f172a" },
-  { name: "Cresti", initials: "Cr", color: "#1d4ed8" },
-  { name: "Willy", initials: "Wi", color: "#1e3a8a" },
-  { name: "Hamdan", initials: "Ha", color: "#2563eb" },
-  { name: "Ivan", initials: "Iv", color: "#0f172a" },
+  { name: "Medi Yolanda Sari, S.T.", short: "Medi", angkatan: "Angkatan 2000", file: "medi.png" },
+  { name: "Rodi Afriniko, S.T., M.E.", short: "Rodi", angkatan: "Angkatan 2007", file: "rodi.png" },
+  { name: "Cresti Calani, S.T.", short: "Cresti", angkatan: "Angkatan 2007", file: "cresti.png" },
+  { name: "Willy Januardi, S.T., M.T.", short: "Willy", angkatan: "Angkatan 2007", file: "willy.png" },
+  { name: "Ivan, S.T., MBA.", short: "Ivan", angkatan: "Angkatan 2007", file: "ivan.png" },
+  { name: "Muhammad Hamdan Fadhlani, S.T.", short: "Hamdan", angkatan: "Angkatan 2022", file: "hamdan.png" },
 ];
 
 const PRINCIPLES = [
@@ -326,39 +326,35 @@ export default function AboutPage() {
           </div>
         </FadeIn>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "1rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
           {INITIATORS.map((person, i) => (
-            <FadeIn key={person.name} delay={i * 0.07}>
+            <FadeIn key={person.short} delay={i * 0.07}>
               <div style={{
                 background: "#fff",
                 border: "1px solid rgba(15,23,42,0.07)",
                 borderRadius: "16px",
-                padding: "1.75rem 1rem 1.5rem",
-                textAlign: "center",
-                boxShadow: "0 2px 8px rgba(15,23,42,0.03)",
+                overflow: "hidden",
+                boxShadow: "0 2px 8px rgba(15,23,42,0.04)",
               }}>
-                {/* Avatar placeholder */}
-                <div style={{
-                  width: "64px",
-                  height: "64px",
-                  borderRadius: "50%",
-                  background: `linear-gradient(135deg, ${person.color}, ${person.color}cc)`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "0 auto 1rem",
-                  fontSize: "1.2rem",
-                  fontWeight: 800,
-                  color: "#fff",
-                  letterSpacing: "0.02em",
-                }}>
-                  {person.initials}
+                {/* Foto */}
+                <div style={{ width: "100%", aspectRatio: "3/4", overflow: "hidden", background: "#f1f5f9" }}>
+                  <img
+                    src={`/initiators/${person.file}`}
+                    alt={person.short}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
+                  />
                 </div>
-                <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#0f172a", marginBottom: "0.3rem" }}>
-                  {person.name}
-                </div>
-                <div style={{ fontSize: "0.72rem", color: "#94a3b8", fontWeight: 600, letterSpacing: "0.04em", textTransform: "uppercase" }}>
-                  Initiator
+                {/* Info */}
+                <div style={{ padding: "1rem 1.1rem 1.2rem" }}>
+                  <div style={{ fontWeight: 700, fontSize: "0.9rem", color: "#0f172a", lineHeight: 1.3, marginBottom: "0.3rem" }}>
+                    {person.name}
+                  </div>
+                  <div style={{ fontSize: "0.75rem", color: "#2563eb", fontWeight: 600, letterSpacing: "0.03em" }}>
+                    {person.angkatan}
+                  </div>
+                  <div style={{ fontSize: "0.72rem", color: "#94a3b8", fontWeight: 600, letterSpacing: "0.04em", textTransform: "uppercase", marginTop: "0.2rem" }}>
+                    Initiator
+                  </div>
                 </div>
               </div>
             </FadeIn>
