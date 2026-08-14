@@ -5,9 +5,9 @@ import { motion, useInView } from "framer-motion";
 
 /* ── Initiators data ── */
 const INITIATORS = [
-  { name: "Medi Yolanda Sari, S.T.", short: "Medi", angkatan: "Angkatan 2000", file: "medi.png" },
-  { name: "Rodi Afriniko, S.T., M.E.", short: "Rodi", angkatan: "Angkatan 2007", file: "rodi.png" },
-  { name: "Cresti Calani, S.T.", short: "Cresti", angkatan: "Angkatan 2007", file: "cresti.png" },
+  { name: "Medy Yolanda Sari, S.T.", short: "Medi", angkatan: "Angkatan 2000", file: "medi.png" },
+  { name: "Rodi Afriniko, S.T., M.E.", short: "Rodi", angkatan: "Angkatan 2005", file: "rodi.png" },
+  { name: "Cresti Kalani, S.T., CPSp.", short: "Cresti", angkatan: "Angkatan 2007", file: "cresti.png" },
   { name: "Willy Januardi, S.T., M.T.", short: "Willy", angkatan: "Angkatan 2007", file: "willy.png" },
   { name: "Ivan, S.T., MBA.", short: "Ivan", angkatan: "Angkatan 2007", file: "ivan.png" },
   { name: "Muhammad Hamdan Fadhlani, S.T.", short: "Hamdan", angkatan: "Angkatan 2022", file: "hamdan.png" },
@@ -19,8 +19,8 @@ const PRINCIPLES = [
     desc: "Membangun hubungan lintas generasi, bidang, dan profesi.",
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.8">
-        <circle cx="9" cy="7" r="3"/><circle cx="17" cy="17" r="3"/>
-        <path d="M12 10c0 4 5 7 5 7M9 10s-5 3-5 7"/>
+        <circle cx="9" cy="7" r="3" /><circle cx="17" cy="17" r="3" />
+        <path d="M12 10c0 4 5 7 5 7M9 10s-5 3-5 7" />
       </svg>
     ),
   },
@@ -29,7 +29,7 @@ const PRINCIPLES = [
     desc: "Mengubah jaringan menjadi akses terhadap pekerjaan, project, talent, dan kolaborasi.",
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.8">
-        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
       </svg>
     ),
   },
@@ -38,9 +38,9 @@ const PRINCIPLES = [
     desc: "Mendorong alumni untuk berbagi pengalaman, expertise, dan kesempatan.",
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.8">
-        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
       </svg>
     ),
   },
@@ -49,8 +49,8 @@ const PRINCIPLES = [
     desc: "Membangun ekosistem yang membuat mahasiswa dan alumni berkembang bersama.",
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.8">
-        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-        <polyline points="17 6 23 6 23 12"/>
+        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+        <polyline points="17 6 23 6 23 12" />
       </svg>
     ),
   },
