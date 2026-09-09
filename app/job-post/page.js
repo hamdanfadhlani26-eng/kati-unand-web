@@ -65,15 +65,16 @@ function JobCard({ job, index, onShare }) {
         background: "#fff",
         border: "1px solid rgba(15,23,42,0.08)",
         borderRadius: "16px",
-        overflow: "hidden",
+        overflow: "visible",
         boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
         display: "flex",
         flexDirection: "column",
+        position: "relative",
       }}
       whileHover={{ boxShadow: "0 12px 36px rgba(37,99,235,0.1)", borderColor: "rgba(37,99,235,0.25)" }}
     >
       {job.poster_url && !imgError && (
-        <div style={{ width: "100%", height: "180px", overflow: "hidden", background: "#f1f5f9", flexShrink: 0 }}>
+        <div style={{ width: "100%", height: "180px", overflow: "hidden", background: "#f1f5f9", flexShrink: 0, borderRadius: "16px 16px 0 0" }}>
           <img
             src={job.poster_url}
             alt="Poster Loker"

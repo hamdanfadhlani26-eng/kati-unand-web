@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
@@ -25,7 +25,7 @@ function timeAgo(dateStr) {
 }
 
 export default function JobDetailPage({ params }) {
-  const { id } = params;
+  const { id } = use(params);
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
