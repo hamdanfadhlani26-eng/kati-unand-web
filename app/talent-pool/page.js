@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import TalentList from "./TalentList";
 import PhotoCropper from "./PhotoCropper";
@@ -15,233 +15,15 @@ function sanitizeFileName(fileName) {
 
 const emptyExperience = { role: "", tempat: "" };
 
-// ─── OTP Step: Email Input ────────────────────────────────────────────────────
-function StepEmailInput({ onOtpSent }) {
-    const [emailInput, setEmailInput] = useState("");
-    const [sending, setSending] = useState(false);
-    const [error, setError] = useState("");
-
-    async function handleSend(e) {
-        e.preventDefault();
-        setError("");
-        setSending(true);
-        try {
-            const { error: otpError } = await supabase.auth.signInWithOtp({
-                email: emailInput.trim(),
-                options: { shouldCreateUser: true },
-            });
-            if (otpError) throw otpError;
-            onOtpSent(emailInput.trim());
-        } catch (err) {
-            setError("Gagal mengirim OTP: " + err.message);
-        } finally {
-            setSending(false);
-        }
-    }
-
-    return (
-        <div style={stepCardStyle}>
-            <div style={stepIconStyle}>✉️</div>
-            <h2 style={stepTitleStyle}>Verifikasi Email Kamu</h2>
-            <p style={stepDescStyle}>
-                Masukkan email aktifmu. Kami akan kirim kode OTP 6 digit untuk verifikasi sebelum kamu bisa mendaftar ke Talent Pool.
-            </p>
-            <form onSubmit={handleSend} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                <div>
-                    <label style={labelStyle}>Alamat Email *</label>
-                    <input
-                        type="email"
-                        value={emailInput}
-                        onChange={(e) => setEmailInput(e.target.value)}
-                        required
-                        placeholder="contoh@email.com"
-                        style={stepInputStyle}
-                        autoFocus
-                    />
-                </div>
-                {error && <p style={errorStyle}>{error}</p>}
-                <button type="submit" disabled={sending} style={sending ? btnDisabledStyle : btnPrimaryStyle}>
-                    {sending ? (
-                        <span style={{ display: "flex", alignItems: "center", gap: "0.5rem", justifyContent: "center" }}>
-                            <span style={spinnerStyle} /> Mengirim OTP...
-                        </span>
-                    ) : (
-                        "Kirim Kode OTP →"
-                    )}
-                </button>
-            </form>
-        </div>
-    );
-}
-
-// ─── OTP Step: Verify Code ────────────────────────────────────────────────────
-function StepOtpVerify({ email, onVerified, onBack }) {
-    const [digits, setDigits] = useState(["", "", "", "", "", ""]);
-    const [verifying, setVerifying] = useState(false);
-    const [error, setError] = useState("");
-    const [countdown, setCountdown] = useState(60);
-    const [resending, setResending] = useState(false);
-    const [resendSuccess, setResendSuccess] = useState(false);
-    const inputRefs = useRef([]);
-
-    // Countdown timer
-    useEffect(() => {
-        if (countdown <= 0) return;
-        const timer = setTimeout(() => setCountdown((c) => c - 1), 1000);
-        return () => clearTimeout(timer);
-    }, [countdown]);
-
-    function handleDigitChange(index, value) {
-        // Handle paste
-        if (value.length > 1) {
-            const pasted = value.replace(/\D/g, "").slice(0, 6);
-            const newDigits = [...digits];
-            for (let i = 0; i < 6; i++) {
-                newDigits[i] = pasted[i] || "";
-            }
-            setDigits(newDigits);
-            const nextIndex = Math.min(pasted.length, 5);
-            inputRefs.current[nextIndex]?.focus();
-            return;
-        }
-
-        const digit = value.replace(/\D/g, "");
-        const newDigits = [...digits];
-        newDigits[index] = digit;
-        setDigits(newDigits);
-
-        if (digit && index < 5) {
-            inputRefs.current[index + 1]?.focus();
-        }
-    }
-
-    function handleKeyDown(index, e) {
-        if (e.key === "Backspace" && !digits[index] && index > 0) {
-            inputRefs.current[index - 1]?.focus();
-        }
-    }
-
-    async function handleVerify(e) {
-        e.preventDefault();
-        const token = digits.join("");
-        if (token.length < 6) {
-            setError("Masukkan 6 digit kode OTP.");
-            return;
-        }
-        setError("");
-        setVerifying(true);
-        try {
-            const { data, error: verifyError } = await supabase.auth.verifyOtp({
-                email,
-                token,
-                type: "email",
-            });
-            if (verifyError) throw verifyError;
-            // Sign out session setelah verify — kita hanya butuh konfirmasi email
-            await supabase.auth.signOut();
-            onVerified(email);
-        } catch (err) {
-            setError("Kode OTP salah atau sudah kedaluwarsa. Silakan coba lagi.");
-        } finally {
-            setVerifying(false);
-        }
-    }
-
-    async function handleResend() {
-        setResending(true);
-        setResendSuccess(false);
-        setError("");
-        try {
-            const { error: otpError } = await supabase.auth.signInWithOtp({
-                email,
-                options: { shouldCreateUser: true },
-            });
-            if (otpError) throw otpError;
-            setCountdown(60);
-            setDigits(["", "", "", "", "", ""]);
-            setResendSuccess(true);
-            inputRefs.current[0]?.focus();
-        } catch (err) {
-            setError("Gagal mengirim ulang: " + err.message);
-        } finally {
-            setResending(false);
-        }
-    }
-
-    return (
-        <div style={stepCardStyle}>
-            <div style={stepIconStyle}>🔐</div>
-            <h2 style={stepTitleStyle}>Masukkan Kode OTP</h2>
-            <p style={stepDescStyle}>
-                Kode 6 digit telah dikirim ke{" "}
-                <strong style={{ color: "#12233f" }}>{email}</strong>
-            </p>
-            <form onSubmit={handleVerify} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-                {/* 6 Digit OTP Boxes */}
-                <div style={{ display: "flex", gap: "0.6rem", justifyContent: "center" }}>
-                    {digits.map((d, i) => (
-                        <input
-                            key={i}
-                            ref={(el) => (inputRefs.current[i] = el)}
-                            type="text"
-                            inputMode="numeric"
-                            maxLength={6}
-                            value={d}
-                            onChange={(e) => handleDigitChange(i, e.target.value)}
-                            onKeyDown={(e) => handleKeyDown(i, e)}
-                            style={otpBoxStyle(d)}
-                            autoFocus={i === 0}
-                        />
-                    ))}
-                </div>
-
-                {error && <p style={{ ...errorStyle, textAlign: "center" }}>{error}</p>}
-                {resendSuccess && (
-                    <p style={{ ...successStyle, textAlign: "center" }}>
-                        ✓ Kode baru berhasil dikirim ke {email}
-                    </p>
-                )}
-
-                <button type="submit" disabled={verifying} style={verifying ? btnDisabledStyle : btnPrimaryStyle}>
-                    {verifying ? (
-                        <span style={{ display: "flex", alignItems: "center", gap: "0.5rem", justifyContent: "center" }}>
-                            <span style={spinnerStyle} /> Memverifikasi...
-                        </span>
-                    ) : (
-                        "Verifikasi & Lanjutkan →"
-                    )}
-                </button>
-            </form>
-
-            <div style={{ marginTop: "1.25rem", textAlign: "center", fontSize: "0.85rem", color: "#666" }}>
-                {countdown > 0 ? (
-                    <span>Kirim ulang kode dalam <strong style={{ color: "#12233f" }}>{countdown}s</strong></span>
-                ) : (
-                    <button
-                        onClick={handleResend}
-                        disabled={resending}
-                        style={{ background: "none", border: "none", color: "#2563eb", cursor: "pointer", fontWeight: 600, fontSize: "0.85rem" }}
-                    >
-                        {resending ? "Mengirim..." : "Kirim Ulang Kode"}
-                    </button>
-                )}
-            </div>
-            <button
-                onClick={onBack}
-                style={{ marginTop: "0.75rem", display: "block", width: "100%", background: "none", border: "none", color: "#999", cursor: "pointer", fontSize: "0.82rem" }}
-            >
-                ← Ganti email
-            </button>
-        </div>
-    );
-}
-
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function TalentPool() {
-    // step: "email_input" | "otp_verify" | "already_registered" | "form"
+    // step: "email_input" | "already_registered" | "form"
     const [step, setStep] = useState("email_input");
     const [verifiedEmail, setVerifiedEmail] = useState("");
-    const [pendingEmail, setPendingEmail] = useState(""); // email saat di step otp_verify
+    
+    const [emailInput, setEmailInput] = useState("");
+    const [checkingEmail, setCheckingEmail] = useState(false);
+    const [emailError, setEmailError] = useState("");
 
     const [form, setForm] = useState({
         nama: "",
@@ -269,23 +51,39 @@ export default function TalentPool() {
     const [message, setMessage] = useState("");
     const [refreshKey, setRefreshKey] = useState(0);
 
-    // ── Setelah OTP verified: cek apakah email sudah terdaftar ──────────────
-    async function handleOtpVerified(email) {
-        const { data } = await supabase
-            .from("talent_pool")
-            .select("id")
-            .eq("email", email)
-            .maybeSingle();
+    // ── Cek apakah email sudah terdaftar ──────────────
+    async function handleCheckEmail(e) {
+        e.preventDefault();
+        if (!emailInput.trim()) return;
+        
+        setEmailError("");
+        setCheckingEmail(true);
 
-        if (data) {
-            // Email sudah terdaftar di talent pool
-            setVerifiedEmail(email);
-            setStep("already_registered");
-        } else {
-            // Email baru — lanjut ke form
-            setVerifiedEmail(email);
-            setForm((prev) => ({ ...prev, email }));
-            setStep("form");
+        try {
+            const email = emailInput.trim();
+            const { data, error } = await supabase
+                .from("talent_pool")
+                .select("id")
+                .eq("email", email)
+                .maybeSingle();
+
+            if (error) throw error;
+
+            if (data) {
+                // Email sudah terdaftar di talent pool
+                setVerifiedEmail(email);
+                setStep("already_registered");
+            } else {
+                // Email baru — lanjut ke form
+                setVerifiedEmail(email);
+                setForm((prev) => ({ ...prev, email }));
+                setStep("form");
+            }
+        } catch (err) {
+            console.error(err);
+            setEmailError("Terjadi kesalahan saat mengecek email. Silakan coba lagi.");
+        } finally {
+            setCheckingEmail(false);
         }
     }
 
@@ -392,7 +190,7 @@ export default function TalentPool() {
             const { error: insertError } = await supabase.from("talent_pool").insert([
                 {
                     ...form,
-                    email: verifiedEmail, // pastikan pakai email yang sudah diverifikasi
+                    email: verifiedEmail, // pastikan pakai email yang sudah dicek
                     bidang_minat: bidangMinat,
                     experience: cleanedExperiences,
                     foto_url,
@@ -405,10 +203,12 @@ export default function TalentPool() {
             setMessage("Berhasil! Profil kamu sudah masuk ke Talent Pool.");
             resetForm();
             setRefreshKey((k) => k + 1);
+            
             // Kembali ke step awal setelah sukses
             setTimeout(() => {
                 setStep("email_input");
                 setVerifiedEmail("");
+                setEmailInput("");
                 setMessage("");
             }, 4000);
         } catch (err) {
@@ -433,16 +233,15 @@ export default function TalentPool() {
                 {/* ── Progress Stepper (tampil saat proses registrasi) ── */}
                 {step !== "email_input" && step !== "already_registered" && (
                     <div style={stepperContainerStyle}>
-                        {["Verifikasi Email", "Kode OTP", "Isi Profil"].map((label, i) => {
-                            const stepMap = { 0: "email_input", 1: "otp_verify", 2: "form" };
-                            const currentIdx = step === "otp_verify" ? 1 : step === "form" ? 2 : 0;
+                        {["Cek Email", "Isi Profil"].map((label, i) => {
+                            const currentIdx = step === "form" ? 1 : 0;
                             const done = i < currentIdx;
                             const active = i === currentIdx;
                             return (
                                 <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
                                     <div style={stepDotStyle(done, active)}>{done ? "✓" : i + 1}</div>
                                     <span style={{ fontSize: "0.8rem", color: active ? "#12233f" : done ? "#22c55e" : "#aaa", fontWeight: active ? 700 : 400 }}>{label}</span>
-                                    {i < 2 && <div style={stepLineStyle(done)} />}
+                                    {i < 1 && <div style={stepLineStyle(done)} />}
                                 </div>
                             );
                         })}
@@ -464,26 +263,40 @@ export default function TalentPool() {
                                 + Daftar ke Talent Pool
                             </summary>
                             <div style={{ marginTop: "1.5rem" }}>
-                                <StepEmailInput
-                                    onOtpSent={(email) => {
-                                        setPendingEmail(email);
-                                        setStep("otp_verify");
-                                    }}
-                                />
+                                <div style={stepCardStyle}>
+                                    <div style={stepIconStyle}>✉️</div>
+                                    <h2 style={stepTitleStyle}>Daftar Talent Pool</h2>
+                                    <p style={stepDescStyle}>
+                                        Masukkan email aktifmu untuk mengecek apakah kamu sudah terdaftar.
+                                    </p>
+                                    <form onSubmit={handleCheckEmail} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                                        <div>
+                                            <label style={labelStyle}>Alamat Email *</label>
+                                            <input
+                                                type="email"
+                                                value={emailInput}
+                                                onChange={(e) => setEmailInput(e.target.value)}
+                                                required
+                                                placeholder="contoh@email.com"
+                                                style={stepInputStyle}
+                                                autoFocus
+                                            />
+                                        </div>
+                                        {emailError && <p style={errorStyle}>{emailError}</p>}
+                                        <button type="submit" disabled={checkingEmail} style={checkingEmail ? btnDisabledStyle : btnPrimaryStyle}>
+                                            {checkingEmail ? (
+                                                <span style={{ display: "flex", alignItems: "center", gap: "0.5rem", justifyContent: "center" }}>
+                                                    <span style={spinnerStyle} /> Mengecek Email...
+                                                </span>
+                                            ) : (
+                                                "Lanjutkan Pendaftaran →"
+                                            )}
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </details>
                     </>
-                )}
-
-                {/* ── Step: Verifikasi OTP ── */}
-                {step === "otp_verify" && (
-                    <div style={{ marginBottom: "2.5rem" }}>
-                        <StepOtpVerify
-                            email={pendingEmail}
-                            onVerified={handleOtpVerified}
-                            onBack={() => setStep("email_input")}
-                        />
-                    </div>
                 )}
 
                 {/* ── Step: Email sudah terdaftar ── */}
@@ -518,7 +331,7 @@ export default function TalentPool() {
                 {step === "form" && (
                     <details open style={{ marginBottom: "2.5rem" }}>
                         <summary style={{ cursor: "pointer", fontWeight: 600, color: "#12233f" }}>
-                            ✓ Email Terverifikasi — Isi Profil Talent Pool
+                            ✓ Pendaftaran Email — Isi Profil Talent Pool
                         </summary>
 
                         <form
@@ -530,7 +343,7 @@ export default function TalentPool() {
                                 <input type="text" name="nama" value={form.nama} onChange={handleChange} required style={inputStyle} />
                             </div>
 
-                            {/* Email — read-only, sudah diverifikasi */}
+                            {/* Email — read-only, sudah di cek */}
                             <div>
                                 <label>Email *</label>
                                 <div style={{ position: "relative" }}>
@@ -541,7 +354,7 @@ export default function TalentPool() {
                                         style={{ ...inputStyle, backgroundColor: "#f0fdf4", color: "#15803d", fontWeight: 600, cursor: "default" }}
                                     />
                                     <span style={{ position: "absolute", right: "0.6rem", top: "50%", transform: "translateY(-50%)", fontSize: "0.8rem", color: "#22c55e" }}>
-                                        ✓ Terverifikasi
+                                        ✓ Diterima
                                     </span>
                                 </div>
                             </div>
@@ -829,21 +642,6 @@ const stepInputStyle = {
     boxSizing: "border-box",
 };
 
-const otpBoxStyle = (filled) => ({
-    width: "48px",
-    height: "56px",
-    textAlign: "center",
-    fontSize: "1.5rem",
-    fontWeight: 700,
-    border: `2px solid ${filled ? "#12233f" : "#d1d5db"}`,
-    borderRadius: "10px",
-    outline: "none",
-    transition: "border-color 0.2s, box-shadow 0.2s",
-    boxShadow: filled ? "0 0 0 3px rgba(18,35,63,0.1)" : "none",
-    background: filled ? "#f0f4ff" : "#fff",
-    color: "#12233f",
-});
-
 const btnPrimaryStyle = {
     padding: "0.75rem 1.5rem",
     background: "#12233f",
@@ -879,15 +677,6 @@ const errorStyle = {
     fontSize: "0.85rem",
     color: "#b91c1c",
     background: "#fef2f2",
-    padding: "0.5rem 0.75rem",
-    borderRadius: "6px",
-    margin: 0,
-};
-
-const successStyle = {
-    fontSize: "0.85rem",
-    color: "#15803d",
-    background: "#f0fdf4",
     padding: "0.5rem 0.75rem",
     borderRadius: "6px",
     margin: 0,
