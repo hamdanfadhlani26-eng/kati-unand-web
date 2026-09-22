@@ -19,6 +19,8 @@ export default function TalentList() {
     const [searchNama, setSearchNama] = useState("");
     const [searchBidang, setSearchBidang] = useState("");
 
+    const [activeTab, setActiveTab] = useState("expert"); // "expert" atau "entry"
+
     useEffect(() => {
         fetchTalents();
     }, []);
@@ -43,6 +45,8 @@ export default function TalentList() {
 
     const expertTalents = filtered.filter(t => EXPERT_NAMES.includes(t.nama));
     const entryTalents = filtered.filter(t => !EXPERT_NAMES.includes(t.nama));
+
+    const displayedTalents = activeTab === "expert" ? expertTalents : entryTalents;
 
     if (loading) return <p style={{ padding: "1rem" }}>Memuat data talent...</p>;
 
@@ -82,37 +86,33 @@ export default function TalentList() {
                 </select>
             </div>
 
+            {/* ── Tabs ── */}
+            <div style={{ display: "flex", gap: "1.5rem", marginBottom: "1rem", borderBottom: "2px solid #e2e8f0" }}>
+                <button
+                    onClick={() => setActiveTab("expert")}
+                    style={activeTab === "expert" ? activeTabStyle : inactiveTabStyle}
+                >
+                    Expert Profile ({expertTalents.length})
+                </button>
+                <button
+                    onClick={() => setActiveTab("entry")}
+                    style={activeTab === "entry" ? activeTabStyle : inactiveTabStyle}
+                >
+                    Entry Level ({entryTalents.length})
+                </button>
+            </div>
+
             <p style={{ fontSize: "0.85rem", color: "#666", marginBottom: "1.5rem" }}>
-                Menampilkan {filtered.length} dari {talents.length} talent
+                Menampilkan {displayedTalents.length} talent pada kategori ini
             </p>
 
-            {filtered.length === 0 ? (
-                <p style={{ color: "#666" }}>Tidak ada talent yang cocok dengan pencarian.</p>
+            {displayedTalents.length === 0 ? (
+                <p style={{ color: "#666" }}>Tidak ada talent yang cocok dengan pencarian di kategori ini.</p>
             ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
-                    
-                    {expertTalents.length > 0 && (
-                        <div>
-                            <h2 style={{ fontSize: "1.5rem", color: "#12233f", marginBottom: "1rem", borderBottom: "2px solid #e2e8f0", paddingBottom: "0.5rem" }}>Expert Profile</h2>
-                            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                                {expertTalents.map((t) => (
-                                    <TalentRow key={t.id} talent={t} onSelect={() => setSelected(t)} />
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {entryTalents.length > 0 && (
-                        <div>
-                            <h2 style={{ fontSize: "1.5rem", color: "#12233f", marginBottom: "1rem", borderBottom: "2px solid #e2e8f0", paddingBottom: "0.5rem" }}>Entry Level</h2>
-                            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                                {entryTalents.map((t) => (
-                                    <TalentRow key={t.id} talent={t} onSelect={() => setSelected(t)} />
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
+                <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                    {displayedTalents.map((t) => (
+                        <TalentRow key={t.id} talent={t} onSelect={() => setSelected(t)} />
+                    ))}
                 </div>
             )}
 
@@ -471,4 +471,22 @@ const filterInput = {
     border: "1px solid #ccc",
     borderRadius: "4px",
     fontSize: "0.9rem",
+};
+
+const inactiveTabStyle = {
+    padding: "0.5rem 0",
+    background: "none",
+    border: "none",
+    borderBottom: "3px solid transparent",
+    fontSize: "1.1rem",
+    fontWeight: 600,
+    color: "#888",
+    cursor: "pointer",
+    transition: "all 0.2s ease-in-out",
+};
+
+const activeTabStyle = {
+    ...inactiveTabStyle,
+    borderBottom: "3px solid #2563eb",
+    color: "#2563eb",
 };
