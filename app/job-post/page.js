@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
+import { useEmailGate } from "@/lib/emailGate";
+import EmailGateScreen from "@/components/EmailGateScreen";
 
 /* ── helpers ── */
 function sanitizeFileName(fileName) {
@@ -289,6 +291,8 @@ function JobCard({ job, index, onShare }) {
 
 /* ── Main Page ── */
 export default function JobPostPage() {
+  const { isUnlocked, checking, submitEmail } = useEmailGate("job-post");
+
   const [form, setForm] = useState({
     nama_poster: "", judul_posisi: "", nama_perusahaan: "",
     lokasi: "", tipe_pekerjaan: "", deskripsi: "", link_daftar: "", deadline: "",
@@ -416,6 +420,10 @@ export default function JobPostPage() {
 
   /* ── label style ── */
   const lbl = { fontSize: "0.82rem", fontWeight: 600, color: "#374151", display: "block", marginBottom: "0.35rem" };
+
+  // Tampilkan gate jika belum unlock
+  if (checking) return <div style={{ minHeight: "60vh" }} />;
+  if (!isUnlocked) return <EmailGateScreen page="job-post" onUnlock={submitEmail} />;
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)" }}>

@@ -5,6 +5,8 @@ import { supabase } from "@/lib/supabase";
 import TalentList from "./TalentList";
 import PhotoCropper from "./PhotoCropper";
 import { BIDANG_MINAT_OPTIONS } from "@/lib/bidangMinat";
+import { useEmailGate } from "@/lib/emailGate";
+import EmailGateScreen from "@/components/EmailGateScreen";
 
 function sanitizeFileName(fileName) {
     const ext = fileName.split(".").pop();
@@ -17,6 +19,8 @@ const emptyExperience = { role: "", tempat: "" };
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function TalentPool() {
+    const { isUnlocked, checking, submitEmail } = useEmailGate("talent-pool");
+
     // step: "email_input" | "already_registered" | "form"
     const [step, setStep] = useState("email_input");
     const [verifiedEmail, setVerifiedEmail] = useState("");
@@ -218,6 +222,10 @@ export default function TalentPool() {
             setLoading(false);
         }
     }
+
+    // ── Email Gate ────────────────────────────────────────────────────────────
+    if (checking) return <div style={{ minHeight: "60vh" }} />;
+    if (!isUnlocked) return <EmailGateScreen page="talent-pool" onUnlock={submitEmail} />;
 
     return (
         <div>

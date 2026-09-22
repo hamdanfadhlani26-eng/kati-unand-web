@@ -1,14 +1,15 @@
+"use client";
+
+import { use } from "react";
 import { getServiceBySlug, SERVICES } from "@/lib/servicesData";
 import { notFound } from "next/navigation";
+import { useEmailGate } from "@/lib/emailGate";
+import EmailGateScreen from "@/components/EmailGateScreen";
 
 const WA_NUMBER = "6281261739191";
 
 function waLink(msg) {
     return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
-}
-
-export function generateStaticParams() {
-    return SERVICES.map((s) => ({ slug: s.slug }));
 }
 
 function IconCheck() {
@@ -19,12 +20,28 @@ function IconCheck() {
     );
 }
 
-export default async function ServiceDetailPage({ params }) {
-    const { slug } = await params;
+export default function ServiceDetailPage({ params }) {
+    const { slug } = use(params);
     const item = getServiceBySlug(slug);
+
+    const { isUnlocked, checking, submitEmail } = useEmailGate("services");
+
     if (!item) return notFound();
 
     const msg = `Halo, saya ingin memesan layanan "${item.title}".`;
+
+    // Tampilkan gate jika belum unlock
+    if (checking) return <div style={{ minHeight: "60vh" }} />;
+    if (!isUnlocked) {
+        return (
+            <EmailGateScreen
+                page="services"
+                onUnlock={submitEmail}
+                title={`Akses Detail: ${item.title}`}
+                description={`Masukkan emailmu untuk melihat detail lengkap, harga, dan cara memesan layanan "${item.title}" dari tim KATI Unand.`}
+            />
+        );
+    }
 
     return (
         <div style={{ padding: "2rem", maxWidth: "1000px", margin: "0 auto" }}>
