@@ -5,6 +5,13 @@ import { supabase } from "@/lib/supabase";
 import { BIDANG_MINAT_OPTIONS, getBidangStyle } from "@/lib/bidangMinat";
 import { WhatsAppIcon, InstagramIcon, LinkedInIcon } from "./SocialIcons";
 
+const EXPERT_NAMES = [
+    "Regina Nofricha",
+    "Hania Mukhrima",
+    "Fauzal Syukri Rahman",
+    "Nidi Annisa Riva"
+];
+
 export default function TalentList() {
     const [talents, setTalents] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -33,6 +40,9 @@ export default function TalentList() {
         const matchBidang = searchBidang === "" || bidangList.includes(searchBidang);
         return matchNama && matchBidang;
     });
+
+    const expertTalents = filtered.filter(t => EXPERT_NAMES.includes(t.nama));
+    const entryTalents = filtered.filter(t => !EXPERT_NAMES.includes(t.nama));
 
     if (loading) return <p style={{ padding: "1rem" }}>Memuat data talent...</p>;
 
@@ -72,17 +82,37 @@ export default function TalentList() {
                 </select>
             </div>
 
-            <p style={{ fontSize: "0.85rem", color: "#666", marginBottom: "1rem" }}>
+            <p style={{ fontSize: "0.85rem", color: "#666", marginBottom: "1.5rem" }}>
                 Menampilkan {filtered.length} dari {talents.length} talent
             </p>
 
             {filtered.length === 0 ? (
                 <p style={{ color: "#666" }}>Tidak ada talent yang cocok dengan pencarian.</p>
             ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                    {filtered.map((t) => (
-                        <TalentRow key={t.id} talent={t} onSelect={() => setSelected(t)} />
-                    ))}
+                <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+                    
+                    {expertTalents.length > 0 && (
+                        <div>
+                            <h2 style={{ fontSize: "1.5rem", color: "#12233f", marginBottom: "1rem", borderBottom: "2px solid #e2e8f0", paddingBottom: "0.5rem" }}>Expert Profile</h2>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                                {expertTalents.map((t) => (
+                                    <TalentRow key={t.id} talent={t} onSelect={() => setSelected(t)} />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {entryTalents.length > 0 && (
+                        <div>
+                            <h2 style={{ fontSize: "1.5rem", color: "#12233f", marginBottom: "1rem", borderBottom: "2px solid #e2e8f0", paddingBottom: "0.5rem" }}>Entry Level</h2>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                                {entryTalents.map((t) => (
+                                    <TalentRow key={t.id} talent={t} onSelect={() => setSelected(t)} />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                 </div>
             )}
 
