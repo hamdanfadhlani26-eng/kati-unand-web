@@ -168,10 +168,11 @@ export default function JaringanAlumni() {
                     </div>
 
                     <h1 style={{ margin: "0 0 1rem", fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 800, color: "#fff", lineHeight: 1.1, letterSpacing: "-0.025em" }}>
-                        Terhubung dengan{" "}
+                        Temukan{" "}
                         <span style={{ background: "linear-gradient(135deg, #a78bfa, #818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                            Pemimpin Industri
+                            Alumni Unand
                         </span>
+                        {" "}di Seluruh Indonesia
                     </h1>
                     <p style={{ margin: "0 auto 2rem", maxWidth: "560px", color: "#94a3b8", fontSize: "1rem", lineHeight: 1.7 }}>
                         Temukan alumni Teknik Industri Unand yang telah berhasil membangun karier di berbagai industri terkemuka di Indonesia — siap berbagi pengalaman dan membuka peluang.
