@@ -65,7 +65,7 @@ export default function Navbar() {
             gap: "2rem",
             alignItems: "center",
           }} className="navbar-desktop-links">
-            {["Beranda:/", "Tentang:/about", "Services:/services", "Talent Pool:/talent-pool", "Job Post:/job-post"].map((item) => {
+            {["Beranda:/", "Tentang:/about", "Services:/services", "Talent Pool:/talent-pool", "Jaringan Alumni:/profil-alumni", "Job Post:/job-post"].map((item) => {
               const [label, href] = item.split(":");
               return (
                 <a key={href} href={href} style={{
@@ -123,6 +123,7 @@ export default function Navbar() {
               { label: "Tentang", href: "/about" },
               { label: "Services", href: "/services" },
               { label: "Talent Pool", href: "/talent-pool" },
+              { label: "Jaringan Alumni", href: "/profil-alumni" },
               { label: "Job Post", href: "/job-post" },
             ].map((item) => (
               <a
