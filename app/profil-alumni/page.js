@@ -174,7 +174,7 @@ export default function JaringanAlumni() {
                         </span>
                     </h1>
                     <p style={{ margin: "0 auto 2rem", maxWidth: "560px", color: "#94a3b8", fontSize: "1rem", lineHeight: 1.7 }}>
-                        Jaringan CEO, Direktur, VP, dan Manajer alumni Teknik Industri Unand yang tersebar di berbagai industri terkemuka di Indonesia.
+                        Temukan alumni Teknik Industri Unand yang telah berhasil membangun karier di berbagai industri terkemuka di Indonesia — siap berbagi pengalaman dan membuka peluang.
                     </p>
 
                     <div style={{ display: "flex", gap: "0.85rem", justifyContent: "center", flexWrap: "wrap" }}>
