@@ -384,35 +384,36 @@ function AlumniCard({ alumni, onSelect }) {
                 display: "flex",
                 flexDirection: "column",
             }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(15,23,42,0.12)"; }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(15,23,42,0.14)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 2px 12px rgba(15,23,42,0.06)"; }}
         >
-            {/* Photo header */}
-            <div style={{ position: "relative", background: "linear-gradient(135deg, #1e1b4b, #312e81)", padding: "1.75rem 1.5rem 3.5rem", textAlign: "center" }}>
-                <div style={{
-                    width: "80px", height: "80px", borderRadius: "50%", margin: "0 auto",
-                    border: "3px solid rgba(255,255,255,0.3)", overflow: "hidden",
-                    background: "#4c1d95", display: "flex", alignItems: "center", justifyContent: "center",
-                }}>
-                    {alumni.foto_url ? (
-                        <img src={alumni.foto_url} alt={alumni.nama} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    ) : (
-                        <span style={{ fontSize: "1.8rem", fontWeight: 800, color: "#a78bfa" }}>
+            {/* ── Full portrait photo ── */}
+            <div style={{ position: "relative", width: "100%", aspectRatio: "3 / 4", overflow: "hidden", background: "linear-gradient(135deg, #1e1b4b, #312e81)", flexShrink: 0 }}>
+                {alumni.foto_url ? (
+                    <img
+                        src={alumni.foto_url}
+                        alt={alumni.nama}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }}
+                    />
+                ) : (
+                    <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <span style={{ fontSize: "5rem", fontWeight: 800, color: "rgba(167,139,250,0.5)" }}>
                             {alumni.nama?.charAt(0)?.toUpperCase()}
                         </span>
-                    )}
-                </div>
-            </div>
+                    </div>
+                )}
 
-            {/* Content */}
-            <div style={{ padding: "0 1.25rem 1.25rem", marginTop: "-2.25rem", flex: 1, display: "flex", flexDirection: "column" }}>
+                {/* Gradient overlay bawah agar teks terbaca */}
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", background: "linear-gradient(to top, rgba(15,10,40,0.85) 0%, transparent 100%)", pointerEvents: "none" }} />
+
+                {/* Level badge di atas foto */}
                 {alumni.level && (
-                    <div style={{ marginBottom: "0.75rem" }}>
+                    <div style={{ position: "absolute", top: "0.75rem", left: "0.75rem" }}>
                         <span style={{
                             display: "inline-block",
-                            padding: "0.25rem 0.75rem",
+                            padding: "0.2rem 0.65rem",
                             borderRadius: "999px",
-                            fontSize: "0.72rem",
+                            fontSize: "0.68rem",
                             fontWeight: 700,
                             background: levelStyle.bg,
                             color: levelStyle.text,
@@ -423,29 +424,36 @@ function AlumniCard({ alumni, onSelect }) {
                     </div>
                 )}
 
-                <div style={{ fontWeight: 800, fontSize: "1.1rem", color: "#0f172a", marginBottom: "0.2rem" }}>
-                    {alumni.nama}
-                </div>
-                <div style={{ fontSize: "0.875rem", color: "#7c3aed", fontWeight: 600, marginBottom: "0.15rem" }}>
-                    {alumni.jabatan}
-                </div>
-                <div style={{ fontSize: "0.83rem", color: "#64748b", marginBottom: "0.5rem" }}>
-                    {alumni.tempat_kerja}{alumni.kota ? ` · ${alumni.kota}` : ""}
-                </div>
-
-                {alumni.angkatan && (
-                    <div style={{ display: "inline-block", fontSize: "0.72rem", fontWeight: 700, color: "#94a3b8", background: "#f8faff", border: "1px solid #e2e8f0", borderRadius: "999px", padding: "0.2rem 0.65rem", marginBottom: "0.75rem" }}>
-                        Angkatan {alumni.angkatan}
+                {/* Nama & jabatan overlay di bawah foto */}
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "1rem 1.1rem 0.85rem" }}>
+                    <div style={{ fontWeight: 800, fontSize: "1.05rem", color: "#fff", lineHeight: 1.2, marginBottom: "0.2rem" }}>
+                        {alumni.nama}
                     </div>
-                )}
+                    <div style={{ fontSize: "0.8rem", color: "#c4b5fd", fontWeight: 600 }}>
+                        {alumni.jabatan}
+                    </div>
+                </div>
+            </div>
+
+            {/* ── Info bawah ── */}
+            <div style={{ padding: "1rem 1.1rem 1rem", flex: 1, display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                <div style={{ fontSize: "0.82rem", color: "#64748b" }}>
+                    🏢 {alumni.tempat_kerja}{alumni.kota ? ` · ${alumni.kota}` : ""}
+                </div>
 
                 {alumni.industri && (
-                    <div style={{ fontSize: "0.78rem", color: "#64748b", marginBottom: "0.5rem" }}>
+                    <div style={{ fontSize: "0.78rem", color: "#64748b" }}>
                         🏭 {alumni.industri}
                     </div>
                 )}
 
-                <div style={{ marginTop: "auto", paddingTop: "0.75rem", borderTop: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                {alumni.angkatan && (
+                    <div style={{ display: "inline-block", fontSize: "0.7rem", fontWeight: 700, color: "#94a3b8", background: "#f8faff", border: "1px solid #e2e8f0", borderRadius: "999px", padding: "0.18rem 0.6rem", width: "fit-content", marginTop: "0.15rem" }}>
+                        Angkatan {alumni.angkatan}
+                    </div>
+                )}
+
+                <div style={{ marginTop: "auto", paddingTop: "0.7rem", borderTop: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div style={{ display: "flex", gap: "0.4rem" }}>
                         {alumni.wa_number && (
                             <a href={`https://wa.me/${alumni.wa_number}`} target="_blank" rel="noreferrer"
