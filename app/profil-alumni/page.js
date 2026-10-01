@@ -58,13 +58,14 @@ export default function JaringanAlumni() {
     const [selected, setSelected] = useState(null);
     const [filterLevel, setFilterLevel] = useState("");
     const [filterIndustri, setFilterIndustri] = useState("");
+    const [activeTab, setActiveTab] = useState("Industri");
     const [searchNama, setSearchNama] = useState("");
 
     // Form state
     const [form, setForm] = useState({
         nama: "", email: "", no_hp: "", angkatan: "",
         jabatan: "", level: "", tempat_kerja: "", industri: "",
-        kota: "", deskripsi: "", wa_number: "", linkedin_url: "",
+        kota: "", deskripsi: "", wa_number: "", linkedin_url: "", kategori: "",
     });
     const [fotoFile, setFotoFile] = useState(null);
     const [fotoPreview, setFotoPreview] = useState(null);
@@ -123,7 +124,7 @@ export default function JaringanAlumni() {
             const { error: insertError } = await supabase.from("alumni_profiles").insert([{ ...form, foto_url }]);
             if (insertError) throw insertError;
             setMessage("Profil kamu berhasil ditambahkan ke Jaringan Alumni!");
-            setForm({ nama: "", email: "", no_hp: "", angkatan: "", jabatan: "", level: "", tempat_kerja: "", industri: "", kota: "", deskripsi: "", wa_number: "", linkedin_url: "" });
+            setForm({ nama: "", email: "", no_hp: "", angkatan: "", jabatan: "", level: "", tempat_kerja: "", industri: "", kota: "", deskripsi: "", wa_number: "", linkedin_url: "", kategori: "" });
             setFotoFile(null); setFotoPreview(null);
             setFormOpen(false);
             fetchAlumni();
@@ -134,7 +135,17 @@ export default function JaringanAlumni() {
         }
     }
 
-    const filtered = alumniList.filter((a) => {
+    const getKategori = (a) => {
+        if (a.kategori) return a.kategori;
+        const nm = a.nama?.toLowerCase() || "";
+        if (nm.includes("iin") || nm.includes("ivan")) return "Industri";
+        if (nm.includes("rodi")) return "Entrepreneur";
+        return "Akademisi"; // Fallback for anyone else not specified
+    };
+
+    const tabFiltered = alumniList.filter((a) => getKategori(a) === activeTab);
+
+    const filtered = tabFiltered.filter((a) => {
         const matchNama = a.nama?.toLowerCase().includes(searchNama.toLowerCase());
         const matchLevel = !filterLevel || a.level === filterLevel;
         const matchIndustri = !filterIndustri || a.industri === filterIndustri;
@@ -222,6 +233,32 @@ export default function JaringanAlumni() {
             {/* ── Filter & List ── */}
             <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "3rem 1.5rem 5rem" }}>
 
+                {/* Tab Navigation */}
+                <div style={{ display: "flex", gap: "1rem", marginBottom: "2.5rem", borderBottom: "1px solid #e2e8f0", paddingBottom: "1rem", overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+                    {["Industri", "Akademisi", "Entrepreneur"].map((tab) => (
+                        <button
+                            key={tab}
+                            onClick={() => setActiveTab(tab)}
+                            style={{
+                                padding: "0.6rem 1.5rem",
+                                borderRadius: "999px",
+                                border: "none",
+                                fontWeight: 700,
+                                fontSize: "0.95rem",
+                                cursor: "pointer",
+                                transition: "all 0.2s",
+                                fontFamily: "var(--font-body), sans-serif",
+                                whiteSpace: "nowrap",
+                                ...(activeTab === tab
+                                    ? { background: "#1e1b4b", color: "#fff", boxShadow: "0 4px 12px rgba(30,27,75,0.2)" }
+                                    : { background: "#f1f5f9", color: "#64748b" }),
+                            }}
+                        >
+                            {tab}
+                        </button>
+                    ))}
+                </div>
+
                 {/* Filter bar */}
                 <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: "2rem" }}>
                     <input
@@ -283,6 +320,14 @@ export default function JaringanAlumni() {
                         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}>
                             <FormRow label="Nama Lengkap *">
                                 <input type="text" name="nama" value={form.nama} onChange={handleChange} required style={inp} />
+                            </FormRow>
+                            <FormRow label="Kategori *">
+                                <select name="kategori" value={form.kategori} onChange={handleChange} required style={inp}>
+                                    <option value="">-- Pilih Kategori --</option>
+                                    <option value="Industri">Industri</option>
+                                    <option value="Akademisi">Akademisi</option>
+                                    <option value="Entrepreneur">Entrepreneur</option>
+                                </select>
                             </FormRow>
                             <FormRow label="Email * (untuk edit profil)">
                                 <input type="email" name="email" value={form.email} onChange={handleChange} required style={inp} />
