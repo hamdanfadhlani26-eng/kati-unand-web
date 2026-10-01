@@ -16,6 +16,7 @@ const LEVEL_OPTIONS = [
     "Senior Manager / Manager",
     "Head of Department",
     "Senior Specialist / Lead",
+    "Professor / Akademisi",
 ];
 
 const INDUSTRI_OPTIONS = [
@@ -42,6 +43,7 @@ const LEVEL_COLORS = {
     "Senior Manager / Manager": { bg: "#dcfce7", text: "#14532d", border: "#86efac" },
     "Head of Department": { bg: "#e0f2fe", text: "#0c4a6e", border: "#7dd3fc" },
     "Senior Specialist / Lead": { bg: "#f1f5f9", text: "#334155", border: "#cbd5e1" },
+    "Professor / Akademisi": { bg: "#ffedd5", text: "#c2410c", border: "#fdba74" },
 };
 
 function getLevelStyle(level) {

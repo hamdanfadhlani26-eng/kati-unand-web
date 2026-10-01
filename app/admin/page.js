@@ -24,6 +24,8 @@ export default function AdminPage() {
     const [search, setSearch] = useState("");
     const [deletingId, setDeletingId] = useState(null);
     const [confirmDelete, setConfirmDelete] = useState(null); // { id, name }
+    const [editingData, setEditingData] = useState(null); // Object to edit
+    const [saving, setSaving] = useState(false);
     const [toast, setToast] = useState("");
 
     function handleLogin(e) {
@@ -63,6 +65,25 @@ export default function AdminPage() {
         }
         setDeletingId(null);
         setConfirmDelete(null);
+    }
+
+    async function handleSaveEdit(e) {
+        e.preventDefault();
+        setSaving(true);
+        const updates = { ...editingData };
+        delete updates.id;
+        delete updates.created_at;
+        delete updates.updated_at;
+
+        const { error } = await supabase.from(activeTab).update(updates).eq("id", editingData.id);
+        if (!error) {
+            setData((prev) => prev.map((r) => (r.id === editingData.id ? { ...r, ...updates } : r)));
+            showToast("✅ Data berhasil diubah.");
+            setEditingData(null);
+        } else {
+            showToast("❌ Gagal menyimpan: " + error.message);
+        }
+        setSaving(false);
     }
 
     function showToast(msg) {
@@ -201,6 +222,7 @@ export default function AdminPage() {
                                 row={row}
                                 nameField={nameField}
                                 tabKey={activeTab}
+                                onEdit={() => setEditingData({ ...row })}
                                 onDelete={() => setConfirmDelete({ id: row.id, name: row[nameField] || String(row.id) })}
                                 deleting={deletingId === row.id}
                             />
@@ -230,6 +252,43 @@ export default function AdminPage() {
                 </div>
             )}
 
+            {/* Edit modal */}
+            {editingData && (
+                <div onClick={() => setEditingData(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
+                    <div onClick={(e) => e.stopPropagation()} style={{ background: "#1e293b", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "16px", padding: "2rem", maxWidth: "500px", width: "100%", maxHeight: "90vh", display: "flex", flexDirection: "column" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+                            <h3 style={{ margin: 0, color: "#f1f5f9", fontWeight: 700 }}>Edit Data</h3>
+                            <button onClick={() => setEditingData(null)} style={{ background: "transparent", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: "1.2rem" }}>✕</button>
+                        </div>
+                        <form onSubmit={handleSaveEdit} style={{ display: "flex", flexDirection: "column", gap: "1rem", overflowY: "auto", paddingRight: "0.5rem" }}>
+                            {Object.keys(editingData)
+                                .filter((k) => !["id", "created_at", "updated_at", "foto_url", "lampiran_url"].includes(k))
+                                .map((key) => (
+                                    <div key={key} style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                                        <label style={{ fontSize: "0.82rem", color: "#94a3b8", fontWeight: 600, textTransform: "capitalize" }}>{key.replace(/_/g, " ")}</label>
+                                        <input
+                                            type="text"
+                                            value={editingData[key] || ""}
+                                            onChange={(e) => setEditingData({ ...editingData, [key]: e.target.value })}
+                                            style={{
+                                                padding: "0.65rem", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
+                                                borderRadius: "8px", color: "#f1f5f9", fontSize: "0.9rem",
+                                                fontFamily: "var(--font-body), sans-serif",
+                                            }}
+                                        />
+                                    </div>
+                                ))}
+                            <div style={{ display: "flex", gap: "0.75rem", marginTop: "1rem" }}>
+                                <button type="button" onClick={() => setEditingData(null)} style={{ flex: 1, padding: "0.75rem", background: "rgba(255,255,255,0.05)", color: "#94a3b8", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", fontWeight: 600, cursor: "pointer" }}>Batal</button>
+                                <button type="submit" disabled={saving} style={{ flex: 1, padding: "0.75rem", background: "linear-gradient(135deg, #2563eb, #1d4ed8)", color: "#fff", border: "none", borderRadius: "10px", fontWeight: 700, cursor: saving ? "not-allowed" : "pointer" }}>
+                                    {saving ? "Menyimpan..." : "Simpan"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
             {/* Toast */}
             {toast && (
                 <div style={{ position: "fixed", bottom: "1.75rem", left: "50%", transform: "translateX(-50%)", background: "#0f172a", color: "#f1f5f9", padding: "0.8rem 1.5rem", borderRadius: "999px", fontWeight: 600, fontSize: "0.88rem", boxShadow: "0 8px 32px rgba(0,0,0,0.4)", zIndex: 999, whiteSpace: "nowrap", border: "1px solid rgba(255,255,255,0.1)", fontFamily: "var(--font-body), sans-serif" }}>
@@ -248,7 +307,7 @@ export default function AdminPage() {
 }
 
 // ── Row Card ──────────────────────────────────────────────────────────────────
-function AdminRow({ row, nameField, tabKey, onDelete, deleting }) {
+function AdminRow({ row, nameField, tabKey, onEdit, onDelete, deleting }) {
     const primaryName = row[nameField] || "—";
     const subtitles = {
         talent_pool: [row.jabatan, row.email].filter(Boolean).join(" · "),
@@ -289,12 +348,32 @@ function AdminRow({ row, nameField, tabKey, onDelete, deleting }) {
                 </div>
             )}
 
+            {/* Actions */}
+            <div style={{ display: "flex", gap: "0.5rem", flexShrink: 0 }}>
+                <button
+                    onClick={onEdit}
+                    disabled={deleting}
+                    style={{
+                        padding: "0.4rem 0.85rem",
+                        background: "rgba(59,130,246,0.12)",
+                        color: "#60a5fa",
+                        border: "1px solid rgba(59,130,246,0.25)",
+                        borderRadius: "7px",
+                        fontWeight: 600,
+                        fontSize: "0.8rem",
+                        cursor: deleting ? "not-allowed" : "pointer",
+                        fontFamily: "var(--font-body), sans-serif",
+                        opacity: deleting ? 0.5 : 1,
+                    }}
+                >
+                    Edit
+                </button>
+
             {/* Delete btn */}
             <button
                 onClick={onDelete}
                 disabled={deleting}
                 style={{
-                    flexShrink: 0,
                     padding: "0.4rem 0.85rem",
                     background: "rgba(239,68,68,0.12)",
                     color: "#f87171",
@@ -309,6 +388,7 @@ function AdminRow({ row, nameField, tabKey, onDelete, deleting }) {
             >
                 {deleting ? "..." : "Hapus"}
             </button>
+            </div>
         </div>
     );
 }
