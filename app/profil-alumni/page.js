@@ -35,6 +35,17 @@ const INDUSTRI_OPTIONS = [
     "Lainnya",
 ];
 
+const JENIS_PEKERJAAN_OPTIONS = [
+    "BUMN / Anak Usaha Danantara / BUMD",
+    "Swasta Nasional",
+    "Swasta Asing",
+    "Kementerian / Pemerintah Daerah",
+    "Wiraswasta",
+    "Akademisi",
+    "NGO",
+    "Lainnya",
+];
+
 const LEVEL_COLORS = {
     "CEO / Founder / Co-Founder": { bg: "#fef3c7", text: "#92400e", border: "#fcd34d" },
     "Direktur / Director": { bg: "#fce7f3", text: "#9d174d", border: "#f9a8d4" },
@@ -93,10 +104,45 @@ const filterSelectStyle = {
     boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
 };
 
+const formInputStyle = {
+    width: "100%",
+    padding: "0.65rem 0.9rem",
+    borderRadius: "10px",
+    border: "1px solid #cbd5e1",
+    fontSize: "0.88rem",
+    color: "#0f172a",
+    outline: "none",
+    fontFamily: "var(--font-body), sans-serif",
+    boxSizing: "border-box",
+};
+
+const formLabelStyle = {
+    display: "block",
+    fontSize: "0.8rem",
+    fontWeight: 700,
+    color: "#334155",
+    marginBottom: "0.3rem",
+};
+
+const emptyDirectoryForm = {
+    id: null,
+    nama_lengkap: "",
+    angkatan: "",
+    jenis_pekerjaan: "BUMN / Anak Usaha Danantara / BUMD",
+    bidang_pekerjaan: "",
+    nama_perusahaan: "",
+    jabatan: "",
+    provinsi: "",
+    kota: "",
+    linkedin_url: "",
+    instagram_url: "",
+    email: "",
+};
+
 export default function JaringanAlumni() {
     const { isUnlocked, checking, submitEmail } = useEmailGate("jaringan-alumni");
 
-    // Main 3 tabs: 'unggulan' (Sorotan Profil), 'direktori' (Direktori Lengkap), 'statistik' (Dashboard Statistik)
+    // Main 3 tabs: 'unggulan', 'direktori', 'statistik'
     const [mainTab, setMainTab] = useState("unggulan");
 
     // --- State Profil Unggulan ---
@@ -110,13 +156,30 @@ export default function JaringanAlumni() {
 
     // --- State Direktori Alumni ---
     const [dbAlumni, setDbAlumni] = useState(initialAlumniData || []);
-    const [loadingDb, setLoadingDb] = useState(false);
     const [dbSearch, setDbSearch] = useState("");
     const [dbFilterJenis, setDbFilterJenis] = useState("");
     const [dbFilterAngkatan, setDbFilterAngkatan] = useState("");
     const [dbFilterProvinsi, setDbFilterProvinsi] = useState("");
     const [dbPage, setDbPage] = useState(1);
     const DB_PER_PAGE = 30;
+
+    // --- State CRUD Modal Direktori ---
+    const [modalMode, setModalMode] = useState(null); // 'add' | 'edit' | null
+    const [formData, setFormData] = useState(emptyDirectoryForm);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [formError, setFormError] = useState("");
+
+    // --- State Delete Confirmation Modal ---
+    const [deleteTarget, setDeleteTarget] = useState(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    // --- Toast Notification ---
+    const [toast, setToast] = useState(null);
+
+    const showToast = (message, type = "success") => {
+        setToast({ message, type });
+        setTimeout(() => setToast(null), 3500);
+    };
 
     useEffect(() => {
         if (isUnlocked) {
@@ -139,15 +202,16 @@ export default function JaringanAlumni() {
 
     async function fetchDatabase() {
         try {
-            const { data, error } = await supabase
-                .from("alumni_database")
-                .select("*")
-                .order("angkatan", { ascending: false });
-            if (!error && data && data.length > 0) {
-                setDbAlumni(data);
+            const res = await fetch("/api/alumni-directory");
+            if (res.ok) {
+                const json = await res.json();
+                if (json.data && json.data.length > 0) {
+                    setDbAlumni(json.data);
+                    return;
+                }
             }
         } catch (e) {
-            // If table doesn't exist yet, initialAlumniData from JSON is already active
+            // fallback to local JSON is already set
         }
     }
 
@@ -270,6 +334,123 @@ export default function JaringanAlumni() {
         };
     }, [dbAlumni]);
 
+    // --- CRUD Handlers ---
+    const handleOpenAdd = () => {
+        setFormData({ ...emptyDirectoryForm, id: Date.now() });
+        setFormError("");
+        setModalMode("add");
+    };
+
+    const handleOpenEdit = (alumni) => {
+        setFormData({
+            id: alumni.id || Date.now(),
+            nama_lengkap: alumni.nama_lengkap || "",
+            angkatan: alumni.angkatan || "",
+            jenis_pekerjaan: alumni.jenis_pekerjaan || "Lainnya",
+            bidang_pekerjaan: alumni.bidang_pekerjaan || "",
+            nama_perusahaan: alumni.nama_perusahaan || "",
+            jabatan: alumni.jabatan || "",
+            provinsi: alumni.provinsi || "",
+            kota: alumni.kota || "",
+            linkedin_url: alumni.linkedin_url || "",
+            instagram_url: alumni.instagram_url || "",
+            email: alumni.email || "",
+            old_nama: alumni.nama_lengkap || "",
+        });
+        setFormError("");
+        setModalMode("edit");
+    };
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        setFormError("");
+
+        if (!formData.nama_lengkap.trim()) {
+            setFormError("Nama lengkap wajib diisi.");
+            return;
+        }
+        if (!formData.angkatan.trim()) {
+            setFormError("Tahun angkatan wajib diisi.");
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            if (modalMode === "add") {
+                const res = await fetch("/api/alumni-directory", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formData),
+                });
+                const json = await res.json();
+                if (json.success) {
+                    setDbAlumni((prev) => [json.data || formData, ...prev]);
+                    showToast("Profil alumni berhasil ditambahkan ke direktori!");
+                    setModalMode(null);
+                } else {
+                    setFormError(json.error || "Gagal menyimpan data alumni.");
+                }
+            } else if (modalMode === "edit") {
+                const res = await fetch("/api/alumni-directory", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formData),
+                });
+                const json = await res.json();
+                if (json.success) {
+                    setDbAlumni((prev) =>
+                        prev.map((item) =>
+                            String(item.id) === String(formData.id) ||
+                            (formData.old_nama && item.nama_lengkap.toLowerCase() === formData.old_nama.toLowerCase())
+                                ? { ...item, ...formData }
+                                : item
+                        )
+                    );
+                    showToast("Profil alumni berhasil diperbarui!");
+                    setModalMode(null);
+                } else {
+                    setFormError(json.error || "Gagal memperbarui data.");
+                }
+            }
+        } catch (err) {
+            setFormError("Terjadi kesalahan jaringan.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!deleteTarget) return;
+        setIsDeleting(true);
+        try {
+            const queryParams = new URLSearchParams({
+                id: deleteTarget.id || "",
+                nama: deleteTarget.nama_lengkap || "",
+            });
+            const res = await fetch(`/api/alumni-directory?${queryParams}`, {
+                method: "DELETE",
+            });
+            const json = await res.json();
+            if (json.success) {
+                setDbAlumni((prev) =>
+                    prev.filter(
+                        (item) =>
+                            String(item.id) !== String(deleteTarget.id) &&
+                            item.nama_lengkap.toLowerCase() !== (deleteTarget.nama_lengkap || "").toLowerCase()
+                    )
+                );
+                showToast(`Profil ${deleteTarget.nama_lengkap} berhasil dihapus.`);
+                setDeleteTarget(null);
+            } else {
+                alert(json.error || "Gagal menghapus data.");
+            }
+        } catch (err) {
+            alert("Terjadi kesalahan saat menghapus data.");
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
     if (checking) return <div style={{ minHeight: "60vh" }} />;
     if (!isUnlocked) {
         return (
@@ -284,6 +465,32 @@ export default function JaringanAlumni() {
 
     return (
         <div style={{ minHeight: "100vh", background: "#f8faff" }}>
+            {/* Floating Toast Notification */}
+            {toast && (
+                <div
+                    style={{
+                        position: "fixed",
+                        bottom: "2rem",
+                        right: "2rem",
+                        zIndex: 300,
+                        background: toast.type === "error" ? "#ef4444" : "#10b981",
+                        color: "#fff",
+                        padding: "0.85rem 1.4rem",
+                        borderRadius: "12px",
+                        boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.6rem",
+                        fontWeight: 600,
+                        fontSize: "0.9rem",
+                        animation: "fadeIn 0.2s ease",
+                    }}
+                >
+                    <span>{toast.type === "error" ? "⚠️" : "✓"}</span>
+                    <span>{toast.message}</span>
+                </div>
+            )}
+
             {/* Hero Banner */}
             <div
                 style={{
@@ -533,17 +740,44 @@ export default function JaringanAlumni() {
             )}
 
             {/* ======================================================== */}
-            {/* TAB 2: DIREKTORI ALUMNI (DATABASE LENGKAP)               */}
+            {/* TAB 2: DIREKTORI ALUMNI (DILENGKAPI TAMBAH, EDIT, HAPUS) */}
             {/* ======================================================== */}
             {mainTab === "direktori" && (
                 <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "2.5rem 1.5rem 5rem" }}>
-                    <div style={{ marginBottom: "2rem" }}>
-                        <h2 style={{ margin: "0 0 0.35rem", fontSize: "1.45rem", fontWeight: 800, color: "#0f172a" }}>
-                            Direktori Alumni KATI UNAND
-                        </h2>
-                        <p style={{ margin: 0, color: "#64748b", fontSize: "0.92rem" }}>
-                            Daftar basis data alumni Teknik Industri Unand dari seluruh angkatan dan domisili kerja.
-                        </p>
+                    {/* Header + Action Button */}
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.75rem", flexWrap: "wrap", gap: "1rem" }}>
+                        <div>
+                            <h2 style={{ margin: "0 0 0.35rem", fontSize: "1.45rem", fontWeight: 800, color: "#0f172a" }}>
+                                Direktori Alumni KATI UNAND
+                            </h2>
+                            <p style={{ margin: 0, color: "#64748b", fontSize: "0.92rem" }}>
+                                Cari, perbarui, atau tambahkan profil Anda ke jejaring alumni Teknik Industri Unand.
+                            </p>
+                        </div>
+
+                        {/* Tombol Tambah Data Alumni */}
+                        <button
+                            onClick={handleOpenAdd}
+                            style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "0.5rem",
+                                padding: "0.75rem 1.4rem",
+                                background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
+                                color: "#fff",
+                                border: "none",
+                                borderRadius: "999px",
+                                fontWeight: 700,
+                                fontSize: "0.88rem",
+                                cursor: "pointer",
+                                boxShadow: "0 4px 14px rgba(124,58,237,0.25)",
+                                transition: "all 0.15s ease",
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-2px)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.transform = "")}
+                        >
+                            <span>+</span> Tambah Profil Saya
+                        </button>
                     </div>
 
                     {/* Filter Bar */}
@@ -616,14 +850,19 @@ export default function JaringanAlumni() {
                                 Tidak ada data alumni yang sesuai
                             </div>
                             <p style={{ fontSize: "0.88rem", color: "#64748b", marginTop: "0.35rem" }}>
-                                Coba sesuaikan kata kunci pencarian atau bersihkan filter di atas.
+                                Coba sesuaikan kata kunci pencarian atau gunakan tombol Tambah Profil untuk menambahkan diri Anda.
                             </p>
                         </div>
                     ) : (
                         <>
                             <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
                                 {dbPaginated.map((a, i) => (
-                                    <DirectoryRow key={a.id || i} alumni={a} />
+                                    <DirectoryRow
+                                        key={a.id || i}
+                                        alumni={a}
+                                        onEdit={() => handleOpenEdit(a)}
+                                        onDelete={() => setDeleteTarget(a)}
+                                    />
                                 ))}
                             </div>
 
@@ -657,7 +896,7 @@ export default function JaringanAlumni() {
             )}
 
             {/* ======================================================== */}
-            {/* TAB 3: STATISTIK ALUMNI (DASHBOARD ANALITIK)             */}
+            {/* TAB 3: STATISTIK ALUMNI (DASHBOARD ANALITIK DIOPTIMASI)  */}
             {/* ======================================================== */}
             {mainTab === "statistik" && (
                 <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "2.5rem 1.5rem 5rem" }}>
@@ -721,7 +960,7 @@ export default function JaringanAlumni() {
                                 ))}
                             </div>
 
-                            {/* Section 1: Jenis Pekerjaan Alumni (Matching User's Donut/Distribution) */}
+                            {/* Section 1: Jenis Pekerjaan Alumni */}
                             <div
                                 style={{
                                     background: "#fff",
@@ -789,7 +1028,7 @@ export default function JaringanAlumni() {
                                 </div>
                             </div>
 
-                            {/* Section 2: Bar Chart Distribusi per Angkatan (1994 s.d. 2022) */}
+                            {/* Section 2: Bar Chart Distribusi per Angkatan (DIPERBAIKI AGAR TIDAK KEPOTONG) */}
                             <div
                                 style={{
                                     background: "#fff",
@@ -798,6 +1037,7 @@ export default function JaringanAlumni() {
                                     padding: "2rem",
                                     boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
                                     marginBottom: "2rem",
+                                    overflow: "hidden",
                                 }}
                             >
                                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "1.75rem", flexWrap: "wrap", gap: "0.5rem" }}>
@@ -814,19 +1054,24 @@ export default function JaringanAlumni() {
                                     </span>
                                 </div>
 
+                                {/* Container Bar Chart: Height dan Padding diperluas agar angka atas & label bawah tidak terpotong */}
                                 <div
+                                    className="custom-chart-scroll"
                                     style={{
                                         display: "flex",
                                         alignItems: "flex-end",
-                                        gap: "8px",
-                                        height: "220px",
+                                        gap: "10px",
+                                        height: "270px",
                                         overflowX: "auto",
-                                        paddingBottom: "2.5rem",
-                                        paddingTop: "1.5rem",
+                                        paddingBottom: "3rem",
+                                        paddingTop: "2.5rem",
+                                        paddingLeft: "0.75rem",
+                                        paddingRight: "2rem",
                                     }}
                                 >
                                     {stats.byAngkatan.map(([angkatan, count]) => {
-                                        const heightPx = Math.max((count / stats.maxAngkatanCount) * 150, 6);
+                                        // Skala diperbaiki: max height 115px sehingga angka di atas punya headroom 60px+
+                                        const heightPx = Math.max((count / stats.maxAngkatanCount) * 115, 8);
                                         const isPeak = count >= 60;
                                         return (
                                             <div
@@ -837,31 +1082,53 @@ export default function JaringanAlumni() {
                                                     alignItems: "center",
                                                     gap: "6px",
                                                     flexShrink: 0,
-                                                    minWidth: "28px",
+                                                    minWidth: "30px",
                                                 }}
                                                 title={`Angkatan ${angkatan}: ${count} alumni`}
                                             >
-                                                <span style={{ fontSize: "0.68rem", color: isPeak ? "#7c3aed" : "#94a3b8", fontWeight: 700 }}>
-                                                    {count}
-                                                </span>
-                                                <div
-                                                    style={{
-                                                        width: "22px",
-                                                        height: `${heightPx}px`,
-                                                        background: isPeak ? "linear-gradient(180deg, #7c3aed, #4f46e5)" : "#93c5fd",
-                                                        borderRadius: "4px 4px 0 0",
-                                                        transition: "height 0.5s ease",
-                                                        cursor: "pointer",
-                                                    }}
-                                                />
+                                                {/* Angka di atas bar */}
                                                 <span
                                                     style={{
-                                                        fontSize: "0.65rem",
+                                                        fontSize: "0.72rem",
+                                                        color: isPeak ? "#6d28d9" : "#64748b",
+                                                        fontWeight: isPeak ? 800 : 700,
+                                                        lineHeight: 1,
+                                                    }}
+                                                >
+                                                    {count}
+                                                </span>
+
+                                                {/* Batang grafik */}
+                                                <div
+                                                    style={{
+                                                        width: "24px",
+                                                        height: `${heightPx}px`,
+                                                        background: isPeak
+                                                            ? "linear-gradient(180deg, #7c3aed, #4f46e5)"
+                                                            : "#93c5fd",
+                                                        borderRadius: "5px 5px 0 0",
+                                                        transition: "height 0.4s ease, transform 0.15s ease",
+                                                        cursor: "pointer",
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        e.currentTarget.style.transform = "scaleY(1.05)";
+                                                        e.currentTarget.style.filter = "brightness(1.1)";
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        e.currentTarget.style.transform = "";
+                                                        e.currentTarget.style.filter = "none";
+                                                    }}
+                                                />
+
+                                                {/* Tahun angkatan di bawah bar */}
+                                                <span
+                                                    style={{
+                                                        fontSize: "0.68rem",
                                                         color: "#64748b",
                                                         fontWeight: 600,
                                                         transform: "rotate(-45deg)",
                                                         whiteSpace: "nowrap",
-                                                        marginTop: "6px",
+                                                        marginTop: "8px",
                                                     }}
                                                 >
                                                     {angkatan}
@@ -1143,6 +1410,357 @@ export default function JaringanAlumni() {
                     </div>
                 </div>
             )}
+
+            {/* Modal Tambah / Edit Data Alumni Direktori */}
+            {modalMode && (
+                <div
+                    onClick={() => setModalMode(null)}
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(15,23,42,0.6)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 250,
+                        padding: "1rem",
+                        backdropFilter: "blur(4px)",
+                    }}
+                >
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                            background: "#fff",
+                            borderRadius: "20px",
+                            maxWidth: "540px",
+                            width: "100%",
+                            maxHeight: "92vh",
+                            overflowY: "auto",
+                            boxShadow: "0 24px 64px rgba(0,0,0,0.25)",
+                            padding: "2rem",
+                            position: "relative",
+                        }}
+                    >
+                        <button
+                            onClick={() => setModalMode(null)}
+                            style={{
+                                position: "absolute",
+                                top: "1.25rem",
+                                right: "1.25rem",
+                                background: "#f1f5f9",
+                                border: "none",
+                                borderRadius: "50%",
+                                width: "32px",
+                                height: "32px",
+                                cursor: "pointer",
+                                fontSize: "0.9rem",
+                                color: "#64748b",
+                                fontWeight: 700,
+                            }}
+                        >
+                            ✕
+                        </button>
+
+                        <div style={{ marginBottom: "1.5rem" }}>
+                            <h2 style={{ margin: "0 0 0.3rem", fontSize: "1.3rem", fontWeight: 800, color: "#0f172a" }}>
+                                {modalMode === "add" ? "Tambah Profil Saya ke Direktori" : "Edit Profil Alumni"}
+                            </h2>
+                            <p style={{ margin: 0, fontSize: "0.85rem", color: "#64748b" }}>
+                                {modalMode === "add"
+                                    ? "Lengkapi informasi karier Anda untuk bergabung di direktori resmi alumni Teknik Industri Unand."
+                                    : "Perbarui informasi pekerjaan, domisili, atau akun LinkedIn Anda."}
+                            </p>
+                        </div>
+
+                        {formError && (
+                            <div
+                                style={{
+                                    padding: "0.75rem 1rem",
+                                    background: "#fef2f2",
+                                    border: "1px solid #fecaca",
+                                    borderRadius: "10px",
+                                    color: "#b91c1c",
+                                    fontSize: "0.85rem",
+                                    marginBottom: "1.25rem",
+                                    fontWeight: 600,
+                                }}
+                            >
+                                ⚠️ {formError}
+                            </div>
+                        )}
+
+                        <form onSubmit={handleFormSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                            <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "0.75rem" }}>
+                                <div>
+                                    <label style={formLabelStyle}>Nama Lengkap *</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Contoh: Rahmat Hidayat, S.T."
+                                        value={formData.nama_lengkap}
+                                        onChange={(e) => setFormData({ ...formData, nama_lengkap: e.target.value })}
+                                        required
+                                        style={formInputStyle}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={formLabelStyle}>Angkatan *</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Contoh: 2014"
+                                        value={formData.angkatan}
+                                        onChange={(e) => setFormData({ ...formData, angkatan: e.target.value })}
+                                        required
+                                        style={formInputStyle}
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label style={formLabelStyle}>Jenis Pekerjaan *</label>
+                                <select
+                                    value={formData.jenis_pekerjaan}
+                                    onChange={(e) => setFormData({ ...formData, jenis_pekerjaan: e.target.value })}
+                                    style={formInputStyle}
+                                >
+                                    {JENIS_PEKERJAAN_OPTIONS.map((opt) => (
+                                        <option key={opt} value={opt}>
+                                            {opt}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+                                <div>
+                                    <label style={formLabelStyle}>Nama Perusahaan / Institusi</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Contoh: PT Semen Padang"
+                                        value={formData.nama_perusahaan}
+                                        onChange={(e) => setFormData({ ...formData, nama_perusahaan: e.target.value })}
+                                        style={formInputStyle}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={formLabelStyle}>Jabatan / Posisi</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Contoh: Supply Chain Lead"
+                                        value={formData.jabatan}
+                                        onChange={(e) => setFormData({ ...formData, jabatan: e.target.value })}
+                                        style={formInputStyle}
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label style={formLabelStyle}>Bidang Pekerjaan</label>
+                                <input
+                                    type="text"
+                                    placeholder="Contoh: Manufaktur, Energi, Teknologi, FMCG"
+                                    value={formData.bidang_pekerjaan}
+                                    onChange={(e) => setFormData({ ...formData, bidang_pekerjaan: e.target.value })}
+                                    style={formInputStyle}
+                                />
+                            </div>
+
+                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+                                <div>
+                                    <label style={formLabelStyle}>Provinsi Domisili</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Contoh: Sumatera Barat"
+                                        value={formData.provinsi}
+                                        onChange={(e) => setFormData({ ...formData, provinsi: e.target.value })}
+                                        style={formInputStyle}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={formLabelStyle}>Kota / Kabupaten</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Contoh: Padang"
+                                        value={formData.kota}
+                                        onChange={(e) => setFormData({ ...formData, kota: e.target.value })}
+                                        style={formInputStyle}
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label style={formLabelStyle}>Link Profil LinkedIn</label>
+                                <input
+                                    type="text"
+                                    placeholder="https://www.linkedin.com/in/username"
+                                    value={formData.linkedin_url}
+                                    onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
+                                    style={formInputStyle}
+                                />
+                            </div>
+
+                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+                                <div>
+                                    <label style={formLabelStyle}>Link Instagram (Opsional)</label>
+                                    <input
+                                        type="text"
+                                        placeholder="https://instagram.com/..."
+                                        value={formData.instagram_url}
+                                        onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
+                                        style={formInputStyle}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={formLabelStyle}>Email (Opsional)</label>
+                                    <input
+                                        type="email"
+                                        placeholder="nama@email.com"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        style={formInputStyle}
+                                    />
+                                </div>
+                            </div>
+
+                            <div style={{ display: "flex", gap: "0.75rem", marginTop: "1rem" }}>
+                                <button
+                                    type="button"
+                                    onClick={() => setModalMode(null)}
+                                    style={{
+                                        flex: 1,
+                                        padding: "0.8rem",
+                                        background: "#f1f5f9",
+                                        border: "none",
+                                        borderRadius: "10px",
+                                        fontWeight: 700,
+                                        color: "#475569",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    Batal
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    style={{
+                                        flex: 2,
+                                        padding: "0.8rem",
+                                        background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
+                                        border: "none",
+                                        borderRadius: "10px",
+                                        fontWeight: 700,
+                                        color: "#fff",
+                                        cursor: isSubmitting ? "not-allowed" : "pointer",
+                                        boxShadow: "0 4px 12px rgba(124,58,237,0.25)",
+                                    }}
+                                >
+                                    {isSubmitting
+                                        ? "Menyimpan..."
+                                        : modalMode === "add"
+                                        ? "Simpan Profil Saya"
+                                        : "Perbarui Profil"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal Konfirmasi Hapus Data */}
+            {deleteTarget && (
+                <div
+                    onClick={() => setDeleteTarget(null)}
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(15,23,42,0.6)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 260,
+                        padding: "1rem",
+                        backdropFilter: "blur(4px)",
+                    }}
+                >
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                            background: "#fff",
+                            borderRadius: "20px",
+                            maxWidth: "420px",
+                            width: "100%",
+                            padding: "2rem",
+                            textAlign: "center",
+                            boxShadow: "0 24px 64px rgba(0,0,0,0.25)",
+                        }}
+                    >
+                        <div style={{ fontSize: "2.8rem", marginBottom: "0.75rem" }}>🗑️</div>
+                        <h3 style={{ margin: "0 0 0.5rem", fontSize: "1.2rem", fontWeight: 800, color: "#0f172a" }}>
+                            Hapus Profil Alumni?
+                        </h3>
+                        <p style={{ margin: "0 0 1.5rem", fontSize: "0.88rem", color: "#64748b", lineHeight: 1.5 }}>
+                            Apakah Anda yakin ingin menghapus data profil untuk{" "}
+                            <strong style={{ color: "#0f172a" }}>{deleteTarget.nama_lengkap}</strong>{" "}
+                            {deleteTarget.angkatan ? `(Angkatan ${deleteTarget.angkatan})` : ""}?
+                        </p>
+                        <div style={{ display: "flex", gap: "0.75rem" }}>
+                            <button
+                                onClick={() => setDeleteTarget(null)}
+                                disabled={isDeleting}
+                                style={{
+                                    flex: 1,
+                                    padding: "0.75rem",
+                                    background: "#f1f5f9",
+                                    border: "none",
+                                    borderRadius: "10px",
+                                    fontWeight: 700,
+                                    color: "#475569",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                Batal
+                            </button>
+                            <button
+                                onClick={handleConfirmDelete}
+                                disabled={isDeleting}
+                                style={{
+                                    flex: 1,
+                                    padding: "0.75rem",
+                                    background: "#ef4444",
+                                    border: "none",
+                                    borderRadius: "10px",
+                                    fontWeight: 700,
+                                    color: "#fff",
+                                    cursor: isDeleting ? "not-allowed" : "pointer",
+                                    boxShadow: "0 4px 12px rgba(239,68,68,0.25)",
+                                }}
+                            >
+                                {isDeleting ? "Menghapus..." : "Ya, Hapus Data"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <style jsx global>{`
+                .custom-chart-scroll::-webkit-scrollbar {
+                    height: 6px;
+                }
+                .custom-chart-scroll::-webkit-scrollbar-track {
+                    background: #f1f5f9;
+                    border-radius: 999px;
+                }
+                .custom-chart-scroll::-webkit-scrollbar-thumb {
+                    background: #cbd5e1;
+                    border-radius: 999px;
+                }
+                .custom-chart-scroll::-webkit-scrollbar-thumb:hover {
+                    background: #94a3b8;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `}</style>
         </div>
     );
 }
@@ -1300,7 +1918,7 @@ function AlumniCard({ alumni, onSelect }) {
 }
 
 // ── Komponen Baris Direktori (Tab Direktori Alumni) ───────────────────────────
-function DirectoryRow({ alumni }) {
+function DirectoryRow({ alumni, onEdit, onDelete }) {
     const jenisColor = getJenisColor(alumni.jenis_pekerjaan);
     const hasLinkedIn = alumni.linkedin_url && (alumni.linkedin_url.includes("linkedin.com") || alumni.linkedin_url.includes("http"));
 
@@ -1429,6 +2047,72 @@ function DirectoryRow({ alumni }) {
                         in
                     </a>
                 )}
+
+                {/* Tombol Edit Profil */}
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onEdit();
+                    }}
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "8px",
+                        background: "#f1f5f9",
+                        border: "1px solid #e2e8f0",
+                        color: "#475569",
+                        cursor: "pointer",
+                        fontSize: "0.8rem",
+                        transition: "all 0.15s",
+                    }}
+                    title="Edit Profil"
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "#7c3aed";
+                        e.currentTarget.style.color = "#fff";
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "#f1f5f9";
+                        e.currentTarget.style.color = "#475569";
+                    }}
+                >
+                    ✏️
+                </button>
+
+                {/* Tombol Hapus Profil */}
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete();
+                    }}
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "8px",
+                        background: "#fef2f2",
+                        border: "1px solid #fee2e2",
+                        color: "#ef4444",
+                        cursor: "pointer",
+                        fontSize: "0.8rem",
+                        transition: "all 0.15s",
+                    }}
+                    title="Hapus Profil"
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "#ef4444";
+                        e.currentTarget.style.color = "#fff";
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "#fef2f2";
+                        e.currentTarget.style.color = "#ef4444";
+                    }}
+                >
+                    🗑️
+                </button>
             </div>
         </div>
     );
