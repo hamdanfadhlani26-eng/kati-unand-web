@@ -191,28 +191,6 @@ export default function JaringanAlumni() {
                         Temukan alumni Teknik Industri Unand yang telah berhasil membangun karier di berbagai industri terkemuka di Indonesia — siap berbagi pengalaman dan membuka peluang.
                     </p>
 
-                    <div style={{ display: "flex", gap: "0.85rem", justifyContent: "center", flexWrap: "wrap" }}>
-                        <button
-                            onClick={() => setFormOpen(true)}
-                            style={{
-                                background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
-                                color: "#fff", border: "none", borderRadius: "999px",
-                                padding: "0.85rem 2rem", fontWeight: 700, fontSize: "0.95rem",
-                                cursor: "pointer", boxShadow: "0 8px 24px rgba(124,58,237,0.4)",
-                                fontFamily: "var(--font-body), sans-serif",
-                            }}
-                        >
-                            + Daftarkan Profil Alumni Saya
-                        </button>
-                        <a href="/profil-alumni/edit" style={{
-                            background: "rgba(255,255,255,0.08)", color: "#e2e8f0",
-                            border: "1px solid rgba(255,255,255,0.2)", borderRadius: "999px",
-                            padding: "0.85rem 2rem", fontWeight: 600, fontSize: "0.95rem",
-                            textDecoration: "none",
-                        }}>
-                            ✎ Edit Profil Saya
-                        </a>
-                    </div>
 
                     {/* Stats */}
                     <div style={{ display: "flex", gap: "2rem", justifyContent: "center", marginTop: "2.5rem", flexWrap: "wrap" }}>
