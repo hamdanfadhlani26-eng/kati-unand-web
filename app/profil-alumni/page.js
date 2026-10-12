@@ -77,33 +77,6 @@ function getJenisColor(jenis) {
     return JENIS_COLORS[jenis] || "#64748b";
 }
 
-const filterInputStyle = {
-    padding: "0.65rem 1.1rem",
-    background: "#fff",
-    border: "1px solid #e2e8f0",
-    borderRadius: "999px",
-    fontSize: "0.88rem",
-    color: "#0f172a",
-    outline: "none",
-    minWidth: "220px",
-    flexGrow: 1,
-    fontFamily: "var(--font-body), sans-serif",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
-};
-
-const filterSelectStyle = {
-    padding: "0.65rem 1.1rem",
-    background: "#fff",
-    border: "1px solid #e2e8f0",
-    borderRadius: "999px",
-    fontSize: "0.88rem",
-    color: "#0f172a",
-    outline: "none",
-    fontFamily: "var(--font-body), sans-serif",
-    cursor: "pointer",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
-};
-
 const formInputStyle = {
     width: "100%",
     padding: "0.65rem 0.9rem",
@@ -470,20 +443,21 @@ export default function JaringanAlumni() {
                 <div
                     style={{
                         position: "fixed",
-                        bottom: "2rem",
-                        right: "2rem",
+                        bottom: "1.5rem",
+                        right: "1.5rem",
                         zIndex: 300,
                         background: toast.type === "error" ? "#ef4444" : "#10b981",
                         color: "#fff",
-                        padding: "0.85rem 1.4rem",
+                        padding: "0.85rem 1.25rem",
                         borderRadius: "12px",
                         boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
                         display: "flex",
                         alignItems: "center",
                         gap: "0.6rem",
                         fontWeight: 600,
-                        fontSize: "0.9rem",
+                        fontSize: "0.88rem",
                         animation: "fadeIn 0.2s ease",
+                        maxWidth: "calc(100vw - 3rem)",
                     }}
                 >
                     <span>{toast.type === "error" ? "⚠️" : "✓"}</span>
@@ -493,10 +467,11 @@ export default function JaringanAlumni() {
 
             {/* Hero Banner */}
             <div
+                className="hero-section"
                 style={{
                     background: "linear-gradient(135deg, #090d1a 0%, #17153a 50%, #0a1128 100%)",
-                    paddingTop: "5.5rem",
-                    paddingBottom: "3.5rem",
+                    paddingTop: "5rem",
+                    paddingBottom: "3rem",
                     textAlign: "center",
                     position: "relative",
                     overflow: "hidden",
@@ -527,7 +502,7 @@ export default function JaringanAlumni() {
                     }}
                 />
 
-                <div style={{ position: "relative", zIndex: 1, padding: "0 1.5rem" }}>
+                <div style={{ position: "relative", zIndex: 1, padding: "0 1rem" }}>
                     <div
                         style={{
                             display: "inline-flex",
@@ -536,23 +511,23 @@ export default function JaringanAlumni() {
                             background: "rgba(139,92,246,0.2)",
                             border: "1px solid rgba(139,92,246,0.4)",
                             borderRadius: "999px",
-                            padding: "0.35rem 1.1rem",
-                            marginBottom: "1.25rem",
+                            padding: "0.35rem 1rem",
+                            marginBottom: "1rem",
                         }}
                     >
                         <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#a78bfa", display: "inline-block" }} />
-                        <span style={{ fontSize: "0.74rem", fontWeight: 700, color: "#c4b5fd", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                        <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "#c4b5fd", letterSpacing: "0.08em", textTransform: "uppercase" }}>
                             Jaringan Alumni IKA KATI UNAND
                         </span>
                     </div>
 
                     <h1
                         style={{
-                            margin: "0 0 1rem",
-                            fontSize: "clamp(2rem,5vw,3rem)",
+                            margin: "0 0 0.85rem",
+                            fontSize: "clamp(1.75rem,5vw,2.8rem)",
                             fontWeight: 800,
                             color: "#fff",
-                            lineHeight: 1.15,
+                            lineHeight: 1.2,
                             letterSpacing: "-0.025em",
                         }}
                     >
@@ -562,23 +537,21 @@ export default function JaringanAlumni() {
                         </span>
                     </h1>
 
-                    <p style={{ margin: "0 auto 2rem", maxWidth: "620px", color: "#94a3b8", fontSize: "1rem", lineHeight: 1.7 }}>
+                    <p style={{ margin: "0 auto 1.75rem", maxWidth: "600px", color: "#94a3b8", fontSize: "0.95rem", lineHeight: 1.6 }}>
                         Jejaring resmi alumni Teknik Industri Universitas Andalas yang berkiprah di BUMN, multinasional, kementerian, akademisi, hingga wirausaha di seluruh penjuru Indonesia.
                     </p>
 
                     {/* Hero Quick Stats */}
-                    <div style={{ display: "flex", gap: "2.5rem", justifyContent: "center", marginTop: "1.5rem", flexWrap: "wrap" }}>
+                    <div className="hero-stats-wrap">
                         {[
                             { num: `${dbAlumni.length}+`, label: "Alumni Terdata" },
                             { num: `${alumniList.length}`, label: "Profil Unggulan" },
-                            { num: `${stats?.totalProvinsi || 32}+`, label: "Provinsi Domisili" },
-                            { num: `${stats?.withLinkedin || 328}+`, label: "Profil LinkedIn" },
+                            { num: `${stats?.totalProvinsi || 32}+`, label: "Provinsi" },
+                            { num: `${stats?.withLinkedin || 328}+`, label: "LinkedIn" },
                         ].map((s, i) => (
-                            <div key={i} style={{ textAlign: "center" }}>
-                                <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>{s.num}</div>
-                                <div style={{ fontSize: "0.76rem", color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", marginTop: "0.15rem" }}>
-                                    {s.label}
-                                </div>
+                            <div key={i} className="hero-stat-item">
+                                <div className="hero-stat-num">{s.num}</div>
+                                <div className="hero-stat-label">{s.label}</div>
                             </div>
                         ))}
                     </div>
@@ -596,7 +569,7 @@ export default function JaringanAlumni() {
                     boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
                 }}
             >
-                <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 1.5rem", display: "flex", gap: "0.5rem" }}>
+                <div className="tab-navigation-container">
                     {[
                         { key: "unggulan", label: "Profil Unggulan", badge: alumniList.length, icon: "✦" },
                         { key: "direktori", label: "Direktori Alumni", badge: dbAlumni.length, icon: "🗂" },
@@ -607,37 +580,12 @@ export default function JaringanAlumni() {
                             <button
                                 key={tab.key}
                                 onClick={() => setMainTab(tab.key)}
-                                style={{
-                                    padding: "1rem 1.4rem",
-                                    border: "none",
-                                    borderBottom: isActive ? "3px solid #7c3aed" : "3px solid transparent",
-                                    background: "transparent",
-                                    fontWeight: isActive ? 700 : 600,
-                                    fontSize: "0.92rem",
-                                    color: isActive ? "#7c3aed" : "#64748b",
-                                    cursor: "pointer",
-                                    fontFamily: "var(--font-body), sans-serif",
-                                    transition: "all 0.15s ease",
-                                    marginBottom: "-1px",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: "0.5rem",
-                                    whiteSpace: "nowrap",
-                                }}
+                                className={`tab-nav-btn ${isActive ? "active" : ""}`}
                             >
                                 <span>{tab.icon}</span>
                                 <span>{tab.label}</span>
                                 {tab.badge && (
-                                    <span
-                                        style={{
-                                            fontSize: "0.72rem",
-                                            padding: "0.1rem 0.5rem",
-                                            borderRadius: "999px",
-                                            background: isActive ? "#f3e8ff" : "#f1f5f9",
-                                            color: isActive ? "#7c3aed" : "#64748b",
-                                            fontWeight: 700,
-                                        }}
-                                    >
+                                    <span className={`tab-badge ${isActive ? "active" : ""}`}>
                                         {tab.badge}
                                     </span>
                                 )}
@@ -651,19 +599,19 @@ export default function JaringanAlumni() {
             {/* TAB 1: PROFIL UNGGULAN                                  */}
             {/* ======================================================== */}
             {mainTab === "unggulan" && (
-                <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "2.5rem 1.5rem 5rem" }}>
+                <div className="content-container">
                     {/* Category Filter Pills */}
-                    <div style={{ display: "flex", gap: "0.6rem", marginBottom: "2rem", borderBottom: "1px solid #e2e8f0", paddingBottom: "1rem", flexWrap: "wrap" }}>
+                    <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.75rem", borderBottom: "1px solid #e2e8f0", paddingBottom: "0.85rem", flexWrap: "wrap" }}>
                         {["Semua", "Industri", "Akademisi", "Entrepreneur"].map((cat) => (
                             <button
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
                                 style={{
-                                    padding: "0.55rem 1.25rem",
+                                    padding: "0.5rem 1.15rem",
                                     borderRadius: "999px",
                                     border: "none",
                                     fontWeight: 700,
-                                    fontSize: "0.88rem",
+                                    fontSize: "0.85rem",
                                     cursor: "pointer",
                                     fontFamily: "var(--font-body), sans-serif",
                                     transition: "all 0.15s",
@@ -678,33 +626,35 @@ export default function JaringanAlumni() {
                     </div>
 
                     {/* Search & Filters Bar */}
-                    <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: "1.75rem" }}>
+                    <div className="directory-filter-bar">
                         <input
                             type="text"
                             placeholder="🔍  Cari nama alumni unggulan..."
                             value={searchNama}
                             onChange={(e) => setSearchNama(e.target.value)}
-                            style={filterInputStyle}
+                            className="filter-input-search"
                         />
-                        <select value={filterLevel} onChange={(e) => setFilterLevel(e.target.value)} style={filterSelectStyle}>
-                            <option value="">Semua Level Jabatan</option>
-                            {LEVEL_OPTIONS.map((l) => (
-                                <option key={l} value={l}>
-                                    {l}
-                                </option>
-                            ))}
-                        </select>
-                        <select value={filterIndustri} onChange={(e) => setFilterIndustri(e.target.value)} style={filterSelectStyle}>
-                            <option value="">Semua Bidang Industri</option>
-                            {INDUSTRI_OPTIONS.map((i) => (
-                                <option key={i} value={i}>
-                                    {i}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="filter-selects-wrap">
+                            <select value={filterLevel} onChange={(e) => setFilterLevel(e.target.value)} className="filter-select-item">
+                                <option value="">Semua Level Jabatan</option>
+                                {LEVEL_OPTIONS.map((l) => (
+                                    <option key={l} value={l}>
+                                        {l}
+                                    </option>
+                                ))}
+                            </select>
+                            <select value={filterIndustri} onChange={(e) => setFilterIndustri(e.target.value)} className="filter-select-item">
+                                <option value="">Semua Bidang Industri</option>
+                                {INDUSTRI_OPTIONS.map((i) => (
+                                    <option key={i} value={i}>
+                                        {i}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
 
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem", flexWrap: "wrap", gap: "0.4rem" }}>
                         <p style={{ fontSize: "0.85rem", color: "#64748b", margin: 0 }}>
                             Menampilkan <strong>{featuredFiltered.length}</strong> profil unggulan
                         </p>
@@ -714,23 +664,23 @@ export default function JaringanAlumni() {
                     </div>
 
                     {loadingFeatured ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.5rem" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.25rem" }}>
                             {[...Array(6)].map((_, i) => (
                                 <div key={i} style={{ height: "360px", background: "#e2e8f0", borderRadius: "16px", animation: "pulse 1.5s infinite" }} />
                             ))}
                         </div>
                     ) : featuredFiltered.length === 0 ? (
-                        <div style={{ textAlign: "center", padding: "5rem 2rem", background: "#fff", borderRadius: "16px", border: "1px solid #e2e8f0" }}>
-                            <div style={{ fontSize: "3rem" }}>🔍</div>
-                            <div style={{ fontWeight: 700, fontSize: "1.1rem", color: "#1e293b", marginTop: "1rem" }}>
+                        <div style={{ textAlign: "center", padding: "4rem 1.5rem", background: "#fff", borderRadius: "16px", border: "1px solid #e2e8f0" }}>
+                            <div style={{ fontSize: "2.5rem" }}>🔍</div>
+                            <div style={{ fontWeight: 700, fontSize: "1.05rem", color: "#1e293b", marginTop: "0.75rem" }}>
                                 Tidak ada alumni yang cocok dengan pencarian
                             </div>
-                            <p style={{ fontSize: "0.88rem", color: "#64748b", marginTop: "0.35rem" }}>
+                            <p style={{ fontSize: "0.85rem", color: "#64748b", marginTop: "0.35rem" }}>
                                 Coba reset filter atau gunakan kata kunci nama lainnya.
                             </p>
                         </div>
                     ) : (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.5rem" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.25rem" }}>
                             {featuredFiltered.map((a) => (
                                 <AlumniCard key={a.id} alumni={a} onSelect={() => setSelected(a)} />
                             ))}
@@ -740,17 +690,17 @@ export default function JaringanAlumni() {
             )}
 
             {/* ======================================================== */}
-            {/* TAB 2: DIREKTORI ALUMNI (DILENGKAPI TAMBAH, EDIT, HAPUS) */}
+            {/* TAB 2: DIREKTORI ALUMNI (RESPONSIF MOBILE DENGAN CRUD)   */}
             {/* ======================================================== */}
             {mainTab === "direktori" && (
-                <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "2.5rem 1.5rem 5rem" }}>
+                <div className="content-container">
                     {/* Header + Action Button */}
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.75rem", flexWrap: "wrap", gap: "1rem" }}>
+                    <div className="directory-header-wrap">
                         <div>
-                            <h2 style={{ margin: "0 0 0.35rem", fontSize: "1.45rem", fontWeight: 800, color: "#0f172a" }}>
+                            <h2 style={{ margin: "0 0 0.35rem", fontSize: "1.4rem", fontWeight: 800, color: "#0f172a" }}>
                                 Direktori Alumni KATI UNAND
                             </h2>
-                            <p style={{ margin: 0, color: "#64748b", fontSize: "0.92rem" }}>
+                            <p style={{ margin: 0, color: "#64748b", fontSize: "0.88rem" }}>
                                 Cari, perbarui, atau tambahkan profil Anda ke jejaring alumni Teknik Industri Unand.
                             </p>
                         </div>
@@ -758,67 +708,53 @@ export default function JaringanAlumni() {
                         {/* Tombol Tambah Data Alumni */}
                         <button
                             onClick={handleOpenAdd}
-                            style={{
-                                display: "inline-flex",
-                                alignItems: "center",
-                                gap: "0.5rem",
-                                padding: "0.75rem 1.4rem",
-                                background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
-                                color: "#fff",
-                                border: "none",
-                                borderRadius: "999px",
-                                fontWeight: 700,
-                                fontSize: "0.88rem",
-                                cursor: "pointer",
-                                boxShadow: "0 4px 14px rgba(124,58,237,0.25)",
-                                transition: "all 0.15s ease",
-                            }}
-                            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-2px)")}
-                            onMouseLeave={(e) => (e.currentTarget.style.transform = "")}
+                            className="btn-add-alumni"
                         >
                             <span>+</span> Tambah Profil Saya
                         </button>
                     </div>
 
                     {/* Filter Bar */}
-                    <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
+                    <div className="directory-filter-bar">
                         <input
                             type="text"
-                            placeholder="🔍  Cari nama, institusi/perusahaan, jabatan, atau kota..."
+                            placeholder="🔍  Cari nama, kantor, posisi, atau kota..."
                             value={dbSearch}
                             onChange={(e) => setDbSearch(e.target.value)}
-                            style={{ ...filterInputStyle, minWidth: "280px" }}
+                            className="filter-input-search"
                         />
-                        <select value={dbFilterAngkatan} onChange={(e) => setDbFilterAngkatan(e.target.value)} style={filterSelectStyle}>
-                            <option value="">Semua Angkatan</option>
-                            {dbAngkatanList.map((a) => (
-                                <option key={a} value={a}>
-                                    Angkatan {a}
-                                </option>
-                            ))}
-                        </select>
-                        <select value={dbFilterJenis} onChange={(e) => setDbFilterJenis(e.target.value)} style={filterSelectStyle}>
-                            <option value="">Semua Jenis Pekerjaan</option>
-                            {dbJenisList.map((j) => (
-                                <option key={j} value={j}>
-                                    {j}
-                                </option>
-                            ))}
-                        </select>
-                        <select value={dbFilterProvinsi} onChange={(e) => setDbFilterProvinsi(e.target.value)} style={filterSelectStyle}>
-                            <option value="">Semua Provinsi</option>
-                            {dbProvinsiList.map((p) => (
-                                <option key={p} value={p}>
-                                    {p}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="filter-selects-wrap">
+                            <select value={dbFilterAngkatan} onChange={(e) => setDbFilterAngkatan(e.target.value)} className="filter-select-item">
+                                <option value="">Semua Angkatan</option>
+                                {dbAngkatanList.map((a) => (
+                                    <option key={a} value={a}>
+                                        Angkatan {a}
+                                    </option>
+                                ))}
+                            </select>
+                            <select value={dbFilterJenis} onChange={(e) => setDbFilterJenis(e.target.value)} className="filter-select-item">
+                                <option value="">Semua Jenis Pekerjaan</option>
+                                {dbJenisList.map((j) => (
+                                    <option key={j} value={j}>
+                                        {j}
+                                    </option>
+                                ))}
+                            </select>
+                            <select value={dbFilterProvinsi} onChange={(e) => setDbFilterProvinsi(e.target.value)} className="filter-select-item">
+                                <option value="">Semua Provinsi</option>
+                                {dbProvinsiList.map((p) => (
+                                    <option key={p} value={p}>
+                                        {p}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
 
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem", flexWrap: "wrap", gap: "0.5rem" }}>
                         <p style={{ fontSize: "0.85rem", color: "#64748b", margin: 0 }}>
                             Menampilkan <strong>{dbPaginated.length}</strong> dari <strong>{dbFiltered.length}</strong> alumni
-                            <span style={{ color: "#94a3b8" }}> (total database: {dbAlumni.length} alumni)</span>
+                            <span style={{ color: "#94a3b8" }}> (total: {dbAlumni.length})</span>
                         </p>
                         {(dbSearch || dbFilterAngkatan || dbFilterJenis || dbFilterProvinsi) && (
                             <button
@@ -844,18 +780,18 @@ export default function JaringanAlumni() {
                     </div>
 
                     {dbFiltered.length === 0 ? (
-                        <div style={{ textAlign: "center", padding: "5rem 2rem", background: "#fff", borderRadius: "16px", border: "1px solid #e2e8f0" }}>
-                            <div style={{ fontSize: "3rem" }}>📂</div>
-                            <div style={{ fontWeight: 700, fontSize: "1.1rem", color: "#1e293b", marginTop: "1rem" }}>
+                        <div style={{ textAlign: "center", padding: "4rem 1.5rem", background: "#fff", borderRadius: "16px", border: "1px solid #e2e8f0" }}>
+                            <div style={{ fontSize: "2.5rem" }}>📂</div>
+                            <div style={{ fontWeight: 700, fontSize: "1.05rem", color: "#1e293b", marginTop: "0.75rem" }}>
                                 Tidak ada data alumni yang sesuai
                             </div>
-                            <p style={{ fontSize: "0.88rem", color: "#64748b", marginTop: "0.35rem" }}>
+                            <p style={{ fontSize: "0.85rem", color: "#64748b", marginTop: "0.35rem" }}>
                                 Coba sesuaikan kata kunci pencarian atau gunakan tombol Tambah Profil untuk menambahkan diri Anda.
                             </p>
                         </div>
                     ) : (
                         <>
-                            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
                                 {dbPaginated.map((a, i) => (
                                     <DirectoryRow
                                         key={a.id || i}
@@ -867,17 +803,17 @@ export default function JaringanAlumni() {
                             </div>
 
                             {dbPaginated.length < dbFiltered.length && (
-                                <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
+                                <div style={{ textAlign: "center", marginTop: "2rem" }}>
                                     <button
                                         onClick={() => setDbPage((p) => p + 1)}
                                         style={{
-                                            padding: "0.8rem 2.2rem",
+                                            padding: "0.75rem 2rem",
                                             background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
                                             color: "#fff",
                                             border: "none",
                                             borderRadius: "999px",
                                             fontWeight: 700,
-                                            fontSize: "0.92rem",
+                                            fontSize: "0.9rem",
                                             cursor: "pointer",
                                             fontFamily: "var(--font-body), sans-serif",
                                             boxShadow: "0 4px 16px rgba(124,58,237,0.25)",
@@ -899,61 +835,43 @@ export default function JaringanAlumni() {
             {/* TAB 3: STATISTIK ALUMNI (DASHBOARD ANALITIK DIOPTIMASI)  */}
             {/* ======================================================== */}
             {mainTab === "statistik" && (
-                <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "2.5rem 1.5rem 5rem" }}>
-                    <div style={{ marginBottom: "2rem" }}>
-                        <h2 style={{ margin: "0 0 0.35rem", fontSize: "1.45rem", fontWeight: 800, color: "#0f172a" }}>
+                <div className="content-container">
+                    <div style={{ marginBottom: "1.75rem" }}>
+                        <h2 style={{ margin: "0 0 0.35rem", fontSize: "1.4rem", fontWeight: 800, color: "#0f172a" }}>
                             Dashboard Statistik Alumni
                         </h2>
-                        <p style={{ margin: 0, color: "#64748b", fontSize: "0.92rem" }}>
+                        <p style={{ margin: 0, color: "#64748b", fontSize: "0.88rem" }}>
                             Visualisasi distribusi sektor karier, angkatan, dan persebaran wilayah alumni Teknik Industri Unand.
                         </p>
                     </div>
 
                     {!stats ? (
-                        <div style={{ textAlign: "center", padding: "5rem 2rem", background: "#fff", borderRadius: "16px" }}>
-                            <div style={{ fontSize: "3rem" }}>📊</div>
-                            <div style={{ fontWeight: 700, marginTop: "1rem" }}>Memuat statistik...</div>
+                        <div style={{ textAlign: "center", padding: "4rem 1.5rem", background: "#fff", borderRadius: "16px" }}>
+                            <div style={{ fontSize: "2.5rem" }}>📊</div>
+                            <div style={{ fontWeight: 700, marginTop: "0.75rem" }}>Memuat statistik...</div>
                         </div>
                     ) : (
                         <>
                             {/* 4 KPI Top Cards */}
-                            <div
-                                style={{
-                                    display: "grid",
-                                    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-                                    gap: "1.25rem",
-                                    marginBottom: "2.5rem",
-                                }}
-                            >
+                            <div className="stats-kpi-grid">
                                 {[
                                     { label: "Total Alumni Terdata", value: `${stats.total}`, icon: "👥", color: "#2563eb", sub: "100% respons terverifikasi" },
                                     { label: "Memiliki Profil LinkedIn", value: `${stats.withLinkedin}`, icon: "💼", color: "#0a66c2", sub: `${((stats.withLinkedin / stats.total) * 100).toFixed(1)}% koneksi profesional` },
                                     { label: "Sektor BUMN & Swasta", value: `${(stats.byJenis.find(([j]) => j.includes("BUMN"))?.[1] || 0) + (stats.byJenis.find(([j]) => j === "Swasta Nasional")?.[1] || 0) + (stats.byJenis.find(([j]) => j === "Swasta Asing")?.[1] || 0)}`, icon: "🏢", color: "#059669", sub: "Mayoritas serapan industri" },
                                     { label: "Sebaran Wilayah", value: `${stats.totalProvinsi} Provinsi`, icon: "📍", color: "#d97706", sub: "Seluruh pelosok Indonesia" },
                                 ].map((card, idx) => (
-                                    <div
-                                        key={idx}
-                                        style={{
-                                            background: "#fff",
-                                            border: "1px solid #e2e8f0",
-                                            borderRadius: "16px",
-                                            padding: "1.4rem",
-                                            boxShadow: "0 2px 10px rgba(15,23,42,0.04)",
-                                        }}
-                                    >
+                                    <div key={idx} className="stats-kpi-card">
                                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                                            <div style={{ fontSize: "1.8rem" }}>{card.icon}</div>
-                                            <span style={{ fontSize: "0.75rem", fontWeight: 700, color: card.color, background: `${card.color}15`, padding: "0.2rem 0.6rem", borderRadius: "999px" }}>
+                                            <div style={{ fontSize: "1.6rem" }}>{card.icon}</div>
+                                            <span style={{ fontSize: "0.72rem", fontWeight: 700, color: card.color, background: `${card.color}15`, padding: "0.15rem 0.5rem", borderRadius: "999px" }}>
                                                 Stat
                                             </span>
                                         </div>
-                                        <div style={{ fontSize: "1.9rem", fontWeight: 800, color: "#0f172a", marginTop: "0.75rem" }}>
-                                            {card.value}
-                                        </div>
-                                        <div style={{ fontSize: "0.84rem", fontWeight: 600, color: "#475569", marginTop: "0.2rem" }}>
+                                        <div className="stats-kpi-value">{card.value}</div>
+                                        <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "#475569", marginTop: "0.2rem" }}>
                                             {card.label}
                                         </div>
-                                        <div style={{ fontSize: "0.74rem", color: "#94a3b8", marginTop: "0.35rem" }}>
+                                        <div style={{ fontSize: "0.72rem", color: "#94a3b8", marginTop: "0.25rem" }}>
                                             {card.sub}
                                         </div>
                                     </div>
@@ -966,48 +884,40 @@ export default function JaringanAlumni() {
                                     background: "#fff",
                                     border: "1px solid #e2e8f0",
                                     borderRadius: "16px",
-                                    padding: "2rem",
+                                    padding: "1.5rem",
                                     boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
-                                    marginBottom: "2rem",
+                                    marginBottom: "1.75rem",
                                 }}
                             >
-                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "1.75rem", flexWrap: "wrap", gap: "0.5rem" }}>
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "1.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                                     <div>
-                                        <h3 style={{ margin: "0 0 0.25rem", fontSize: "1.1rem", fontWeight: 800, color: "#0f172a" }}>
+                                        <h3 style={{ margin: "0 0 0.25rem", fontSize: "1.05rem", fontWeight: 800, color: "#0f172a" }}>
                                             Distribusi Jenis Pekerjaan Alumni
                                         </h3>
-                                        <p style={{ margin: 0, fontSize: "0.82rem", color: "#64748b" }}>
+                                        <p style={{ margin: 0, fontSize: "0.8rem", color: "#64748b" }}>
                                             Perbandingan persentase sektor pekerjaan berdasarkan survei database alumni
                                         </p>
                                     </div>
-                                    <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
+                                    <span style={{ fontSize: "0.78rem", color: "#94a3b8" }}>
                                         Total: {stats.total} Responden
                                     </span>
                                 </div>
 
-                                <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}>
                                     {stats.byJenis.map(([jenis, count]) => {
                                         const pct = ((count / stats.total) * 100).toFixed(1);
                                         const color = getJenisColor(jenis);
                                         return (
-                                            <div key={jenis} style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
-                                                <div
-                                                    style={{
-                                                        width: "240px",
-                                                        fontSize: "0.84rem",
-                                                        fontWeight: 600,
-                                                        color: "#334155",
-                                                        flexShrink: 0,
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        gap: "0.5rem",
-                                                    }}
-                                                >
-                                                    <span style={{ width: "10px", height: "10px", borderRadius: "3px", background: color, display: "inline-block", flexShrink: 0 }} />
-                                                    <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{jenis}</span>
+                                            <div key={jenis} className="jenis-progress-item">
+                                                <div className="jenis-label-wrap">
+                                                    <span style={{ width: "9px", height: "9px", borderRadius: "3px", background: color, display: "inline-block", flexShrink: 0 }} />
+                                                    <span className="jenis-name">{jenis}</span>
+                                                    <span className="jenis-count-mobile">
+                                                        {count} ({pct}%)
+                                                    </span>
                                                 </div>
 
-                                                <div style={{ flex: 1, minWidth: "150px", background: "#f1f5f9", borderRadius: "999px", height: "24px", overflow: "hidden", position: "relative" }}>
+                                                <div className="jenis-bar-track">
                                                     <div
                                                         style={{
                                                             width: `${pct}%`,
@@ -1019,8 +929,8 @@ export default function JaringanAlumni() {
                                                     />
                                                 </div>
 
-                                                <div style={{ width: "95px", textAlign: "right", fontSize: "0.86rem", fontWeight: 700, color: "#0f172a", flexShrink: 0 }}>
-                                                    {count} <span style={{ color: "#94a3b8", fontWeight: 400, fontSize: "0.78rem" }}>({pct}%)</span>
+                                                <div className="jenis-count-desktop">
+                                                    {count} <span style={{ color: "#94a3b8", fontWeight: 400, fontSize: "0.76rem" }}>({pct}%)</span>
                                                 </div>
                                             </div>
                                         );
@@ -1028,24 +938,24 @@ export default function JaringanAlumni() {
                                 </div>
                             </div>
 
-                            {/* Section 2: Bar Chart Distribusi per Angkatan (DIPERBAIKI AGAR TIDAK KEPOTONG) */}
+                            {/* Section 2: Bar Chart Distribusi per Angkatan */}
                             <div
                                 style={{
                                     background: "#fff",
                                     border: "1px solid #e2e8f0",
                                     borderRadius: "16px",
-                                    padding: "2rem",
+                                    padding: "1.5rem",
                                     boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
-                                    marginBottom: "2rem",
+                                    marginBottom: "1.75rem",
                                     overflow: "hidden",
                                 }}
                             >
-                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "1.75rem", flexWrap: "wrap", gap: "0.5rem" }}>
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "1.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
                                     <div>
-                                        <h3 style={{ margin: "0 0 0.25rem", fontSize: "1.1rem", fontWeight: 800, color: "#0f172a" }}>
+                                        <h3 style={{ margin: "0 0 0.25rem", fontSize: "1.05rem", fontWeight: 800, color: "#0f172a" }}>
                                             Alumni yang Telah Terdata per Angkatan
                                         </h3>
-                                        <p style={{ margin: 0, fontSize: "0.82rem", color: "#64748b" }}>
+                                        <p style={{ margin: 0, fontSize: "0.8rem", color: "#64748b" }}>
                                             Frekuensi responden alumni mulai dari angkatan awal hingga angkatan terbaru
                                         </p>
                                     </div>
@@ -1054,23 +964,22 @@ export default function JaringanAlumni() {
                                     </span>
                                 </div>
 
-                                {/* Container Bar Chart: Height dan Padding diperluas agar angka atas & label bawah tidak terpotong */}
                                 <div
                                     className="custom-chart-scroll"
                                     style={{
                                         display: "flex",
                                         alignItems: "flex-end",
-                                        gap: "10px",
+                                        gap: "8px",
                                         height: "270px",
                                         overflowX: "auto",
-                                        paddingBottom: "3rem",
+                                        paddingBottom: "2.75rem",
                                         paddingTop: "2.5rem",
-                                        paddingLeft: "0.75rem",
-                                        paddingRight: "2rem",
+                                        paddingLeft: "0.5rem",
+                                        paddingRight: "1.5rem",
+                                        WebkitOverflowScrolling: "touch",
                                     }}
                                 >
                                     {stats.byAngkatan.map(([angkatan, count]) => {
-                                        // Skala diperbaiki: max height 115px sehingga angka di atas punya headroom 60px+
                                         const heightPx = Math.max((count / stats.maxAngkatanCount) * 115, 8);
                                         const isPeak = count >= 60;
                                         return (
@@ -1082,7 +991,7 @@ export default function JaringanAlumni() {
                                                     alignItems: "center",
                                                     gap: "6px",
                                                     flexShrink: 0,
-                                                    minWidth: "30px",
+                                                    minWidth: "28px",
                                                 }}
                                                 title={`Angkatan ${angkatan}: ${count} alumni`}
                                             >
@@ -1101,12 +1010,12 @@ export default function JaringanAlumni() {
                                                 {/* Batang grafik */}
                                                 <div
                                                     style={{
-                                                        width: "24px",
+                                                        width: "22px",
                                                         height: `${heightPx}px`,
                                                         background: isPeak
                                                             ? "linear-gradient(180deg, #7c3aed, #4f46e5)"
                                                             : "#93c5fd",
-                                                        borderRadius: "5px 5px 0 0",
+                                                        borderRadius: "4px 4px 0 0",
                                                         transition: "height 0.4s ease, transform 0.15s ease",
                                                         cursor: "pointer",
                                                     }}
@@ -1140,23 +1049,23 @@ export default function JaringanAlumni() {
                             </div>
 
                             {/* Section 3: Dua Kolom (Top Provinsi & Adopsi Digital) */}
-                            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.5rem" }}>
+                            <div className="stats-bottom-grid">
                                 {/* Top Provinsi */}
                                 <div
                                     style={{
                                         background: "#fff",
                                         border: "1px solid #e2e8f0",
                                         borderRadius: "16px",
-                                        padding: "1.75rem",
+                                        padding: "1.5rem",
                                         boxShadow: "0 2px 10px rgba(15,23,42,0.04)",
                                     }}
                                 >
                                     <h3 style={{ margin: "0 0 1.25rem", fontSize: "1.05rem", fontWeight: 800, color: "#0f172a" }}>
                                         Top 10 Provinsi Domisili Kerja
                                     </h3>
-                                    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "0.7rem" }}>
                                         {stats.byProvinsi.map(([prov, count], i) => (
-                                            <div key={prov} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                                            <div key={prov} style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
                                                 <div
                                                     style={{
                                                         width: "22px",
@@ -1174,12 +1083,12 @@ export default function JaringanAlumni() {
                                                 >
                                                     {i + 1}
                                                 </div>
-                                                <div style={{ flex: 1, fontSize: "0.85rem", color: "#334155", fontWeight: 600 }}>
+                                                <div style={{ flex: 1, fontSize: "0.82rem", color: "#334155", fontWeight: 600, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                                                     {prov}
                                                 </div>
-                                                <div style={{ fontSize: "0.85rem", fontWeight: 800, color: "#0f172a" }}>
+                                                <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0f172a", flexShrink: 0 }}>
                                                     {count}{" "}
-                                                    <span style={{ fontSize: "0.75rem", color: "#94a3b8", fontWeight: 400 }}>
+                                                    <span style={{ fontSize: "0.72rem", color: "#94a3b8", fontWeight: 400 }}>
                                                         ({((count / stats.total) * 100).toFixed(1)}%)
                                                     </span>
                                                 </div>
@@ -1194,7 +1103,7 @@ export default function JaringanAlumni() {
                                         background: "#fff",
                                         border: "1px solid #e2e8f0",
                                         borderRadius: "16px",
-                                        padding: "1.75rem",
+                                        padding: "1.5rem",
                                         boxShadow: "0 2px 10px rgba(15,23,42,0.04)",
                                         display: "flex",
                                         flexDirection: "column",
@@ -1205,16 +1114,16 @@ export default function JaringanAlumni() {
                                         <h3 style={{ margin: "0 0 0.5rem", fontSize: "1.05rem", fontWeight: 800, color: "#0f172a" }}>
                                             Konektivitas Profesional (LinkedIn)
                                         </h3>
-                                        <p style={{ margin: "0 0 1.5rem", fontSize: "0.82rem", color: "#64748b" }}>
+                                        <p style={{ margin: "0 0 1.25rem", fontSize: "0.8rem", color: "#64748b" }}>
                                             Tingkat keterhubungan alumni di platform jaringan karir profesional LinkedIn.
                                         </p>
 
                                         <div style={{ marginBottom: "1.25rem" }}>
                                             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.4rem" }}>
-                                                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#0a66c2" }}>
+                                                <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "#0a66c2" }}>
                                                     Terdaftar LinkedIn ({stats.withLinkedin})
                                                 </span>
-                                                <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "#0a66c2" }}>
+                                                <span style={{ fontSize: "0.82rem", fontWeight: 800, color: "#0a66c2" }}>
                                                     {((stats.withLinkedin / stats.total) * 100).toFixed(1)}%
                                                 </span>
                                             </div>
@@ -1232,10 +1141,10 @@ export default function JaringanAlumni() {
 
                                         <div>
                                             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.4rem" }}>
-                                                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#64748b" }}>
+                                                <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "#64748b" }}>
                                                     Belum Menyertakan ({stats.total - stats.withLinkedin})
                                                 </span>
-                                                <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "#64748b" }}>
+                                                <span style={{ fontSize: "0.82rem", fontWeight: 800, color: "#64748b" }}>
                                                     {(((stats.total - stats.withLinkedin) / stats.total) * 100).toFixed(1)}%
                                                 </span>
                                             </div>
@@ -1255,16 +1164,16 @@ export default function JaringanAlumni() {
                                     <div
                                         style={{
                                             marginTop: "1.5rem",
-                                            padding: "1rem",
+                                            padding: "0.9rem",
                                             background: "#f0fdf4",
                                             border: "1px solid #bbf7d0",
                                             borderRadius: "12px",
                                         }}
                                     >
-                                        <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#166534", marginBottom: "0.2rem" }}>
+                                        <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#166534", marginBottom: "0.15rem" }}>
                                             💡 Jaga Keterhubungan
                                         </div>
-                                        <div style={{ fontSize: "0.78rem", color: "#15803d", lineHeight: 1.5 }}>
+                                        <div style={{ fontSize: "0.76rem", color: "#15803d", lineHeight: 1.5 }}>
                                             Kunjungi tab Direktori Alumni untuk menemukan dan terhubung langsung dengan rekan alumni melalui LinkedIn.
                                         </div>
                                     </div>
@@ -1344,14 +1253,14 @@ export default function JaringanAlumni() {
                                 ✕
                             </button>
                         </div>
-                        <div style={{ padding: "1.75rem" }}>
+                        <div style={{ padding: "1.5rem" }}>
                             {selected.level && (
                                 <span
                                     style={{
                                         display: "inline-block",
                                         padding: "0.22rem 0.75rem",
                                         borderRadius: "999px",
-                                        fontSize: "0.74rem",
+                                        fontSize: "0.72rem",
                                         fontWeight: 700,
                                         background: getLevelStyle(selected.level).bg,
                                         color: getLevelStyle(selected.level).text,
@@ -1362,27 +1271,27 @@ export default function JaringanAlumni() {
                                     {selected.level}
                                 </span>
                             )}
-                            <h2 style={{ margin: "0 0 0.25rem", fontSize: "1.35rem", fontWeight: 800, color: "#0f172a" }}>
+                            <h2 style={{ margin: "0 0 0.25rem", fontSize: "1.3rem", fontWeight: 800, color: "#0f172a" }}>
                                 {selected.nama}
                             </h2>
-                            <p style={{ margin: "0 0 0.15rem", color: "#7c3aed", fontWeight: 700, fontSize: "0.95rem" }}>
+                            <p style={{ margin: "0 0 0.15rem", color: "#7c3aed", fontWeight: 700, fontSize: "0.92rem" }}>
                                 {selected.jabatan}
                             </p>
-                            <p style={{ margin: "0 0 1rem", color: "#64748b", fontSize: "0.88rem" }}>
+                            <p style={{ margin: "0 0 1rem", color: "#64748b", fontSize: "0.85rem" }}>
                                 {selected.tempat_kerja}
                                 {selected.kota ? ` · ${selected.kota}` : ""}
                             </p>
                             {selected.angkatan && (
-                                <div style={{ fontSize: "0.8rem", color: "#94a3b8", marginBottom: "0.75rem" }}>
+                                <div style={{ fontSize: "0.78rem", color: "#94a3b8", marginBottom: "0.75rem" }}>
                                     🎓 Angkatan {selected.angkatan}
                                 </div>
                             )}
                             {selected.deskripsi && (
-                                <p style={{ fontSize: "0.88rem", color: "#475569", lineHeight: 1.6, marginTop: "0.5rem" }}>
+                                <p style={{ fontSize: "0.85rem", color: "#475569", lineHeight: 1.6, marginTop: "0.5rem" }}>
                                     {selected.deskripsi}
                                 </p>
                             )}
-                            <div style={{ display: "flex", gap: "0.6rem", marginTop: "1.5rem" }}>
+                            <div style={{ display: "flex", gap: "0.6rem", marginTop: "1.25rem" }}>
                                 {selected.wa_number && (
                                     <a
                                         href={`https://wa.me/${selected.wa_number}`}
@@ -1418,7 +1327,7 @@ export default function JaringanAlumni() {
                     style={{
                         position: "fixed",
                         inset: 0,
-                        background: "rgba(15,23,42,0.6)",
+                        background: "rgba(15,23,42,0.65)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -1429,24 +1338,14 @@ export default function JaringanAlumni() {
                 >
                     <div
                         onClick={(e) => e.stopPropagation()}
-                        style={{
-                            background: "#fff",
-                            borderRadius: "20px",
-                            maxWidth: "540px",
-                            width: "100%",
-                            maxHeight: "92vh",
-                            overflowY: "auto",
-                            boxShadow: "0 24px 64px rgba(0,0,0,0.25)",
-                            padding: "2rem",
-                            position: "relative",
-                        }}
+                        className="modal-content-box"
                     >
                         <button
                             onClick={() => setModalMode(null)}
                             style={{
                                 position: "absolute",
-                                top: "1.25rem",
-                                right: "1.25rem",
+                                top: "1.2rem",
+                                right: "1.2rem",
                                 background: "#f1f5f9",
                                 border: "none",
                                 borderRadius: "50%",
@@ -1461,11 +1360,11 @@ export default function JaringanAlumni() {
                             ✕
                         </button>
 
-                        <div style={{ marginBottom: "1.5rem" }}>
-                            <h2 style={{ margin: "0 0 0.3rem", fontSize: "1.3rem", fontWeight: 800, color: "#0f172a" }}>
+                        <div style={{ marginBottom: "1.25rem" }}>
+                            <h2 style={{ margin: "0 0 0.25rem", fontSize: "1.25rem", fontWeight: 800, color: "#0f172a" }}>
                                 {modalMode === "add" ? "Tambah Profil Saya ke Direktori" : "Edit Profil Alumni"}
                             </h2>
-                            <p style={{ margin: 0, fontSize: "0.85rem", color: "#64748b" }}>
+                            <p style={{ margin: 0, fontSize: "0.82rem", color: "#64748b" }}>
                                 {modalMode === "add"
                                     ? "Lengkapi informasi karier Anda untuk bergabung di direktori resmi alumni Teknik Industri Unand."
                                     : "Perbarui informasi pekerjaan, domisili, atau akun LinkedIn Anda."}
@@ -1481,7 +1380,7 @@ export default function JaringanAlumni() {
                                     borderRadius: "10px",
                                     color: "#b91c1c",
                                     fontSize: "0.85rem",
-                                    marginBottom: "1.25rem",
+                                    marginBottom: "1rem",
                                     fontWeight: 600,
                                 }}
                             >
@@ -1489,8 +1388,8 @@ export default function JaringanAlumni() {
                             </div>
                         )}
 
-                        <form onSubmit={handleFormSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                            <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "0.75rem" }}>
+                        <form onSubmit={handleFormSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+                            <div className="modal-grid-2">
                                 <div>
                                     <label style={formLabelStyle}>Nama Lengkap *</label>
                                     <input
@@ -1530,7 +1429,7 @@ export default function JaringanAlumni() {
                                 </select>
                             </div>
 
-                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+                            <div className="modal-grid-2">
                                 <div>
                                     <label style={formLabelStyle}>Nama Perusahaan / Institusi</label>
                                     <input
@@ -1564,7 +1463,7 @@ export default function JaringanAlumni() {
                                 />
                             </div>
 
-                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+                            <div className="modal-grid-2">
                                 <div>
                                     <label style={formLabelStyle}>Provinsi Domisili</label>
                                     <input
@@ -1598,7 +1497,7 @@ export default function JaringanAlumni() {
                                 />
                             </div>
 
-                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+                            <div className="modal-grid-2">
                                 <div>
                                     <label style={formLabelStyle}>Link Instagram (Opsional)</label>
                                     <input
@@ -1621,13 +1520,13 @@ export default function JaringanAlumni() {
                                 </div>
                             </div>
 
-                            <div style={{ display: "flex", gap: "0.75rem", marginTop: "1rem" }}>
+                            <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.75rem" }}>
                                 <button
                                     type="button"
                                     onClick={() => setModalMode(null)}
                                     style={{
                                         flex: 1,
-                                        padding: "0.8rem",
+                                        padding: "0.75rem",
                                         background: "#f1f5f9",
                                         border: "none",
                                         borderRadius: "10px",
@@ -1643,7 +1542,7 @@ export default function JaringanAlumni() {
                                     disabled={isSubmitting}
                                     style={{
                                         flex: 2,
-                                        padding: "0.8rem",
+                                        padding: "0.75rem",
                                         background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
                                         border: "none",
                                         borderRadius: "10px",
@@ -1672,7 +1571,7 @@ export default function JaringanAlumni() {
                     style={{
                         position: "fixed",
                         inset: 0,
-                        background: "rgba(15,23,42,0.6)",
+                        background: "rgba(15,23,42,0.65)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -1685,19 +1584,19 @@ export default function JaringanAlumni() {
                         onClick={(e) => e.stopPropagation()}
                         style={{
                             background: "#fff",
-                            borderRadius: "20px",
-                            maxWidth: "420px",
+                            borderRadius: "18px",
+                            maxWidth: "400px",
                             width: "100%",
-                            padding: "2rem",
+                            padding: "1.75rem",
                             textAlign: "center",
                             boxShadow: "0 24px 64px rgba(0,0,0,0.25)",
                         }}
                     >
-                        <div style={{ fontSize: "2.8rem", marginBottom: "0.75rem" }}>🗑️</div>
-                        <h3 style={{ margin: "0 0 0.5rem", fontSize: "1.2rem", fontWeight: 800, color: "#0f172a" }}>
+                        <div style={{ fontSize: "2.5rem", marginBottom: "0.6rem" }}>🗑️</div>
+                        <h3 style={{ margin: "0 0 0.4rem", fontSize: "1.15rem", fontWeight: 800, color: "#0f172a" }}>
                             Hapus Profil Alumni?
                         </h3>
-                        <p style={{ margin: "0 0 1.5rem", fontSize: "0.88rem", color: "#64748b", lineHeight: 1.5 }}>
+                        <p style={{ margin: "0 0 1.25rem", fontSize: "0.85rem", color: "#64748b", lineHeight: 1.5 }}>
                             Apakah Anda yakin ingin menghapus data profil untuk{" "}
                             <strong style={{ color: "#0f172a" }}>{deleteTarget.nama_lengkap}</strong>{" "}
                             {deleteTarget.angkatan ? `(Angkatan ${deleteTarget.angkatan})` : ""}?
@@ -1741,7 +1640,375 @@ export default function JaringanAlumni() {
                 </div>
             )}
 
+            {/* Global & Responsive CSS Styles */}
             <style jsx global>{`
+                /* Main Container */
+                .content-container {
+                    max-width: 1100px;
+                    margin: 0 auto;
+                    padding: 2.5rem 1.5rem 5rem;
+                }
+
+                /* Hero Stats */
+                .hero-stats-wrap {
+                    display: flex;
+                    gap: 2.5rem;
+                    justify-content: center;
+                    margin-top: 1.5rem;
+                    flex-wrap: wrap;
+                }
+                .hero-stat-item {
+                    text-align: center;
+                }
+                .hero-stat-num {
+                    font-size: 1.75rem;
+                    font-weight: 800;
+                    color: #fff;
+                    letter-spacing: -0.02em;
+                }
+                .hero-stat-label {
+                    font-size: 0.74rem;
+                    color: #94a3b8;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                    margin-top: 0.15rem;
+                }
+
+                /* Sticky Tab Nav */
+                .tab-navigation-container {
+                    max-width: 1100px;
+                    margin: 0 auto;
+                    padding: 0 1.5rem;
+                    display: flex;
+                    gap: 0.5rem;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                    scrollbar-width: none;
+                }
+                .tab-navigation-container::-webkit-scrollbar {
+                    display: none;
+                }
+                .tab-nav-btn {
+                    padding: 0.95rem 1.4rem;
+                    border: none;
+                    border-bottom: 3px solid transparent;
+                    background: transparent;
+                    font-weight: 600;
+                    font-size: 0.92rem;
+                    color: #64748b;
+                    cursor: pointer;
+                    font-family: var(--font-body), sans-serif;
+                    transition: all 0.15s ease;
+                    margin-bottom: -1px;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    white-space: nowrap;
+                    flex-shrink: 0;
+                }
+                .tab-nav-btn.active {
+                    border-bottom-color: #7c3aed;
+                    color: #7c3aed;
+                    font-weight: 700;
+                }
+                .tab-badge {
+                    font-size: 0.72rem;
+                    padding: 0.1rem 0.5rem;
+                    border-radius: 999px;
+                    background: #f1f5f9;
+                    color: #64748b;
+                    font-weight: 700;
+                }
+                .tab-badge.active {
+                    background: #f3e8ff;
+                    color: #7c3aed;
+                }
+
+                /* Header Direktori */
+                .directory-header-wrap {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 1.5rem;
+                    flex-wrap: wrap;
+                    gap: 1rem;
+                }
+                .btn-add-alumni {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.75rem 1.35rem;
+                    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+                    color: #fff;
+                    border: none;
+                    border-radius: 999px;
+                    font-weight: 700;
+                    font-size: 0.88rem;
+                    cursor: pointer;
+                    box-shadow: 0 4px 14px rgba(124,58,237,0.25);
+                    transition: all 0.15s ease;
+                    white-space: nowrap;
+                }
+
+                /* Filter Bar */
+                .directory-filter-bar {
+                    display: flex;
+                    gap: 0.75rem;
+                    flex-wrap: wrap;
+                    margin-bottom: 1.25rem;
+                }
+                .filter-input-search {
+                    padding: 0.65rem 1.1rem;
+                    background: #fff;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 999px;
+                    fontSize: 0.88rem;
+                    color: #0f172a;
+                    outline: none;
+                    min-width: 260px;
+                    flex-grow: 1;
+                    font-family: var(--font-body), sans-serif;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+                }
+                .filter-selects-wrap {
+                    display: flex;
+                    gap: 0.6rem;
+                    flex-wrap: wrap;
+                }
+                .filter-select-item {
+                    padding: 0.65rem 1rem;
+                    background: #fff;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 999px;
+                    font-size: 0.85rem;
+                    color: #0f172a;
+                    outline: none;
+                    font-family: var(--font-body), sans-serif;
+                    cursor: pointer;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+                }
+
+                /* Directory Row Card (Modern & Fully Responsive) */
+                .directory-row-card {
+                    background: #fff;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 14px;
+                    padding: 1rem 1.25rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.65rem;
+                    transition: box-shadow 0.15s, border-color 0.15s;
+                }
+                .directory-row-card:hover {
+                    box-shadow: 0 4px 16px rgba(15,23,42,0.06);
+                    border-color: #cbd5e1;
+                }
+                .directory-row-main {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 0.85rem;
+                    width: 100%;
+                }
+                .directory-row-info {
+                    flex: 1;
+                    min-width: 0;
+                }
+                .directory-row-name {
+                    font-weight: 700;
+                    font-size: 0.95rem;
+                    color: #0f172a;
+                    line-height: 1.35;
+                    word-break: break-word;
+                }
+                .directory-row-role {
+                    font-size: 0.82rem;
+                    color: #64748b;
+                    line-height: 1.4;
+                    margin-top: 0.2rem;
+                    word-break: break-word;
+                }
+                .directory-row-location {
+                    font-size: 0.76rem;
+                    color: #94a3b8;
+                    margin-top: 0.25rem;
+                }
+                .directory-row-actions {
+                    display: flex;
+                    gap: 0.4rem;
+                    flex-shrink: 0;
+                    align-items: center;
+                }
+                .directory-action-btn {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 8px;
+                    border: 1px solid #e2e8f0;
+                    background: #f8fafc;
+                    color: #475569;
+                    cursor: pointer;
+                    font-size: 0.85rem;
+                    text-decoration: none;
+                    transition: all 0.15s;
+                    flex-shrink: 0;
+                }
+                .directory-action-btn:hover {
+                    background: #f1f5f9;
+                }
+                .directory-action-btn.edit-btn:hover {
+                    background: #7c3aed;
+                    color: #fff;
+                    border-color: #7c3aed;
+                }
+                .directory-action-btn.delete-btn:hover {
+                    background: #ef4444;
+                    color: #fff;
+                    border-color: #ef4444;
+                }
+                .directory-action-btn.linkedin-btn {
+                    background: rgba(10,102,194,0.1);
+                    border-color: rgba(10,102,194,0.3);
+                    color: #0a66c2;
+                    font-weight: 800;
+                    font-size: 0.75rem;
+                }
+                .directory-action-btn.linkedin-btn:hover {
+                    background: #0a66c2;
+                    color: #fff;
+                }
+                .directory-row-badges {
+                    display: flex;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    gap: 0.45rem;
+                    padding-top: 0.5rem;
+                    border-top: 1px solid #f8fafc;
+                }
+                .badge-angkatan {
+                    font-size: 0.72rem;
+                    font-weight: 700;
+                    color: #475569;
+                    background: #f8faff;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 999px;
+                    padding: 0.2rem 0.65rem;
+                    white-space: nowrap;
+                }
+                .badge-jenis {
+                    font-size: 0.72rem;
+                    font-weight: 700;
+                    border: 1px solid;
+                    border-radius: 999px;
+                    padding: 0.2rem 0.7rem;
+                    white-space: nowrap;
+                    max-width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                .badge-bidang {
+                    font-size: 0.72rem;
+                    color: #64748b;
+                    background: #f1f5f9;
+                    border-radius: 999px;
+                    padding: 0.2rem 0.65rem;
+                    white-space: nowrap;
+                }
+
+                /* Stats Dashboard Components */
+                .stats-kpi-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                    gap: 1.25rem;
+                    margin-bottom: 2rem;
+                }
+                .stats-kpi-card {
+                    background: #fff;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 16px;
+                    padding: 1.4rem;
+                    box-shadow: 0 2px 10px rgba(15,23,42,0.04);
+                }
+                .stats-kpi-value {
+                    font-size: 1.85rem;
+                    font-weight: 800;
+                    color: #0f172a;
+                    margin-top: 0.6rem;
+                }
+                .stats-bottom-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                    gap: 1.5rem;
+                }
+
+                /* Jenis Pekerjaan Progress Item */
+                .jenis-progress-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    width: 100%;
+                }
+                .jenis-label-wrap {
+                    width: 240px;
+                    font-size: 0.84rem;
+                    font-weight: 600;
+                    color: #334155;
+                    flex-shrink: 0;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+                .jenis-name {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+                .jenis-count-mobile {
+                    display: none;
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    color: #0f172a;
+                    margin-left: auto;
+                }
+                .jenis-bar-track {
+                    flex: 1;
+                    min-width: 120px;
+                    background: #f1f5f9;
+                    border-radius: 999px;
+                    height: 22px;
+                    overflow: hidden;
+                    position: relative;
+                }
+                .jenis-count-desktop {
+                    width: 95px;
+                    text-align: right;
+                    font-size: 0.85rem;
+                    font-weight: 700;
+                    color: #0f172a;
+                    flex-shrink: 0;
+                }
+
+                /* Modal Styling */
+                .modal-content-box {
+                    background: #fff;
+                    border-radius: 20px;
+                    max-width: 540px;
+                    width: 100%;
+                    max-height: 92vh;
+                    overflow-y: auto;
+                    box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+                    padding: 2rem;
+                    position: relative;
+                }
+                .modal-grid-2 {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 0.75rem;
+                }
+
+                /* Custom Chart Scrollbar */
                 .custom-chart-scroll::-webkit-scrollbar {
                     height: 6px;
                 }
@@ -1756,6 +2023,134 @@ export default function JaringanAlumni() {
                 .custom-chart-scroll::-webkit-scrollbar-thumb:hover {
                     background: #94a3b8;
                 }
+
+                /* ─────────────────────────────────────────────────────────────
+                   MOBILE RESPONSIVE BREAKPOINT (< 768px)
+                   ───────────────────────────────────────────────────────────── */
+                @media (max-width: 767px) {
+                    .content-container {
+                        padding: 1.5rem 0.85rem 4rem;
+                    }
+
+                    .hero-section {
+                        padding-top: 4.25rem !important;
+                        padding-bottom: 2.25rem !important;
+                    }
+                    .hero-stats-wrap {
+                        display: grid !important;
+                        grid-template-columns: repeat(2, 1fr) !important;
+                        gap: 1rem !important;
+                        max-width: 280px;
+                        margin-left: auto;
+                        margin-right: auto;
+                    }
+                    .hero-stat-num {
+                        font-size: 1.45rem !important;
+                    }
+
+                    .tab-navigation-container {
+                        padding: 0 0.85rem !important;
+                    }
+                    .tab-nav-btn {
+                        padding: 0.85rem 1rem !important;
+                        font-size: 0.85rem !important;
+                    }
+
+                    .directory-header-wrap {
+                        flex-direction: column !important;
+                        align-items: stretch !important;
+                        gap: 0.85rem !important;
+                    }
+                    .btn-add-alumni {
+                        width: 100% !important;
+                        justify-content: center !important;
+                    }
+
+                    .directory-filter-bar {
+                        flex-direction: column !important;
+                        gap: 0.5rem !important;
+                    }
+                    .filter-input-search {
+                        width: 100% !important;
+                        min-width: 100% !important;
+                        border-radius: 12px !important;
+                    }
+                    .filter-selects-wrap {
+                        display: flex !important;
+                        flex-direction: column !important;
+                        gap: 0.5rem !important;
+                        width: 100% !important;
+                    }
+                    .filter-select-item {
+                        width: 100% !important;
+                        border-radius: 12px !important;
+                    }
+
+                    /* Directory Row Mobile Layout: */
+                    .directory-row-card {
+                        padding: 0.85rem 1rem !important;
+                        gap: 0.6rem !important;
+                    }
+                    .directory-row-badges {
+                        margin-left: 0 !important;
+                        padding-top: 0.5rem !important;
+                    }
+
+                    /* Stats on Mobile */
+                    .stats-kpi-grid {
+                        grid-template-columns: repeat(2, 1fr) !important;
+                        gap: 0.75rem !important;
+                    }
+                    .stats-kpi-card {
+                        padding: 1rem !important;
+                        border-radius: 12px !important;
+                    }
+                    .stats-kpi-value {
+                        font-size: 1.45rem !important;
+                        margin-top: 0.4rem !important;
+                    }
+
+                    /* Jenis Pekerjaan Mobile: Stack label di atas bar */
+                    .jenis-progress-item {
+                        flex-direction: column !important;
+                        align-items: stretch !important;
+                        gap: 0.35rem !important;
+                    }
+                    .jenis-label-wrap {
+                        width: 100% !important;
+                    }
+                    .jenis-count-mobile {
+                        display: inline-block !important;
+                    }
+                    .jenis-count-desktop {
+                        display: none !important;
+                    }
+                    .jenis-bar-track {
+                        width: 100% !important;
+                        height: 18px !important;
+                    }
+
+                    .stats-bottom-grid {
+                        grid-template-columns: 1fr !important;
+                    }
+
+                    /* Modal Mobile */
+                    .modal-content-box {
+                        padding: 1.25rem !important;
+                        border-radius: 16px !important;
+                    }
+                    .modal-grid-2 {
+                        grid-template-columns: 1fr !important;
+                        gap: 0.85rem !important;
+                    }
+                }
+
+                @media (min-width: 768px) {
+                    .directory-row-badges {
+                        margin-left: 48px;
+                    }
+                }
+
                 @keyframes fadeIn {
                     from { opacity: 0; transform: translateY(10px); }
                     to { opacity: 1; transform: translateY(0); }
@@ -1923,89 +2318,99 @@ function DirectoryRow({ alumni, onEdit, onDelete }) {
     const hasLinkedIn = alumni.linkedin_url && (alumni.linkedin_url.includes("linkedin.com") || alumni.linkedin_url.includes("http"));
 
     return (
-        <div
-            style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "1rem",
-                background: "#fff",
-                border: "1px solid #e2e8f0",
-                borderRadius: "12px",
-                padding: "0.9rem 1.25rem",
-                transition: "box-shadow 0.15s, border-color 0.15s",
-            }}
-            onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 4px 16px rgba(15,23,42,0.06)";
-                e.currentTarget.style.borderColor = "#cbd5e1";
-            }}
-            onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.borderColor = "#e2e8f0";
-            }}
-        >
-            {/* Avatar Initial */}
-            <div
-                style={{
-                    width: "38px",
-                    height: "38px",
-                    borderRadius: "50%",
-                    background: `${jenisColor}18`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                }}
-            >
-                <span style={{ fontSize: "0.9rem", fontWeight: 800, color: jenisColor }}>
-                    {alumni.nama_lengkap?.charAt(0)?.toUpperCase() || "?"}
-                </span>
-            </div>
-
-            {/* Nama & Posisi */}
-            <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 700, fontSize: "0.92rem", color: "#0f172a", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                    {alumni.nama_lengkap}
+        <div className="directory-row-card">
+            {/* Top row / Main info */}
+            <div className="directory-row-main">
+                {/* Avatar Initial */}
+                <div
+                    style={{
+                        width: "38px",
+                        height: "38px",
+                        borderRadius: "50%",
+                        background: `${jenisColor}18`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                    }}
+                >
+                    <span style={{ fontSize: "0.9rem", fontWeight: 800, color: jenisColor }}>
+                        {alumni.nama_lengkap?.charAt(0)?.toUpperCase() || "?"}
+                    </span>
                 </div>
-                <div style={{ fontSize: "0.8rem", color: "#64748b", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginTop: "0.1rem" }}>
-                    {alumni.jabatan && <span style={{ color: "#334155", fontWeight: 600 }}>{alumni.jabatan}</span>}
-                    {alumni.jabatan && alumni.nama_perusahaan && <span style={{ color: "#cbd5e1" }}> · </span>}
-                    {alumni.nama_perusahaan && <span>{alumni.nama_perusahaan}</span>}
-                    {alumni.kota && <span style={{ color: "#94a3b8" }}> ({alumni.kota})</span>}
-                </div>
-            </div>
 
-            {/* Tags & Action */}
-            <div style={{ display: "flex", gap: "0.5rem", flexShrink: 0, alignItems: "center" }}>
-                {alumni.angkatan && (
-                    <span
-                        style={{
-                            fontSize: "0.72rem",
-                            fontWeight: 700,
-                            color: "#64748b",
-                            background: "#f8faff",
-                            border: "1px solid #e2e8f0",
-                            borderRadius: "999px",
-                            padding: "0.18rem 0.6rem",
+                {/* Nama, Jabatan, Kantor */}
+                <div className="directory-row-info">
+                    <div className="directory-row-name">
+                        {alumni.nama_lengkap}
+                    </div>
+                    {(alumni.jabatan || alumni.nama_perusahaan) && (
+                        <div className="directory-row-role">
+                            {alumni.jabatan && <span style={{ color: "#334155", fontWeight: 600 }}>{alumni.jabatan}</span>}
+                            {alumni.jabatan && alumni.nama_perusahaan && <span style={{ color: "#cbd5e1" }}> · </span>}
+                            {alumni.nama_perusahaan && <span>{alumni.nama_perusahaan}</span>}
+                        </div>
+                    )}
+                    {(alumni.kota || alumni.provinsi) && (
+                        <div className="directory-row-location">
+                            📍 {alumni.kota || alumni.provinsi}
+                        </div>
+                    )}
+                </div>
+
+                {/* Tombol Aksi (LinkedIn, Edit, Hapus) */}
+                <div className="directory-row-actions">
+                    {hasLinkedIn && (
+                        <a
+                            href={alumni.linkedin_url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="directory-action-btn linkedin-btn"
+                            title="Buka LinkedIn"
+                        >
+                            in
+                        </a>
+                    )}
+
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onEdit();
                         }}
+                        className="directory-action-btn edit-btn"
+                        title="Edit Profil"
                     >
-                        {alumni.angkatan}
+                        ✏️
+                    </button>
+
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete();
+                        }}
+                        className="directory-action-btn delete-btn"
+                        title="Hapus Profil"
+                    >
+                        🗑️
+                    </button>
+                </div>
+            </div>
+
+            {/* Badges row di bawah */}
+            <div className="directory-row-badges">
+                {alumni.angkatan && (
+                    <span className="badge-angkatan">
+                        Angkatan {alumni.angkatan}
                     </span>
                 )}
 
                 {alumni.jenis_pekerjaan && (
                     <span
+                        className="badge-jenis"
                         style={{
-                            fontSize: "0.7rem",
-                            fontWeight: 700,
                             color: jenisColor,
                             background: `${jenisColor}15`,
-                            border: `1px solid ${jenisColor}35`,
-                            borderRadius: "999px",
-                            padding: "0.18rem 0.65rem",
-                            maxWidth: "140px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
+                            borderColor: `${jenisColor}35`,
                         }}
                         title={alumni.jenis_pekerjaan}
                     >
@@ -2013,106 +2418,11 @@ function DirectoryRow({ alumni, onEdit, onDelete }) {
                     </span>
                 )}
 
-                {hasLinkedIn && (
-                    <a
-                        href={alumni.linkedin_url}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: "30px",
-                            height: "30px",
-                            borderRadius: "50%",
-                            background: "rgba(10,102,194,0.1)",
-                            border: "1px solid rgba(10,102,194,0.3)",
-                            color: "#0a66c2",
-                            flexShrink: 0,
-                            textDecoration: "none",
-                            fontSize: "0.75rem",
-                            fontWeight: 800,
-                            transition: "all 0.15s",
-                        }}
-                        title="Buka LinkedIn"
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.background = "#0a66c2";
-                            e.currentTarget.style.color = "#fff";
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.background = "rgba(10,102,194,0.1)";
-                            e.currentTarget.style.color = "#0a66c2";
-                        }}
-                    >
-                        in
-                    </a>
+                {alumni.bidang_pekerjaan && (
+                    <span className="badge-bidang">
+                        {alumni.bidang_pekerjaan}
+                    </span>
                 )}
-
-                {/* Tombol Edit Profil */}
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onEdit();
-                    }}
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "8px",
-                        background: "#f1f5f9",
-                        border: "1px solid #e2e8f0",
-                        color: "#475569",
-                        cursor: "pointer",
-                        fontSize: "0.8rem",
-                        transition: "all 0.15s",
-                    }}
-                    title="Edit Profil"
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "#7c3aed";
-                        e.currentTarget.style.color = "#fff";
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "#f1f5f9";
-                        e.currentTarget.style.color = "#475569";
-                    }}
-                >
-                    ✏️
-                </button>
-
-                {/* Tombol Hapus Profil */}
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onDelete();
-                    }}
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "8px",
-                        background: "#fef2f2",
-                        border: "1px solid #fee2e2",
-                        color: "#ef4444",
-                        cursor: "pointer",
-                        fontSize: "0.8rem",
-                        transition: "all 0.15s",
-                    }}
-                    title="Hapus Profil"
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "#ef4444";
-                        e.currentTarget.style.color = "#fff";
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "#fef2f2";
-                        e.currentTarget.style.color = "#ef4444";
-                    }}
-                >
-                    🗑️
-                </button>
             </div>
         </div>
     );
