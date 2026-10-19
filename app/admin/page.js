@@ -25,6 +25,7 @@ export default function AdminPage() {
     const [deletingId, setDeletingId] = useState(null);
     const [confirmDelete, setConfirmDelete] = useState(null); // { id, name }
     const [editingData, setEditingData] = useState(null); // Object to edit
+    const [addingData, setAddingData] = useState(null);   // New row being created
     const [saving, setSaving] = useState(false);
     const [toast, setToast] = useState("");
 
@@ -84,6 +85,41 @@ export default function AdminPage() {
             showToast("❌ Gagal menyimpan: " + error.message);
         }
         setSaving(false);
+    }
+
+    async function handleSaveAdd(e) {
+        e.preventDefault();
+        setSaving(true);
+        const newRow = { ...addingData };
+        delete newRow.id;
+        delete newRow.created_at;
+        delete newRow.updated_at;
+        // Remove empty-string keys so DB defaults apply
+        Object.keys(newRow).forEach((k) => { if (newRow[k] === "") delete newRow[k]; });
+
+        const { data: inserted, error } = await supabase.from(activeTab).insert([newRow]).select();
+        if (!error && inserted) {
+            setData((prev) => [inserted[0], ...prev]);
+            showToast("✅ Data berhasil ditambahkan.");
+            setAddingData(null);
+        } else {
+            showToast("❌ Gagal menambah: " + (error?.message || "Unknown error"));
+        }
+        setSaving(false);
+    }
+
+    function openAddModal() {
+        // Build an empty template from existing data columns, or predefined per tab
+        const schemaTemplates = {
+            alumni_profiles: { nama: "", angkatan: "", jabatan: "", tempat_kerja: "", deskripsi: "", linkedin_url: "", foto_url: "" },
+            talent_pool: { nama: "", email: "", jabatan: "", keahlian: "" },
+            job_posts: { judul_posisi: "", nama_perusahaan: "", tipe_pekerjaan: "", lokasi: "", deskripsi: "", link_pendaftaran: "" },
+        };
+        const template = schemaTemplates[activeTab] ||
+            (data.length > 0
+                ? Object.fromEntries(Object.keys(data[0]).filter(k => !["id","created_at","updated_at"].includes(k)).map(k => [k, ""]))
+                : { nama: "" });
+        setAddingData(template);
     }
 
     function showToast(msg) {
@@ -188,18 +224,36 @@ export default function AdminPage() {
                             {loading ? "Memuat..." : `${filtered.length} dari ${data.length} data`}
                         </p>
                     </div>
-                    <input
-                        type="text"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder={`Cari ${nameField}...`}
-                        style={{
-                            padding: "0.55rem 1rem", minWidth: "220px",
-                            background: "#1e293b", border: "1px solid rgba(255,255,255,0.1)",
-                            borderRadius: "8px", color: "#f1f5f9", fontSize: "0.88rem",
-                            outline: "none", fontFamily: "var(--font-body), sans-serif",
-                        }}
-                    />
+                    <div style={{ display: "flex", gap: "0.65rem", alignItems: "center", flexWrap: "wrap" }}>
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder={`Cari ${nameField}...`}
+                            style={{
+                                padding: "0.55rem 1rem", minWidth: "180px",
+                                background: "#1e293b", border: "1px solid rgba(255,255,255,0.1)",
+                                borderRadius: "8px", color: "#f1f5f9", fontSize: "0.88rem",
+                                outline: "none", fontFamily: "var(--font-body), sans-serif",
+                            }}
+                        />
+                        {activeTab !== "email_gate_log" && (
+                            <button
+                                onClick={openAddModal}
+                                style={{
+                                    padding: "0.55rem 1.1rem",
+                                    background: "linear-gradient(135deg, #16a34a, #15803d)",
+                                    color: "#fff", border: "none", borderRadius: "8px",
+                                    fontWeight: 700, fontSize: "0.88rem", cursor: "pointer",
+                                    fontFamily: "var(--font-body), sans-serif",
+                                    display: "flex", alignItems: "center", gap: "0.4rem",
+                                    whiteSpace: "nowrap",
+                                }}
+                            >
+                                ＋ Tambah
+                            </button>
+                        )}
+                    </div>
                 </div>
 
                 {/* Table */}
@@ -281,6 +335,56 @@ export default function AdminPage() {
                             <div style={{ display: "flex", gap: "0.75rem", marginTop: "1rem" }}>
                                 <button type="button" onClick={() => setEditingData(null)} style={{ flex: 1, padding: "0.75rem", background: "rgba(255,255,255,0.05)", color: "#94a3b8", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", fontWeight: 600, cursor: "pointer" }}>Batal</button>
                                 <button type="submit" disabled={saving} style={{ flex: 1, padding: "0.75rem", background: "linear-gradient(135deg, #2563eb, #1d4ed8)", color: "#fff", border: "none", borderRadius: "10px", fontWeight: 700, cursor: saving ? "not-allowed" : "pointer" }}>
+                                    {saving ? "Menyimpan..." : "Simpan"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Add modal */}
+            {addingData && (
+                <div onClick={() => setAddingData(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
+                    <div onClick={(e) => e.stopPropagation()} style={{ background: "#1e293b", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "16px", padding: "2rem", maxWidth: "500px", width: "100%", maxHeight: "90vh", display: "flex", flexDirection: "column" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+                            <h3 style={{ margin: 0, color: "#f1f5f9", fontWeight: 700 }}>Tambah Data Baru</h3>
+                            <button onClick={() => setAddingData(null)} style={{ background: "transparent", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: "1.2rem" }}>✕</button>
+                        </div>
+                        <form onSubmit={handleSaveAdd} style={{ display: "flex", flexDirection: "column", gap: "1rem", overflowY: "auto", paddingRight: "0.5rem" }}>
+                            {Object.keys(addingData)
+                                .filter((k) => !["id", "created_at", "updated_at"].includes(k))
+                                .map((key) => (
+                                    <div key={key} style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                                        <label style={{ fontSize: "0.82rem", color: "#94a3b8", fontWeight: 600, textTransform: "capitalize" }}>{key.replace(/_/g, " ")}</label>
+                                        {key === "deskripsi" || key === "keahlian" ? (
+                                            <textarea
+                                                rows={3}
+                                                value={addingData[key] || ""}
+                                                onChange={(e) => setAddingData({ ...addingData, [key]: e.target.value })}
+                                                style={{
+                                                    padding: "0.65rem", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
+                                                    borderRadius: "8px", color: "#f1f5f9", fontSize: "0.9rem",
+                                                    fontFamily: "var(--font-body), sans-serif", resize: "vertical",
+                                                }}
+                                            />
+                                        ) : (
+                                            <input
+                                                type="text"
+                                                value={addingData[key] || ""}
+                                                onChange={(e) => setAddingData({ ...addingData, [key]: e.target.value })}
+                                                style={{
+                                                    padding: "0.65rem", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
+                                                    borderRadius: "8px", color: "#f1f5f9", fontSize: "0.9rem",
+                                                    fontFamily: "var(--font-body), sans-serif",
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                ))}
+                            <div style={{ display: "flex", gap: "0.75rem", marginTop: "1rem" }}>
+                                <button type="button" onClick={() => setAddingData(null)} style={{ flex: 1, padding: "0.75rem", background: "rgba(255,255,255,0.05)", color: "#94a3b8", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", fontWeight: 600, cursor: "pointer" }}>Batal</button>
+                                <button type="submit" disabled={saving} style={{ flex: 1, padding: "0.75rem", background: "linear-gradient(135deg, #16a34a, #15803d)", color: "#fff", border: "none", borderRadius: "10px", fontWeight: 700, cursor: saving ? "not-allowed" : "pointer" }}>
                                     {saving ? "Menyimpan..." : "Simpan"}
                                 </button>
                             </div>
