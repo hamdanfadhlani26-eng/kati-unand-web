@@ -27,6 +27,7 @@ export default function AdminPage() {
     const [editingData, setEditingData] = useState(null); // Object to edit
     const [addingData, setAddingData] = useState(null);   // New row being created
     const [saving, setSaving] = useState(false);
+    const [photoUploading, setPhotoUploading] = useState(false);
     const [toast, setToast] = useState("");
 
     function handleLogin(e) {
@@ -85,6 +86,24 @@ export default function AdminPage() {
             showToast("❌ Gagal menyimpan: " + error.message);
         }
         setSaving(false);
+    }
+
+    // ── Upload foto ke Supabase Storage ────────────────────────────────────────
+    async function uploadPhoto(file, setter, currentData, fieldKey = "foto_url") {
+        if (!file) return;
+        setPhotoUploading(true);
+        const ext = file.name.split(".").pop();
+        const fileName = `admin_${Date.now()}.${ext}`;
+        const { error } = await supabase.storage.from("Photo").upload(fileName, file, { upsert: true });
+        if (error) {
+            showToast("❌ Upload foto gagal: " + error.message);
+            setPhotoUploading(false);
+            return;
+        }
+        const { data: pub } = supabase.storage.from("Photo").getPublicUrl(fileName);
+        setter({ ...currentData, [fieldKey]: pub.publicUrl });
+        setPhotoUploading(false);
+        showToast("📸 Foto berhasil diupload!");
     }
 
     async function handleSaveAdd(e) {
@@ -315,6 +334,16 @@ export default function AdminPage() {
                             <button onClick={() => setEditingData(null)} style={{ background: "transparent", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: "1.2rem" }}>✕</button>
                         </div>
                         <form onSubmit={handleSaveEdit} style={{ display: "flex", flexDirection: "column", gap: "1rem", overflowY: "auto", paddingRight: "0.5rem" }}>
+                            {/* Foto upload */}
+                            {"foto_url" in editingData && (
+                                <PhotoUploadField
+                                    label="Foto"
+                                    currentUrl={editingData.foto_url}
+                                    uploading={photoUploading}
+                                    onFile={(file) => uploadPhoto(file, setEditingData, editingData, "foto_url")}
+                                    onClear={() => setEditingData({ ...editingData, foto_url: "" })}
+                                />
+                            )}
                             {Object.keys(editingData)
                                 .filter((k) => !["id", "created_at", "updated_at", "foto_url", "lampiran_url"].includes(k))
                                 .map((key) => (
@@ -334,7 +363,7 @@ export default function AdminPage() {
                                 ))}
                             <div style={{ display: "flex", gap: "0.75rem", marginTop: "1rem" }}>
                                 <button type="button" onClick={() => setEditingData(null)} style={{ flex: 1, padding: "0.75rem", background: "rgba(255,255,255,0.05)", color: "#94a3b8", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", fontWeight: 600, cursor: "pointer" }}>Batal</button>
-                                <button type="submit" disabled={saving} style={{ flex: 1, padding: "0.75rem", background: "linear-gradient(135deg, #2563eb, #1d4ed8)", color: "#fff", border: "none", borderRadius: "10px", fontWeight: 700, cursor: saving ? "not-allowed" : "pointer" }}>
+                                <button type="submit" disabled={saving || photoUploading} style={{ flex: 1, padding: "0.75rem", background: "linear-gradient(135deg, #2563eb, #1d4ed8)", color: "#fff", border: "none", borderRadius: "10px", fontWeight: 700, cursor: (saving || photoUploading) ? "not-allowed" : "pointer" }}>
                                     {saving ? "Menyimpan..." : "Simpan"}
                                 </button>
                             </div>
@@ -352,8 +381,18 @@ export default function AdminPage() {
                             <button onClick={() => setAddingData(null)} style={{ background: "transparent", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: "1.2rem" }}>✕</button>
                         </div>
                         <form onSubmit={handleSaveAdd} style={{ display: "flex", flexDirection: "column", gap: "1rem", overflowY: "auto", paddingRight: "0.5rem" }}>
+                            {/* Foto upload */}
+                            {"foto_url" in addingData && (
+                                <PhotoUploadField
+                                    label="Foto"
+                                    currentUrl={addingData.foto_url}
+                                    uploading={photoUploading}
+                                    onFile={(file) => uploadPhoto(file, setAddingData, addingData, "foto_url")}
+                                    onClear={() => setAddingData({ ...addingData, foto_url: "" })}
+                                />
+                            )}
                             {Object.keys(addingData)
-                                .filter((k) => !["id", "created_at", "updated_at"].includes(k))
+                                .filter((k) => !["id", "created_at", "updated_at", "foto_url"].includes(k))
                                 .map((key) => (
                                     <div key={key} style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                                         <label style={{ fontSize: "0.82rem", color: "#94a3b8", fontWeight: 600, textTransform: "capitalize" }}>{key.replace(/_/g, " ")}</label>
@@ -384,7 +423,7 @@ export default function AdminPage() {
                                 ))}
                             <div style={{ display: "flex", gap: "0.75rem", marginTop: "1rem" }}>
                                 <button type="button" onClick={() => setAddingData(null)} style={{ flex: 1, padding: "0.75rem", background: "rgba(255,255,255,0.05)", color: "#94a3b8", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", fontWeight: 600, cursor: "pointer" }}>Batal</button>
-                                <button type="submit" disabled={saving} style={{ flex: 1, padding: "0.75rem", background: "linear-gradient(135deg, #16a34a, #15803d)", color: "#fff", border: "none", borderRadius: "10px", fontWeight: 700, cursor: saving ? "not-allowed" : "pointer" }}>
+                                <button type="submit" disabled={saving || photoUploading} style={{ flex: 1, padding: "0.75rem", background: "linear-gradient(135deg, #16a34a, #15803d)", color: "#fff", border: "none", borderRadius: "10px", fontWeight: 700, cursor: (saving || photoUploading) ? "not-allowed" : "pointer" }}>
                                     {saving ? "Menyimpan..." : "Simpan"}
                                 </button>
                             </div>
@@ -406,6 +445,72 @@ export default function AdminPage() {
                     50% { opacity: 0.4; }
                 }
             `}</style>
+        </div>
+    );
+}
+
+// ── Photo Upload Field Component ─────────────────────────────────────────────
+function PhotoUploadField({ label, currentUrl, uploading, onFile, onClear }) {
+    const [dragOver, setDragOver] = useState(false);
+
+    function handleDrop(e) {
+        e.preventDefault();
+        setDragOver(false);
+        const file = e.dataTransfer.files?.[0];
+        if (file && file.type.startsWith("image/")) onFile(file);
+    }
+
+    return (
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.82rem", color: "#94a3b8", fontWeight: 600 }}>{label}</label>
+
+            {currentUrl ? (
+                // Preview mode
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", background: "#0f172a", borderRadius: "10px", padding: "0.65rem", border: "1px solid rgba(255,255,255,0.1)" }}>
+                    <img src={currentUrl} alt="preview" style={{ width: "52px", height: "52px", borderRadius: "8px", objectFit: "cover", flexShrink: 0 }} />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ color: "#22c55e", fontSize: "0.8rem", fontWeight: 600 }}>✓ Foto terpasang</div>
+                        <div style={{ color: "#475569", fontSize: "0.72rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{currentUrl}</div>
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem", flexShrink: 0 }}>
+                        <label style={{ padding: "0.3rem 0.65rem", background: "rgba(59,130,246,0.15)", color: "#60a5fa", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer", border: "1px solid rgba(59,130,246,0.25)", whiteSpace: "nowrap" }}>
+                            Ganti
+                            <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => onFile(e.target.files?.[0])} />
+                        </label>
+                        <button type="button" onClick={onClear} style={{ padding: "0.3rem 0.65rem", background: "rgba(239,68,68,0.12)", color: "#f87171", border: "1px solid rgba(239,68,68,0.25)", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer" }}>Hapus</button>
+                    </div>
+                </div>
+            ) : (
+                // Drop zone
+                <label
+                    onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                    onDragLeave={() => setDragOver(false)}
+                    onDrop={handleDrop}
+                    style={{
+                        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                        gap: "0.5rem", padding: "1.5rem", borderRadius: "10px", cursor: uploading ? "not-allowed" : "pointer",
+                        border: `2px dashed ${dragOver ? "#60a5fa" : "rgba(255,255,255,0.15)"}`,
+                        background: dragOver ? "rgba(59,130,246,0.08)" : "#0f172a",
+                        transition: "all 0.2s",
+                    }}
+                >
+                    <input type="file" accept="image/*" style={{ display: "none" }} disabled={uploading} onChange={(e) => onFile(e.target.files?.[0])} />
+                    {uploading ? (
+                        <>
+                            <div style={{ fontSize: "1.5rem" }}>⏳</div>
+                            <span style={{ color: "#94a3b8", fontSize: "0.83rem" }}>Mengupload foto...</span>
+                        </>
+                    ) : (
+                        <>
+                            <div style={{ fontSize: "1.75rem" }}>📸</div>
+                            <span style={{ color: "#94a3b8", fontSize: "0.83rem", textAlign: "center" }}>
+                                <strong style={{ color: "#60a5fa" }}>Klik atau drag foto</strong> ke sini<br />
+                                <span style={{ fontSize: "0.75rem", color: "#475569" }}>JPG, PNG, WebP — maks 5 MB</span>
+                            </span>
+                        </>
+                    )}
+                </label>
+            )}
         </div>
     );
 }
