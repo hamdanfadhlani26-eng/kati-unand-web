@@ -9,6 +9,7 @@ const ADMIN_PASSWORD = "katiunand2025";
 const TABS = [
     { key: "talent_pool",     label: "Talent Pool",     icon: "👤", nameField: "nama" },
     { key: "alumni_profiles", label: "Jaringan Alumni", icon: "🎓", nameField: "nama" },
+    { key: "alumni_products", label: "Produk Alumni",   icon: "🛍️", nameField: "nama_produk" },
     { key: "job_posts",       label: "Job Post",        icon: "💼", nameField: "judul_posisi" },
     { key: "email_gate_log",  label: "Email Gate Log",  icon: "📧", nameField: "email" },
 ];
@@ -43,6 +44,21 @@ export default function AdminPage() {
     async function fetchData() {
         setLoading(true);
         setData([]);
+
+        if (activeTab === "alumni_products") {
+            try {
+                const res = await fetch("/api/alumni-products");
+                const json = await res.json();
+                if (json.success && json.data) {
+                    setData(json.data);
+                    setLoading(false);
+                    return;
+                }
+            } catch (e) {
+                console.warn("Fetch alumni_products via api failed, falling back to Supabase:", e);
+            }
+        }
+
         const { data: rows, error } = await supabase
             .from(activeTab)
             .select("*")
@@ -58,6 +74,22 @@ export default function AdminPage() {
 
     async function handleDelete(id) {
         setDeletingId(id);
+
+        if (activeTab === "alumni_products") {
+            try {
+                await fetch(`/api/alumni-products?id=${id}`, { method: "DELETE" });
+                setData((prev) => prev.filter((r) => r.id !== id));
+                showToast("✅ Produk berhasil dihapus.");
+                setDeletingId(null);
+                setConfirmDelete(null);
+                return;
+            } catch (e) {
+                showToast("❌ Gagal menghapus: " + e.message);
+                setDeletingId(null);
+                return;
+            }
+        }
+
         const { error } = await supabase.from(activeTab).delete().eq("id", id);
         if (!error) {
             setData((prev) => prev.filter((r) => r.id !== id));
@@ -73,6 +105,29 @@ export default function AdminPage() {
         e.preventDefault();
         setSaving(true);
         const updates = { ...editingData };
+
+        if (activeTab === "alumni_products") {
+            try {
+                const res = await fetch("/api/alumni-products", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updates),
+                });
+                const json = await res.json();
+                if (json.success) {
+                    setData((prev) => prev.map((r) => (r.id === editingData.id ? { ...r, ...updates } : r)));
+                    showToast("✅ Produk berhasil diperbarui.");
+                    setEditingData(null);
+                } else {
+                    showToast("❌ Gagal menyimpan: " + (json.message || "Unknown error"));
+                }
+            } catch (err) {
+                showToast("❌ Gagal menyimpan: " + err.message);
+            }
+            setSaving(false);
+            return;
+        }
+
         delete updates.id;
         delete updates.created_at;
         delete updates.updated_at;
@@ -110,6 +165,29 @@ export default function AdminPage() {
         e.preventDefault();
         setSaving(true);
         const newRow = { ...addingData };
+
+        if (activeTab === "alumni_products") {
+            try {
+                const res = await fetch("/api/alumni-products", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(newRow),
+                });
+                const json = await res.json();
+                if (json.success && json.data) {
+                    setData((prev) => [json.data, ...prev]);
+                    showToast("✅ Produk alumni berhasil ditambahkan!");
+                    setAddingData(null);
+                } else {
+                    showToast("❌ Gagal menambah: " + (json.message || "Unknown error"));
+                }
+            } catch (err) {
+                showToast("❌ Gagal menambah: " + err.message);
+            }
+            setSaving(false);
+            return;
+        }
+
         delete newRow.id;
         delete newRow.created_at;
         delete newRow.updated_at;
@@ -131,6 +209,20 @@ export default function AdminPage() {
         // Build an empty template from existing data columns, or predefined per tab
         const schemaTemplates = {
             alumni_profiles: { nama: "", angkatan: "", jabatan: "", tempat_kerja: "", deskripsi: "", linkedin_url: "", foto_url: "" },
+            alumni_products: {
+                nama_produk: "",
+                tipe: "Produk",
+                kategori: "F&B / Kuliner",
+                nama_owner: "",
+                angkatan: "",
+                harga: "",
+                lokasi: "",
+                whatsapp: "",
+                instagram: "",
+                website_url: "",
+                deskripsi: "",
+                foto_url: "",
+            },
             talent_pool: { nama: "", email: "", jabatan: "", keahlian: "" },
             job_posts: { judul_posisi: "", nama_perusahaan: "", tipe_pekerjaan: "", lokasi: "", deskripsi: "", link_pendaftaran: "" },
         };
@@ -349,16 +441,60 @@ export default function AdminPage() {
                                 .map((key) => (
                                     <div key={key} style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                                         <label style={{ fontSize: "0.82rem", color: "#94a3b8", fontWeight: 600, textTransform: "capitalize" }}>{key.replace(/_/g, " ")}</label>
-                                        <input
-                                            type="text"
-                                            value={editingData[key] || ""}
-                                            onChange={(e) => setEditingData({ ...editingData, [key]: e.target.value })}
-                                            style={{
-                                                padding: "0.65rem", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
-                                                borderRadius: "8px", color: "#f1f5f9", fontSize: "0.9rem",
-                                                fontFamily: "var(--font-body), sans-serif",
-                                            }}
-                                        />
+                                        {key === "tipe" ? (
+                                            <select
+                                                value={editingData[key] || "Produk"}
+                                                onChange={(e) => setEditingData({ ...editingData, [key]: e.target.value })}
+                                                style={{
+                                                    padding: "0.65rem", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
+                                                    borderRadius: "8px", color: "#f1f5f9", fontSize: "0.9rem",
+                                                    fontFamily: "var(--font-body), sans-serif",
+                                                }}
+                                            >
+                                                <option value="Produk">Produk</option>
+                                                <option value="Jasa">Jasa</option>
+                                            </select>
+                                        ) : key === "kategori" && activeTab === "alumni_products" ? (
+                                            <select
+                                                value={editingData[key] || "F&B / Kuliner"}
+                                                onChange={(e) => setEditingData({ ...editingData, [key]: e.target.value })}
+                                                style={{
+                                                    padding: "0.65rem", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
+                                                    borderRadius: "8px", color: "#f1f5f9", fontSize: "0.9rem",
+                                                    fontFamily: "var(--font-body), sans-serif",
+                                                }}
+                                            >
+                                                <option value="F&B / Kuliner">F&B / Kuliner</option>
+                                                <option value="Jasa & Konsultasi">Jasa & Konsultasi</option>
+                                                <option value="Fashion & Apparel">Fashion & Apparel</option>
+                                                <option value="Teknologi & Digital">Teknologi & Digital</option>
+                                                <option value="Manufaktur & Kerajinan">Manufaktur & Kerajinan</option>
+                                                <option value="Agribisnis">Agribisnis</option>
+                                                <option value="Lainnya">Lainnya</option>
+                                            </select>
+                                        ) : key === "deskripsi" || key === "keahlian" ? (
+                                            <textarea
+                                                rows={3}
+                                                value={editingData[key] || ""}
+                                                onChange={(e) => setEditingData({ ...editingData, [key]: e.target.value })}
+                                                style={{
+                                                    padding: "0.65rem", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
+                                                    borderRadius: "8px", color: "#f1f5f9", fontSize: "0.9rem",
+                                                    fontFamily: "var(--font-body), sans-serif", resize: "vertical",
+                                                }}
+                                            />
+                                        ) : (
+                                            <input
+                                                type="text"
+                                                value={editingData[key] || ""}
+                                                onChange={(e) => setEditingData({ ...editingData, [key]: e.target.value })}
+                                                style={{
+                                                    padding: "0.65rem", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
+                                                    borderRadius: "8px", color: "#f1f5f9", fontSize: "0.9rem",
+                                                    fontFamily: "var(--font-body), sans-serif",
+                                                }}
+                                            />
+                                        )}
                                     </div>
                                 ))}
                             <div style={{ display: "flex", gap: "0.75rem", marginTop: "1rem" }}>
@@ -396,7 +532,38 @@ export default function AdminPage() {
                                 .map((key) => (
                                     <div key={key} style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                                         <label style={{ fontSize: "0.82rem", color: "#94a3b8", fontWeight: 600, textTransform: "capitalize" }}>{key.replace(/_/g, " ")}</label>
-                                        {key === "deskripsi" || key === "keahlian" ? (
+                                        {key === "tipe" ? (
+                                            <select
+                                                value={addingData[key] || "Produk"}
+                                                onChange={(e) => setAddingData({ ...addingData, [key]: e.target.value })}
+                                                style={{
+                                                    padding: "0.65rem", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
+                                                    borderRadius: "8px", color: "#f1f5f9", fontSize: "0.9rem",
+                                                    fontFamily: "var(--font-body), sans-serif",
+                                                }}
+                                            >
+                                                <option value="Produk">Produk</option>
+                                                <option value="Jasa">Jasa</option>
+                                            </select>
+                                        ) : key === "kategori" && activeTab === "alumni_products" ? (
+                                            <select
+                                                value={addingData[key] || "F&B / Kuliner"}
+                                                onChange={(e) => setAddingData({ ...addingData, [key]: e.target.value })}
+                                                style={{
+                                                    padding: "0.65rem", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
+                                                    borderRadius: "8px", color: "#f1f5f9", fontSize: "0.9rem",
+                                                    fontFamily: "var(--font-body), sans-serif",
+                                                }}
+                                            >
+                                                <option value="F&B / Kuliner">F&B / Kuliner</option>
+                                                <option value="Jasa & Konsultasi">Jasa & Konsultasi</option>
+                                                <option value="Fashion & Apparel">Fashion & Apparel</option>
+                                                <option value="Teknologi & Digital">Teknologi & Digital</option>
+                                                <option value="Manufaktur & Kerajinan">Manufaktur & Kerajinan</option>
+                                                <option value="Agribisnis">Agribisnis</option>
+                                                <option value="Lainnya">Lainnya</option>
+                                            </select>
+                                        ) : key === "deskripsi" || key === "keahlian" ? (
                                             <textarea
                                                 rows={3}
                                                 value={addingData[key] || ""}
@@ -521,6 +688,7 @@ function AdminRow({ row, nameField, tabKey, onEdit, onDelete, deleting }) {
     const subtitles = {
         talent_pool: [row.jabatan, row.email].filter(Boolean).join(" · "),
         alumni_profiles: [row.jabatan, row.tempat_kerja].filter(Boolean).join(" · "),
+        alumni_products: [row.tipe, row.kategori, row.nama_owner ? `${row.nama_owner} (${row.angkatan ? 'TI ' + row.angkatan : '-'})` : "", row.lokasi].filter(Boolean).join(" · "),
         job_posts: [row.nama_perusahaan, row.tipe_pekerjaan, row.lokasi].filter(Boolean).join(" · "),
         email_gate_log: [row.page, row.created_at ? new Date(row.created_at).toLocaleDateString("id-ID") : ""].filter(Boolean).join(" · "),
     };
