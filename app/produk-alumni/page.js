@@ -582,29 +582,68 @@ export default function ProdukAlumniPage() {
 
               {/* Modal Body (Scrollable) */}
               <div style={{ overflowY: "auto", padding: "1.5rem" }}>
-                {/* Photo */}
+                {/* Photo / Poster (Menyesuaikan ukuran & rasio asli foto/poster yang diupload) */}
                 <div
                   style={{
                     width: "100%",
-                    height: "260px",
+                    maxHeight: "520px",
+                    minHeight: "220px",
                     borderRadius: "14px",
                     overflow: "hidden",
                     marginBottom: "1.25rem",
-                    background: "#1e293b",
+                    background: "radial-gradient(ellipse at center, #192339 0%, #090e1a 100%)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                     position: "relative",
                   }}
                 >
                   {activeModal.foto_url ? (
-                    <img
-                      src={activeModal.foto_url}
-                      alt={activeModal.nama_produk}
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                    />
+                    <>
+                      <img
+                        src={activeModal.foto_url}
+                        alt={activeModal.nama_produk}
+                        style={{
+                          maxWidth: "100%",
+                          maxHeight: "520px",
+                          width: "auto",
+                          height: "auto",
+                          objectFit: "contain",
+                          display: "block",
+                        }}
+                      />
+                      <a
+                        href={activeModal.foto_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        title="Buka gambar ukuran penuh"
+                        style={{
+                          position: "absolute",
+                          bottom: "0.75rem",
+                          right: "0.75rem",
+                          background: "rgba(15,23,42,0.85)",
+                          backdropFilter: "blur(6px)",
+                          color: "#cbd5e1",
+                          fontSize: "0.75rem",
+                          fontWeight: 600,
+                          padding: "0.35rem 0.75rem",
+                          borderRadius: "8px",
+                          border: "1px solid rgba(255,255,255,0.15)",
+                          textDecoration: "none",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.3rem",
+                        }}
+                      >
+                        <span>🔍</span> Ukuran Penuh ↗
+                      </a>
+                    </>
                   ) : (
                     <div
                       style={{
                         width: "100%",
-                        height: "100%",
+                        height: "220px",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
