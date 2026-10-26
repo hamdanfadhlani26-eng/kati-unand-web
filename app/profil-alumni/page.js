@@ -694,24 +694,16 @@ export default function JaringanAlumni() {
             {/* ======================================================== */}
             {mainTab === "direktori" && (
                 <div className="content-container">
-                    {/* Header + Action Button */}
+                    {/* Header */}
                     <div className="directory-header-wrap">
                         <div>
                             <h2 style={{ margin: "0 0 0.35rem", fontSize: "1.4rem", fontWeight: 800, color: "#0f172a" }}>
                                 Direktori Alumni KATI UNAND
                             </h2>
                             <p style={{ margin: 0, color: "#64748b", fontSize: "0.88rem" }}>
-                                Cari, perbarui, atau tambahkan profil Anda ke jejaring alumni Teknik Industri Unand.
+                                Cari dan telusuri data jejaring alumni Teknik Industri Universitas Andalas berdasarkan angkatan, instansi, atau wilayah domisili.
                             </p>
                         </div>
-
-                        {/* Tombol Tambah Data Alumni */}
-                        <button
-                            onClick={handleOpenAdd}
-                            className="btn-add-alumni"
-                        >
-                            <span>+</span> Tambah Profil Saya
-                        </button>
                     </div>
 
                     {/* Filter Bar */}
@@ -796,8 +788,6 @@ export default function JaringanAlumni() {
                                     <DirectoryRow
                                         key={a.id || i}
                                         alumni={a}
-                                        onEdit={() => handleOpenEdit(a)}
-                                        onDelete={() => setDeleteTarget(a)}
                                     />
                                 ))}
                             </div>
@@ -826,6 +816,16 @@ export default function JaringanAlumni() {
                                     </button>
                                 </div>
                             )}
+
+                            {/* Info Box PJ Wilayah / Admin */}
+                            <div style={{ background: "#f8fafc", border: "1px dashed #cbd5e1", borderRadius: "12px", padding: "0.85rem 1.25rem", marginTop: "2rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem" }}>
+                                <span style={{ fontSize: "0.82rem", color: "#64748b" }}>
+                                    🔒 <strong>Akses Khusus Pengurus & PJ Wilayah:</strong> Pembaruan atau penambahan database alumni dikoordinasikan melalui Penanggung Jawab (PJ) daerah masing-masing atau Admin KATI.
+                                </span>
+                                <a href="/admin" style={{ fontSize: "0.82rem", color: "#7c3aed", fontWeight: 700, textDecoration: "none" }}>
+                                    Portal PJ Wilayah / Admin →
+                                </a>
+                            </div>
                         </>
                     )}
                 </div>
@@ -1315,326 +1315,6 @@ export default function JaringanAlumni() {
                                     </a>
                                 )}
                             </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Modal Tambah / Edit Data Alumni Direktori */}
-            {modalMode && (
-                <div
-                    onClick={() => setModalMode(null)}
-                    style={{
-                        position: "fixed",
-                        inset: 0,
-                        background: "rgba(15,23,42,0.65)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        zIndex: 250,
-                        padding: "1rem",
-                        backdropFilter: "blur(4px)",
-                    }}
-                >
-                    <div
-                        onClick={(e) => e.stopPropagation()}
-                        className="modal-content-box"
-                    >
-                        <button
-                            onClick={() => setModalMode(null)}
-                            style={{
-                                position: "absolute",
-                                top: "1.2rem",
-                                right: "1.2rem",
-                                background: "#f1f5f9",
-                                border: "none",
-                                borderRadius: "50%",
-                                width: "32px",
-                                height: "32px",
-                                cursor: "pointer",
-                                fontSize: "0.9rem",
-                                color: "#64748b",
-                                fontWeight: 700,
-                            }}
-                        >
-                            ✕
-                        </button>
-
-                        <div style={{ marginBottom: "1.25rem" }}>
-                            <h2 style={{ margin: "0 0 0.25rem", fontSize: "1.25rem", fontWeight: 800, color: "#0f172a" }}>
-                                {modalMode === "add" ? "Tambah Profil Saya ke Direktori" : "Edit Profil Alumni"}
-                            </h2>
-                            <p style={{ margin: 0, fontSize: "0.82rem", color: "#64748b" }}>
-                                {modalMode === "add"
-                                    ? "Lengkapi informasi karier Anda untuk bergabung di direktori resmi alumni Teknik Industri Unand."
-                                    : "Perbarui informasi pekerjaan, domisili, atau akun LinkedIn Anda."}
-                            </p>
-                        </div>
-
-                        {formError && (
-                            <div
-                                style={{
-                                    padding: "0.75rem 1rem",
-                                    background: "#fef2f2",
-                                    border: "1px solid #fecaca",
-                                    borderRadius: "10px",
-                                    color: "#b91c1c",
-                                    fontSize: "0.85rem",
-                                    marginBottom: "1rem",
-                                    fontWeight: 600,
-                                }}
-                            >
-                                ⚠️ {formError}
-                            </div>
-                        )}
-
-                        <form onSubmit={handleFormSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-                            <div className="modal-grid-2">
-                                <div>
-                                    <label style={formLabelStyle}>Nama Lengkap *</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Contoh: Rahmat Hidayat, S.T."
-                                        value={formData.nama_lengkap}
-                                        onChange={(e) => setFormData({ ...formData, nama_lengkap: e.target.value })}
-                                        required
-                                        style={formInputStyle}
-                                    />
-                                </div>
-                                <div>
-                                    <label style={formLabelStyle}>Angkatan *</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Contoh: 2014"
-                                        value={formData.angkatan}
-                                        onChange={(e) => setFormData({ ...formData, angkatan: e.target.value })}
-                                        required
-                                        style={formInputStyle}
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label style={formLabelStyle}>Jenis Pekerjaan *</label>
-                                <select
-                                    value={formData.jenis_pekerjaan}
-                                    onChange={(e) => setFormData({ ...formData, jenis_pekerjaan: e.target.value })}
-                                    style={formInputStyle}
-                                >
-                                    {JENIS_PEKERJAAN_OPTIONS.map((opt) => (
-                                        <option key={opt} value={opt}>
-                                            {opt}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div className="modal-grid-2">
-                                <div>
-                                    <label style={formLabelStyle}>Nama Perusahaan / Institusi</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Contoh: PT Semen Padang"
-                                        value={formData.nama_perusahaan}
-                                        onChange={(e) => setFormData({ ...formData, nama_perusahaan: e.target.value })}
-                                        style={formInputStyle}
-                                    />
-                                </div>
-                                <div>
-                                    <label style={formLabelStyle}>Jabatan / Posisi</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Contoh: Supply Chain Lead"
-                                        value={formData.jabatan}
-                                        onChange={(e) => setFormData({ ...formData, jabatan: e.target.value })}
-                                        style={formInputStyle}
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label style={formLabelStyle}>Bidang Pekerjaan</label>
-                                <input
-                                    type="text"
-                                    placeholder="Contoh: Manufaktur, Energi, Teknologi, FMCG"
-                                    value={formData.bidang_pekerjaan}
-                                    onChange={(e) => setFormData({ ...formData, bidang_pekerjaan: e.target.value })}
-                                    style={formInputStyle}
-                                />
-                            </div>
-
-                            <div className="modal-grid-2">
-                                <div>
-                                    <label style={formLabelStyle}>Provinsi Domisili</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Contoh: Sumatera Barat"
-                                        value={formData.provinsi}
-                                        onChange={(e) => setFormData({ ...formData, provinsi: e.target.value })}
-                                        style={formInputStyle}
-                                    />
-                                </div>
-                                <div>
-                                    <label style={formLabelStyle}>Kota / Kabupaten</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Contoh: Padang"
-                                        value={formData.kota}
-                                        onChange={(e) => setFormData({ ...formData, kota: e.target.value })}
-                                        style={formInputStyle}
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label style={formLabelStyle}>Link Profil LinkedIn</label>
-                                <input
-                                    type="text"
-                                    placeholder="https://www.linkedin.com/in/username"
-                                    value={formData.linkedin_url}
-                                    onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
-                                    style={formInputStyle}
-                                />
-                            </div>
-
-                            <div className="modal-grid-2">
-                                <div>
-                                    <label style={formLabelStyle}>Link Instagram (Opsional)</label>
-                                    <input
-                                        type="text"
-                                        placeholder="https://instagram.com/..."
-                                        value={formData.instagram_url}
-                                        onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
-                                        style={formInputStyle}
-                                    />
-                                </div>
-                                <div>
-                                    <label style={formLabelStyle}>Email (Opsional)</label>
-                                    <input
-                                        type="email"
-                                        placeholder="nama@email.com"
-                                        value={formData.email}
-                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        style={formInputStyle}
-                                    />
-                                </div>
-                            </div>
-
-                            <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.75rem" }}>
-                                <button
-                                    type="button"
-                                    onClick={() => setModalMode(null)}
-                                    style={{
-                                        flex: 1,
-                                        padding: "0.75rem",
-                                        background: "#f1f5f9",
-                                        border: "none",
-                                        borderRadius: "10px",
-                                        fontWeight: 700,
-                                        color: "#475569",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    Batal
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    style={{
-                                        flex: 2,
-                                        padding: "0.75rem",
-                                        background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
-                                        border: "none",
-                                        borderRadius: "10px",
-                                        fontWeight: 700,
-                                        color: "#fff",
-                                        cursor: isSubmitting ? "not-allowed" : "pointer",
-                                        boxShadow: "0 4px 12px rgba(124,58,237,0.25)",
-                                    }}
-                                >
-                                    {isSubmitting
-                                        ? "Menyimpan..."
-                                        : modalMode === "add"
-                                        ? "Simpan Profil Saya"
-                                        : "Perbarui Profil"}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
-
-            {/* Modal Konfirmasi Hapus Data */}
-            {deleteTarget && (
-                <div
-                    onClick={() => setDeleteTarget(null)}
-                    style={{
-                        position: "fixed",
-                        inset: 0,
-                        background: "rgba(15,23,42,0.65)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        zIndex: 260,
-                        padding: "1rem",
-                        backdropFilter: "blur(4px)",
-                    }}
-                >
-                    <div
-                        onClick={(e) => e.stopPropagation()}
-                        style={{
-                            background: "#fff",
-                            borderRadius: "18px",
-                            maxWidth: "400px",
-                            width: "100%",
-                            padding: "1.75rem",
-                            textAlign: "center",
-                            boxShadow: "0 24px 64px rgba(0,0,0,0.25)",
-                        }}
-                    >
-                        <div style={{ fontSize: "2.5rem", marginBottom: "0.6rem" }}>🗑️</div>
-                        <h3 style={{ margin: "0 0 0.4rem", fontSize: "1.15rem", fontWeight: 800, color: "#0f172a" }}>
-                            Hapus Profil Alumni?
-                        </h3>
-                        <p style={{ margin: "0 0 1.25rem", fontSize: "0.85rem", color: "#64748b", lineHeight: 1.5 }}>
-                            Apakah Anda yakin ingin menghapus data profil untuk{" "}
-                            <strong style={{ color: "#0f172a" }}>{deleteTarget.nama_lengkap}</strong>{" "}
-                            {deleteTarget.angkatan ? `(Angkatan ${deleteTarget.angkatan})` : ""}?
-                        </p>
-                        <div style={{ display: "flex", gap: "0.75rem" }}>
-                            <button
-                                onClick={() => setDeleteTarget(null)}
-                                disabled={isDeleting}
-                                style={{
-                                    flex: 1,
-                                    padding: "0.75rem",
-                                    background: "#f1f5f9",
-                                    border: "none",
-                                    borderRadius: "10px",
-                                    fontWeight: 700,
-                                    color: "#475569",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                Batal
-                            </button>
-                            <button
-                                onClick={handleConfirmDelete}
-                                disabled={isDeleting}
-                                style={{
-                                    flex: 1,
-                                    padding: "0.75rem",
-                                    background: "#ef4444",
-                                    border: "none",
-                                    borderRadius: "10px",
-                                    fontWeight: 700,
-                                    color: "#fff",
-                                    cursor: isDeleting ? "not-allowed" : "pointer",
-                                    boxShadow: "0 4px 12px rgba(239,68,68,0.25)",
-                                }}
-                            >
-                                {isDeleting ? "Menghapus..." : "Ya, Hapus Data"}
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -2313,7 +1993,7 @@ function AlumniCard({ alumni, onSelect }) {
 }
 
 // ── Komponen Baris Direktori (Tab Direktori Alumni) ───────────────────────────
-function DirectoryRow({ alumni, onEdit, onDelete }) {
+function DirectoryRow({ alumni }) {
     const jenisColor = getJenisColor(alumni.jenis_pekerjaan);
     const hasLinkedIn = alumni.linkedin_url && (alumni.linkedin_url.includes("linkedin.com") || alumni.linkedin_url.includes("http"));
 
@@ -2358,7 +2038,7 @@ function DirectoryRow({ alumni, onEdit, onDelete }) {
                     )}
                 </div>
 
-                {/* Tombol Aksi (LinkedIn, Edit, Hapus) */}
+                {/* Tombol Aksi (Hanya LinkedIn jika tersedia) */}
                 <div className="directory-row-actions">
                     {hasLinkedIn && (
                         <a
@@ -2371,28 +2051,6 @@ function DirectoryRow({ alumni, onEdit, onDelete }) {
                             in
                         </a>
                     )}
-
-                    <button
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onEdit();
-                        }}
-                        className="directory-action-btn edit-btn"
-                        title="Edit Profil"
-                    >
-                        ✏️
-                    </button>
-
-                    <button
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onDelete();
-                        }}
-                        className="directory-action-btn delete-btn"
-                        title="Hapus Profil"
-                    >
-                        🗑️
-                    </button>
                 </div>
             </div>
 
