@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase";
 
 // ── Password Akses Admin ───────────────────────────────────────────────────
 const SUPER_ADMIN_PASSWORD = "katiunand2025"; // Akses penuh ke seluruh fitur & tab
-const PJ_DAERAH_PASSWORD = "pjdaerah2025";    // Akses khusus PJ Wilayah / Direktori Alumni
+const PJ_DAERAH_PASSWORD = "admin2";         // Akses khusus PJ Wilayah / Direktori Alumni
 
 const ALL_TABS = [
     { key: "talent_pool",     label: "Talent Pool",       icon: "👤", nameField: "nama",         roles: ["super_admin"] },
