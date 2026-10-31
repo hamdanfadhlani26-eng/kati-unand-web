@@ -27,6 +27,22 @@ const JENIS_PEKERJAAN_OPTIONS = [
     "Lainnya",
 ];
 
+const BIDANG_PEKERJAAN_OPTIONS = [
+    "Teknik Industri",
+    "Manajemen & Bisnis",
+    "Teknologi & IT",
+    "Keuangan & Akuntansi",
+    "Supply Chain & Logistik",
+    "Quality & HSE",
+    "Manufaktur & Produksi",
+    "Konsultan & Advisory",
+    "Marketing & Sales",
+    "SDM / HR",
+    "Penelitian & Akademik",
+    "Wirausaha",
+    "Lainnya",
+];
+
 export default function AdminPage() {
     const [authed, setAuthed] = useState(false);
     const [adminRole, setAdminRole] = useState(null); // 'super_admin' | 'pj_daerah'
@@ -613,6 +629,20 @@ export default function AdminPage() {
                                                     <option key={opt} value={opt}>{opt}</option>
                                                 ))}
                                             </select>
+                                        ) : key === "bidang_pekerjaan" ? (
+                                            <select
+                                                value={editingData[key] || "Lainnya"}
+                                                onChange={(e) => setEditingData({ ...editingData, [key]: e.target.value })}
+                                                style={{
+                                                    padding: "0.65rem", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
+                                                    borderRadius: "8px", color: "#f1f5f9", fontSize: "0.9rem",
+                                                    fontFamily: "var(--font-body), sans-serif",
+                                                }}
+                                            >
+                                                {BIDANG_PEKERJAAN_OPTIONS.map((opt) => (
+                                                    <option key={opt} value={opt}>{opt}</option>
+                                                ))}
+                                            </select>
                                         ) : key === "kategori" && activeTab === "alumni_products" ? (
                                             <select
                                                 value={editingData[key] || "F&B / Kuliner"}
@@ -717,6 +747,20 @@ export default function AdminPage() {
                                                 }}
                                             >
                                                 {JENIS_PEKERJAAN_OPTIONS.map((opt) => (
+                                                    <option key={opt} value={opt}>{opt}</option>
+                                                ))}
+                                            </select>
+                                        ) : key === "bidang_pekerjaan" ? (
+                                            <select
+                                                value={addingData[key] || "Lainnya"}
+                                                onChange={(e) => setAddingData({ ...addingData, [key]: e.target.value })}
+                                                style={{
+                                                    padding: "0.65rem", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
+                                                    borderRadius: "8px", color: "#f1f5f9", fontSize: "0.9rem",
+                                                    fontFamily: "var(--font-body), sans-serif",
+                                                }}
+                                            >
+                                                {BIDANG_PEKERJAAN_OPTIONS.map((opt) => (
                                                     <option key={opt} value={opt}>{opt}</option>
                                                 ))}
                                             </select>
