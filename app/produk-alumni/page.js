@@ -1,7 +1,34 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
+
+const AlumniBusinessMap = dynamic(
+  () => import("@/components/AlumniBusinessMap"),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        style={{
+          background: "rgba(15, 23, 42, 0.7)",
+          border: "1px solid rgba(255, 255, 255, 0.08)",
+          borderRadius: "16px",
+          height: "650px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "1rem",
+          color: "#94a3b8",
+        }}
+      >
+        <div style={{ fontSize: "2.5rem" }}>🗺️</div>
+        <div style={{ fontSize: "1rem", fontWeight: 600 }}>Memuat Peta Interaktif KATUA Network...</div>
+      </div>
+    ),
+  }
+);
 
 const WA_ADMIN = "6281261739191";
 
@@ -19,6 +46,7 @@ const KATEGORI_LIST = [
 const TIPE_LIST = ["Semua Tipe", "Produk", "Jasa"];
 
 export default function ProdukAlumniPage() {
+  const [viewMode, setViewMode] = useState("catalog"); // "catalog" | "map"
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -219,11 +247,99 @@ export default function ProdukAlumniPage() {
               <span>＋</span> Daftarkan Usaha Anda
             </a>
           </motion.div>
+
+          {/* ── VIEW MODE TOGGLE (Katalog ⟷ Peta Usaha) ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "2.5rem",
+            }}
+          >
+            <div
+              style={{
+                display: "inline-flex",
+                background: "rgba(15, 23, 42, 0.85)",
+                border: "1px solid rgba(255, 255, 255, 0.12)",
+                borderRadius: "999px",
+                padding: "0.35rem",
+                gap: "0.35rem",
+                backdropFilter: "blur(12px)",
+                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setViewMode("catalog")}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  padding: "0.6rem 1.4rem",
+                  borderRadius: "999px",
+                  border: "none",
+                  fontSize: "0.88rem",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  background:
+                    viewMode === "catalog"
+                      ? "linear-gradient(135deg, #2563eb, #1d4ed8)"
+                      : "transparent",
+                  color: viewMode === "catalog" ? "#ffffff" : "#94a3b8",
+                  boxShadow:
+                    viewMode === "catalog"
+                      ? "0 4px 16px rgba(37,99,235,0.4)"
+                      : "none",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                <span>🛍️</span> Katalog Produk ({products.length})
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setViewMode("map")}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  padding: "0.6rem 1.4rem",
+                  borderRadius: "999px",
+                  border: "none",
+                  fontSize: "0.88rem",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  background:
+                    viewMode === "map"
+                      ? "linear-gradient(135deg, #10b981, #059669)"
+                      : "transparent",
+                  color: viewMode === "map" ? "#ffffff" : "#94a3b8",
+                  boxShadow:
+                    viewMode === "map"
+                      ? "0 4px 16px rgba(16,185,129,0.4)"
+                      : "none",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                <span>🗺️</span> Peta Usaha Alumni (109 Titik)
+              </button>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* ── FILTER & CONTROLS SECTION ── */}
-      <section style={{ maxWidth: "1200px", margin: "0 auto", padding: "2.5rem 1.5rem 1rem" }}>
+      {/* ── CONDITIONAL RENDER: KATALOG VS MAP ── */}
+      {viewMode === "map" ? (
+        <section style={{ maxWidth: "1280px", margin: "0 auto", padding: "1.5rem 1.5rem 4rem" }}>
+          <AlumniBusinessMap />
+        </section>
+      ) : (
+        <>
+          {/* ── FILTER & CONTROLS SECTION ── */}
+          <section style={{ maxWidth: "1200px", margin: "0 auto", padding: "2.5rem 1.5rem 1rem" }}>
         {/* Search bar & Type pills */}
         <div
           style={{
@@ -497,6 +613,8 @@ export default function ProdukAlumniPage() {
           </div>
         </div>
       </section>
+        </>
+      )}
 
       {/* ── MODAL DETAIL PRODUK ── */}
       <AnimatePresence>

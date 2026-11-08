@@ -1,0 +1,1528 @@
+[
+  {
+    "id": 1,
+    "name": "Palanta Coffee",
+    "address": "Komplek SBC 1 Blok O-20, Jl. STM No.70, Suka Maju, Medan Johor, Medan City, North Sumatra 20143",
+    "coords": {
+      "lat": 3.5413715999999997,
+      "lng": 98.6922123
+    },
+    "note": "",
+    "contributor": "HK",
+    "region": "Sumatera Utara",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=3.5413715999999997,98.6922123"
+  },
+  {
+    "id": 2,
+    "name": "Halona Food",
+    "address": "Jalan Karya Kasih, Komplek Palem Indah Johor Residence Blok C No. 1, Pangkalan Masyhur, Kec. Medan Johor, Kota Medan, Sumatera Utara 20147",
+    "coords": {
+      "lat": 3.532835,
+      "lng": 98.66686539999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Utara",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=3.532835,98.66686539999999"
+  },
+  {
+    "id": 3,
+    "name": "Karate-DO Dojo Graha Kirana",
+    "address": "HJ8F+XQX, Jl. Tasbih 2, Asam Kumbang, Kec. Medan Selayang, Kota Medan, Sumatera Utara 20122",
+    "coords": {
+      "lat": 3.5675052999999997,
+      "lng": 98.62428969999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Utara",
+    "category": "Kesehatan & Lifestyle",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=3.5675052999999997,98.62428969999999"
+  },
+  {
+    "id": 4,
+    "name": "Halona Agro",
+    "address": "Jalan Dusun IV Jl. Ps. VI, Ara Condong, Kec. Stabat, Kabupaten Langkat, Sumatera Utara 20811",
+    "coords": {
+      "lat": 3.776791,
+      "lng": 98.480418
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Utara",
+    "category": "Agribisnis & Pertanian",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=3.776791,98.480418"
+  },
+  {
+    "id": 5,
+    "name": "Anamal Jaya",
+    "address": "Jl. Jamin Ginting No.233, Padang Bulan, Kec. Medan Baru, Kota Medan, Sumatera Utara 20135",
+    "coords": {
+      "lat": 3.5665785,
+      "lng": 98.66168599999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=3.5665785,98.66168599999999"
+  },
+  {
+    "id": 6,
+    "name": "Depot Air Minum isi ulang\"ANNASYA\"",
+    "address": "Jl. Lumba-Lumba Raya, Tangkahan, Kec. Medan Labuhan, Kota Medan, Sumatera Utara 20251",
+    "coords": {
+      "lat": 3.6878165999999997,
+      "lng": 98.7007055
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Utara",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=3.6878165999999997,98.7007055"
+  },
+  {
+    "id": 7,
+    "name": "erKat Barbershop",
+    "address": "Jl. Perjuangan komplek Golden Setiabudi No.A2, Tj. Rejo, Kec. Medan Sunggal, Kota Medan, Sumatera Utara 20154",
+    "coords": {
+      "lat": 3.5721057,
+      "lng": 98.6292186
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Utara",
+    "category": "Kesehatan & Lifestyle",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=3.5721057,98.6292186"
+  },
+  {
+    "id": 8,
+    "name": "PT. GLOBAL SOLID AGRINDO",
+    "address": "Jln. Pulau Simelue No.18, M A B A R, Medan Deli, Medan City, North Sumatra 20242",
+    "coords": {
+      "lat": 3.6637024,
+      "lng": 98.6757655
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Utara",
+    "category": "Agribisnis & Pertanian",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=3.6637024,98.6757655"
+  },
+  {
+    "id": 9,
+    "name": "GUSM Techno",
+    "address": "GMGH+HJ3, Jl. Eka Sama Perumahan Taman Pecatu Indah, Gedung Johor, Kec. Medan Johor, Kota Medan, Sumatera Utara",
+    "coords": {
+      "lat": 3.5262944,
+      "lng": 98.6790355
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Utara",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=3.5262944,98.6790355"
+  },
+  {
+    "id": 10,
+    "name": "Berkah Andalas",
+    "address": "Jl. Durian No.95, Labuh Baru Tim., Kec. Payung Sekaki, Kota Pekanbaru, Riau 28122",
+    "coords": {
+      "lat": 0.517038,
+      "lng": 101.4210852
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=0.517038,101.4210852"
+  },
+  {
+    "id": 11,
+    "name": "Kek Pisang Villa Outlet Botania",
+    "address": "Ruko Botania Garden Blok B2 No. 12 Jl. Botania, Belian, Batu Besar, Kec. Batam Kota, Kota Batam, Kepulauan Riau 29466",
+    "coords": {
+      "lat": 1.1262942999999999,
+      "lng": 104.099206
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Agribisnis & Pertanian",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=1.1262942999999999,104.099206"
+  },
+  {
+    "id": 12,
+    "name": "Kek Pisang Villa Outlet Nagoya",
+    "address": "ID, Jl. Imam Bonjol No.51 Samping Hotel Nagoya Plasa Lubuk Baja Kota Lubuk Baja, Tj. Buntung, Kec. Bengkong, Kota Batam, Kepulauan Riau 29432",
+    "coords": {
+      "lat": 1.1464717,
+      "lng": 104.0106381
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=1.1464717,104.0106381"
+  },
+  {
+    "id": 13,
+    "name": "Atha Cell",
+    "address": "Pasar Siulak Gedang RT. 04, Mukai Tengah, Kec. Siulak, Kabupaten Kerinci, Jambi 37161",
+    "coords": {
+      "lat": -1.9674709,
+      "lng": 101.35426939999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Lainnya",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-1.9674709,101.35426939999999"
+  },
+  {
+    "id": 14,
+    "name": "Rendang Gadih Payakumbuh",
+    "address": "Jln Soekarno Hatta Ruko Depan SPBU Koto Nan Ampek, Bulakan Balai Kandih, Kec. Payakumbuh Bar., Kota Payakumbuh, Sumatera Barat 26225",
+    "coords": {
+      "lat": -0.24730159999999998,
+      "lng": 100.61155029999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.24730159999999998,100.61155029999999"
+  },
+  {
+    "id": 15,
+    "name": "Rendang Gadih Tangerang",
+    "address": "Jl. Raya Binong No.39, Binong, Kec. Curug, Kabupaten Tangerang, Banten 15180",
+    "coords": {
+      "lat": -6.231046699999999,
+      "lng": 106.58989349999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.231046699999999,106.58989349999999"
+  },
+  {
+    "id": 16,
+    "name": "Rumah Produksi Rendang Gadih",
+    "address": "Jl. Anthurium No.A1, Payolansek, Kec. Payakumbuh Bar., Kota Payakumbuh, Sumatera Barat 26225",
+    "coords": {
+      "lat": -0.2347754,
+      "lng": 100.6046027
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.2347754,100.6046027"
+  },
+  {
+    "id": 17,
+    "name": "Donut Trums",
+    "address": "Jl. Samudera, Purus, Kec. Padang Bar., Kota Padang, Sumatera Barat 25115",
+    "coords": {
+      "lat": -0.9352349999999999,
+      "lng": 100.3511231
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9352349999999999,100.3511231"
+  },
+  {
+    "id": 18,
+    "name": "Donut Trums",
+    "address": "Jl. Kp. Kalawi barat No.27, Lubuk Lintah, Kec. Kuranji, Kota Padang, Sumatera Barat 25172",
+    "coords": {
+      "lat": -0.9209219999999999,
+      "lng": 100.38801749999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9209219999999999,100.38801749999999"
+  },
+  {
+    "id": 19,
+    "name": "WH8 HUB",
+    "address": "Jl. Batang Anai No.11, Rimbo Kaluang, Kec. Padang Utara, Kota Padang, Sumatera Barat 25114",
+    "coords": {
+      "lat": -0.9266993,
+      "lng": 100.3592998
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9266993,100.3592998"
+  },
+  {
+    "id": 20,
+    "name": "RAJO CORNER",
+    "address": "Jl. Batang Anai Kelurahan No.11, Rimbo Kaluang, Kec. Padang Utara, Kota Padang, Sumatera Barat",
+    "coords": {
+      "lat": -0.9266998999999999,
+      "lng": 100.35929929999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9266998999999999,100.35929929999999"
+  },
+  {
+    "id": 21,
+    "name": "Pusako Coffee",
+    "address": "Jl. Raya Indarung-Rimbo Datar Cengkeh No.22, Bandar Buat, Kec. Lubuk Kilangan, Kota Padang, Sumatera Barat 25225",
+    "coords": {
+      "lat": -0.9521073999999999,
+      "lng": 100.4212575
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9521073999999999,100.4212575"
+  },
+  {
+    "id": 22,
+    "name": "V COFFEE",
+    "address": "Jl. Jaksa Agung R.Soeprapto No.3, Rimbo Kaluang, Kec. Padang Bar., Kota Padang, Sumatera Barat 25111",
+    "coords": {
+      "lat": -0.9267057999999999,
+      "lng": 100.3604476
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9267057999999999,100.3604476"
+  },
+  {
+    "id": 23,
+    "name": "RAFTA Engineers & Consultants",
+    "address": "Jl. Raffless Hills Boulevard No.23 Blok LT, Sukatani, Kec. Tapos, Kota Depok, Jawa Barat 16454",
+    "coords": {
+      "lat": -6.3940984,
+      "lng": 106.8997811
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Agribisnis & Pertanian",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.3940984,106.8997811"
+  },
+  {
+    "id": 24,
+    "name": "Sangsaka Konveksi Pekanbaru",
+    "address": "Depan SMA Muhammadiyah, Jl. KH. Ahmad Dahlan, Kp. Tengah, Kec. Sukajadi, Kota Pekanbaru, Riau 28128",
+    "coords": {
+      "lat": 0.5116056999999999,
+      "lng": 101.4380959
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=0.5116056999999999,101.4380959"
+  },
+  {
+    "id": 25,
+    "name": "PLAZA Laptop dan Komputer - Padang",
+    "address": "Plaza Andalas, Jln. Pemuda, Jl. Blk. Olo lti 2 No.114 - 115, Olo, Kec. Padang Bar., Kota Padang, Sumatera Barat 25122",
+    "coords": {
+      "lat": -0.950545,
+      "lng": 100.35567859999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.950545,100.35567859999999"
+  },
+  {
+    "id": 26,
+    "name": "PT Asnor Manajemen Indonesia",
+    "address": "Komplek Ruko Papa Mama Residence 1 Blok A No. 12A",
+    "coords": {
+      "lat": 1.1147344,
+      "lng": 104.0881544
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Lainnya",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=1.1147344,104.0881544"
+  },
+  {
+    "id": 27,
+    "name": "PT Carano Integrasi Teknologi",
+    "address": "Jl. S. Parman No.147C, RT.001/RW.004, Ulak Karang Sel., Kec. Padang Utara, Kota Padang, Sumatera Barat",
+    "coords": {
+      "lat": -0.9153186,
+      "lng": 100.34998979999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9153186,100.34998979999999"
+  },
+  {
+    "id": 28,
+    "name": "ZETTALINK (PT Salingka Telekomunikasi Nusantara)",
+    "address": "Jl. S. Parman No.147C, Ulak Karang Sel., Kec. Padang Utara, Kota Padang, Sumatera Barat 25134",
+    "coords": {
+      "lat": -0.9153205,
+      "lng": 100.3499714
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9153205,100.3499714"
+  },
+  {
+    "id": 29,
+    "name": "Deflash Laundry",
+    "address": "3CFP+MQH, Jl. Dr. Moh. Hatta, Pasar Ambacang, Kec. Pauh, Kota Padang, Sumatera Barat 25176",
+    "coords": {
+      "lat": -0.9258069999999999,
+      "lng": 100.4369732
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kesehatan & Lifestyle",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9258069999999999,100.4369732"
+  },
+  {
+    "id": 30,
+    "name": "Laundry Care",
+    "address": "Jl. Dr. Moh. Hatta No.56, Ps. Ambacang, Kec. Kuranji, Kota Padang, Sumatera Barat 25176",
+    "coords": {
+      "lat": -0.9304975,
+      "lng": 100.41805719999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kesehatan & Lifestyle",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9304975,100.41805719999999"
+  },
+  {
+    "id": 31,
+    "name": "Pinci Konveksi Padang",
+    "address": "Jl. KIS. Mangunsarkoro No.54, Jati Baru, Kec. Padang Tim., Kota Padang, Sumatera Barat 25129",
+    "coords": {
+      "lat": -0.9340510999999999,
+      "lng": 100.3619184
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9340510999999999,100.3619184"
+  },
+  {
+    "id": 32,
+    "name": "R3i Catering",
+    "address": "Jl. Linggarjati No.IX no 11, Parupuk Tabing, Kec. Koto Tangah, Kota Padang, Sumatera Barat 25155",
+    "coords": {
+      "lat": -0.8689441,
+      "lng": 100.34775119999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.8689441,100.34775119999999"
+  },
+  {
+    "id": 33,
+    "name": "WH8 STORE CCTV PADANG",
+    "address": "Jl. Pemuda No.17f, Olo, Kec. Padang Bar., Kota Padang, Sumatera Barat 25118",
+    "coords": {
+      "lat": -0.9499472999999999,
+      "lng": 100.3550138
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9499472999999999,100.3550138"
+  },
+  {
+    "id": 34,
+    "name": "Sahabat Bumi Teknovasi",
+    "address": "Jl. Enggang IV No.4, Parupuk Tabing, Kec. Koto Tangah, Kota Padang, Sumatera Barat 25173",
+    "coords": {
+      "lat": -0.8888415,
+      "lng": 100.3502267
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.8888415,100.3502267"
+  },
+  {
+    "id": 35,
+    "name": "Kek Pisang Villa Outlet Batam Centre",
+    "address": "Komplek Nusantara Golden, Jl. Raja H. Fisabilillah No.3 blok A, Tlk. Tering, Kec. Batam Kota, Kota Batam, Kepulauan Riau 29461",
+    "coords": {
+      "lat": 1.1274984,
+      "lng": 104.0513735
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=1.1274984,104.0513735"
+  },
+  {
+    "id": 36,
+    "name": "Kek Pisang Villa Outlet Batu Aji",
+    "address": "Ruko Villa Mukakuning Blok A2 No. 10 Jl. Let Jend Suprapto Batu Aji, Tembesi, Kec. Sagulung, Kota Batam, Kepulauan Riau 29434",
+    "coords": {
+      "lat": 1.0406038,
+      "lng": 103.99171729999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=1.0406038,103.99171729999999"
+  },
+  {
+    "id": 37,
+    "name": "AzzamKU Travel Umroh dan Hajj",
+    "address": "Jl. Imam Munandar No.05, KelurahanTengkerang Tim, Kec. Tenayan Raya, Kota Pekanbaru, Riau 28131",
+    "coords": {
+      "lat": 0.4969645,
+      "lng": 101.48271779999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=0.4969645,101.48271779999999"
+  },
+  {
+    "id": 38,
+    "name": "SMJ Workshop",
+    "address": "Jl. Cemara, Sidomulyo Bar., Kec. Tampan, Kota Pekanbaru, Riau 28294",
+    "coords": {
+      "lat": 0.4469218,
+      "lng": 101.40151999999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Retail & Fashion",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=0.4469218,101.40151999999999"
+  },
+  {
+    "id": 39,
+    "name": "Workshop CV JAMTA",
+    "address": "75QC+GPW, Air Jamban, Mandau, Bengkalis Regency, Riau",
+    "coords": {
+      "lat": 1.2888944999999998,
+      "lng": 101.17181389999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Retail & Fashion",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=1.2888944999999998,101.17181389999999"
+  },
+  {
+    "id": 40,
+    "name": "PT Bina Enviro Nusa",
+    "address": "59HP+G56, Jalan TPU Air Dingin, Balai Gadang, Kec. Koto Tangah, Kota Padang, Sumatera Barat",
+    "coords": {
+      "lat": -0.821241,
+      "lng": 100.3853506
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.821241,100.3853506"
+  },
+  {
+    "id": 41,
+    "name": "Berkah Andalas Factory",
+    "address": "CC8F+MMJ, Kubang Jaya, Siak Hulu, Kampar Regency, Riau 28293",
+    "coords": {
+      "lat": 0.4167295,
+      "lng": 101.4241426
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=0.4167295,101.4241426"
+  },
+  {
+    "id": 42,
+    "name": "Klinik Griya Sehat",
+    "address": "Griya Cileungsi 5, Jl. Raya KH Umar Rw. Ilat Ruko K.1 No.7, Mampir, Kec. Cileungsi, Kabupaten Bogor, Jawa Barat 16820",
+    "coords": {
+      "lat": -6.4226819,
+      "lng": 106.99383259999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Kesehatan & Lifestyle",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.4226819,106.99383259999999"
+  },
+  {
+    "id": 43,
+    "name": "Randall Steel",
+    "address": "Jl. Parung Utama No.116, Bojong Kulur, Kec. Gn. Putri, Kabupaten Bogor, Jawa Barat 16969",
+    "coords": {
+      "lat": -6.3356772,
+      "lng": 106.9686179
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.3356772,106.9686179"
+  },
+  {
+    "id": 44,
+    "name": "Cantigi Bus Pariwisata dan Rental Mobil",
+    "address": "Jalan Drs moh hatta No.7, Binuang Kp. Dalam, Kec. Pauh, Kota Padang, Sumatera Barat 25161",
+    "coords": {
+      "lat": -0.9303212999999999,
+      "lng": 100.4235094
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9303212999999999,100.4235094"
+  },
+  {
+    "id": 45,
+    "name": "RA Autowash",
+    "address": "Jalan Drs Moh Hatta No.8, Binuang Kp. Dalam, Kec. Pauh, Kota Padang, Sumatera Barat 25161",
+    "coords": {
+      "lat": -0.9303174,
+      "lng": 100.4234645
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9303174,100.4234645"
+  },
+  {
+    "id": 46,
+    "name": "Rumah KOST Buk Yen",
+    "address": "Jl. Dr. Moh. Hatta No.17, Binuang Kp. Dalam, Kec. Pauh, Kota Padang, Sumatera Barat 25176",
+    "coords": {
+      "lat": -0.9293528,
+      "lng": 100.4227583
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9293528,100.4227583"
+  },
+  {
+    "id": 47,
+    "name": "Gilplas Sumbar",
+    "address": "Jl. By Pass, Batipuh Panjang, Kec. Koto Tangah, Kota Padang, Sumatera Barat 25586",
+    "coords": {
+      "lat": -0.8119297999999999,
+      "lng": 100.32820149999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.8119297999999999,100.32820149999999"
+  },
+  {
+    "id": 48,
+    "name": "MW Motor",
+    "address": "Jalan simpang piai no 74, Kelurahan, Cupak Tangah, Kec. Pauh, Kota Padang, Sumatera Barat 25162",
+    "coords": {
+      "lat": -0.9371778,
+      "lng": 100.43346939999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9371778,100.43346939999999"
+  },
+  {
+    "id": 49,
+    "name": "Pedia Computer Padang (Menjual Komputer baru, laptop baru, laptop bekas \npremium bergaransi , Servis PC/Laptop)",
+    "address": "Jl. Prof. Hamka No.5 D, Parupuk Tabing, Kec. Koto Tangah, Kota Padang, Sumatera Barat 25171",
+    "coords": {
+      "lat": -0.889065,
+      "lng": 100.35168589999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.889065,100.35168589999999"
+  },
+  {
+    "id": 50,
+    "name": "Apotek R24 Marbella Botania",
+    "address": "Ruko marbella, Blk. A1 No.3, Belian, Kec. Batam Kota, Kota Batam, Kepulauan Riau 29464",
+    "coords": {
+      "lat": 1.1235404,
+      "lng": 104.0968797
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Agribisnis & Pertanian",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=1.1235404,104.0968797"
+  },
+  {
+    "id": 51,
+    "name": "Gnzy Barbershop",
+    "address": "Jl. Inpres No.45, Perhentian Marpoyan, Kec. Marpoyan Damai, Kota Pekanbaru, Riau 28289",
+    "coords": {
+      "lat": 0.44883219999999996,
+      "lng": 101.42534839999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Kesehatan & Lifestyle",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=0.44883219999999996,101.42534839999999"
+  },
+  {
+    "id": 52,
+    "name": "PT. Inersia Daya Kavitasi (INDK Industrial Service)",
+    "address": "THE CEO, Jl. TB Simatupang No.18C, RT.7/RW.9, Cilandak Bar., Kec. Cilandak, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12430",
+    "coords": {
+      "lat": -6.291334399999999,
+      "lng": 106.7974787
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.291334399999999,106.7974787"
+  },
+  {
+    "id": 53,
+    "name": "Alesha store",
+    "address": "Jl. Eka Surya Komplek Grand Monaco, Deli Tua, Kec. Medan Johor, Medan, Sumatera Utara",
+    "coords": {
+      "lat": 3.5145693,
+      "lng": 98.66704399999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Utara",
+    "category": "Retail & Fashion",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=3.5145693,98.66704399999999"
+  },
+  {
+    "id": 54,
+    "name": "Cuci Mobil Auto Station",
+    "address": "Jl. By Pass No.Kel Km 8, Ps. Ambacang, Kec. Kuranji, Kota Padang, Sumatera Barat 25176",
+    "coords": {
+      "lat": -0.9299105999999999,
+      "lng": 100.3987952
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9299105999999999,100.3987952"
+  },
+  {
+    "id": 55,
+    "name": "LAPAK ANGAH BEWOK",
+    "address": "Jl. Bukittinggi - Padang Sidempuan, Gadut, Kec. Tilatang Kamang, Kabupaten Agam, Sumatera Barat 26113",
+    "coords": {
+      "lat": -0.2794291,
+      "lng": 100.36613829999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.2794291,100.36613829999999"
+  },
+  {
+    "id": 56,
+    "name": "Optik Century",
+    "address": "3925+GV6, Jl.Pasar baru no.68, simpang Jl. Permindo No.3, Kp. Jao, Kec. Padang Bar., Kota Padang, Sumatera Barat",
+    "coords": {
+      "lat": -0.9488293,
+      "lng": 100.3596541
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kesehatan & Lifestyle",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9488293,100.3596541"
+  },
+  {
+    "id": 57,
+    "name": "HolovisionStore",
+    "address": "HRWV+F4H, Jl. Tole Iskandar, Sukmajaya, Kec. Sukmajaya, Kota Depok, Jawa Barat 16411",
+    "coords": {
+      "lat": -6.4411369999999994,
+      "lng": 107.0559578
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Retail & Fashion",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.4411369999999994,107.0559578"
+  },
+  {
+    "id": 58,
+    "name": "Cendana Auto Service",
+    "address": "Jl. Raya Bypass No.KM 8, Ps. Ambacang, Kec. Kuranji, Kota Padang, Sumatera Barat 25176",
+    "coords": {
+      "lat": -0.9312243,
+      "lng": 100.3989185
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9312243,100.3989185"
+  },
+  {
+    "id": 59,
+    "name": "Nasi goreng padang da Wiro",
+    "address": "Jl. Curugan No.100, Tanah Baru, Kecamatan Beji, Kota Depok, Jawa Barat 16426",
+    "coords": {
+      "lat": -6.371803,
+      "lng": 106.7963012
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.371803,106.7963012"
+  },
+  {
+    "id": 60,
+    "name": "Herry mart 2",
+    "address": "W9RX+624, Dusun Baru, Sungai Penuh, Sungai Penuh City, Jambi 37111",
+    "coords": {
+      "lat": -2.0594755,
+      "lng": 101.3975758
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Lainnya",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-2.0594755,101.3975758"
+  },
+  {
+    "id": 61,
+    "name": "wiyuka coffee",
+    "address": "Jl. Jend. Ahmad Yani No.Desa, Pelayang Raya, Kec. Sungai Bungkal, Kota Sungai Penuh, Jambi 37111",
+    "coords": {
+      "lat": -2.0651885,
+      "lng": 101.3907943
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Lainnya",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-2.0651885,101.3907943"
+  },
+  {
+    "id": 62,
+    "name": "King Sport & Sablon",
+    "address": "JQ4X+435, Jl. Remaja, Mampang, Kec. Pancoran Mas, Kota Depok, Jawa Barat 16433",
+    "coords": {
+      "lat": -6.3947262,
+      "lng": 106.7977325
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.3947262,106.7977325"
+  },
+  {
+    "id": 63,
+    "name": "Ben's Mart",
+    "address": "28VR+GW8, Jl. Lintas Sungai Penuh-Padang, Koto Aro, Kec. Siulak, Kabupaten Kerinci, Jambi 37161",
+    "coords": {
+      "lat": -1.9562149,
+      "lng": 101.34223039999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Retail & Fashion",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-1.9562149,101.34223039999999"
+  },
+  {
+    "id": 64,
+    "name": "Herry Mart",
+    "address": "Jl. Soekarno Hatta No. 42, Pelayang Raya, Sungai Bungkal, Sungai Ning, Kec. Sungai Penuh, Kota Sungai Penuh, Jambi 37152",
+    "coords": {
+      "lat": -2.0689613,
+      "lng": 101.3855978
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Lainnya",
+    "category": "Retail & Fashion",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-2.0689613,101.3855978"
+  },
+  {
+    "id": 65,
+    "name": "Sate & Soto Padang Lapak Bagindo",
+    "address": "Jl. Perum Pura, Tajurhalang, Kec. Tajur Halang, Kabupaten Bogor, Jawa Barat 16320",
+    "coords": {
+      "lat": -6.489184,
+      "lng": 106.7720882
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.489184,106.7720882"
+  },
+  {
+    "id": 66,
+    "name": "Wafaby Guest House Homestay Hotel",
+    "address": "Jl. Latsitarda, Parik Rantang, Kec. Payakumbuh Bar., Kota Payakumbuh, Sumatera Barat 26219",
+    "coords": {
+      "lat": -0.2240625,
+      "lng": 100.62505449999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.2240625,100.62505449999999"
+  },
+  {
+    "id": 67,
+    "name": "Ben Grafika",
+    "address": "Jl. Sutan Syahrir No.149, Silaing Bawah, Kec. Padang Panjang Bar., Kota Padang Panjang, Sumatera Barat 27118",
+    "coords": {
+      "lat": -0.46587039999999996,
+      "lng": 100.3832692
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.46587039999999996,100.3832692"
+  },
+  {
+    "id": 68,
+    "name": "KejuLasi",
+    "address": "MFH2+FRQ, Jl. Lasi Tuo, Lasi, Kec. Candung, Kabupaten Agam, Sumatera Barat 26191",
+    "coords": {
+      "lat": -0.3224063,
+      "lng": 100.4561411
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.3224063,100.4561411"
+  },
+  {
+    "id": 69,
+    "name": "Miss Mochi Ice Cream",
+    "address": "Jl. Teknologi VI No.H10, Surau Gadang, Kec. Nanggalo, Kota Padang, Sumatera Barat 25173",
+    "coords": {
+      "lat": -0.8988474,
+      "lng": 100.3711644
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.8988474,100.3711644"
+  },
+  {
+    "id": 70,
+    "name": "Alamanda Babystore",
+    "address": "Grand Depok City, Jl. Alamanda II No.D2 32, Kalimulya, Kec. Cilodong, Kota Depok, Jawa Barat 16413",
+    "coords": {
+      "lat": -6.4286023,
+      "lng": 106.8256287
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.4286023,106.8256287"
+  },
+  {
+    "id": 71,
+    "name": "Tanjuang Laundry, Cabang 2",
+    "address": "Jl. Adipati Kertamanah, Baleendah, Kec. Baleendah, Kabupaten Bandung, Jawa Barat 40375",
+    "coords": {
+      "lat": -7.003684,
+      "lng": 107.61770589999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Kesehatan & Lifestyle",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-7.003684,107.61770589999999"
+  },
+  {
+    "id": 72,
+    "name": "Tanjuang Laundry, Cabang 3 , Laundry kiloan dan satuan",
+    "address": "Jl. Paniisan ruko No.4, Rancamulya, Kec. Pameungpeuk, Kabupaten Bandung, Jawa Barat 40376",
+    "coords": {
+      "lat": -7.0110437,
+      "lng": 107.59799079999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Kesehatan & Lifestyle",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-7.0110437,107.59799079999999"
+  },
+  {
+    "id": 73,
+    "name": "Laundry Care Sutomo",
+    "address": "Jl. Dr. Sutomo No.111 A, Kubu Marapalam, Kec. Padang Tim., Kota Padang, Sumatera Barat 25152",
+    "coords": {
+      "lat": -0.9506243999999999,
+      "lng": 100.38568479999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kesehatan & Lifestyle",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9506243999999999,100.38568479999999"
+  },
+  {
+    "id": 74,
+    "name": "Laundry Care Pasar Baru",
+    "address": "3CCH+3HM Aysha Cosmetik, Dekat, Jl. Psr. Baru, Cupak Tangah, Kec. Pauh, Kota Padang, Sumatera Barat 25176",
+    "coords": {
+      "lat": -0.9297422,
+      "lng": 100.42895399999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kesehatan & Lifestyle",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9297422,100.42895399999999"
+  },
+  {
+    "id": 75,
+    "name": "Laundry Baleendah, Laundry Kiloan, Laundry satuan, Laundry Karpet, Tanjuang \nLaundry",
+    "address": "XJVG+M62, Jl. Jaksa Naranata, Baleendah, Kec. Baleendah, Kabupaten Bandung, Jawa Barat 40375",
+    "coords": {
+      "lat": -7.005725099999999,
+      "lng": 107.6255171
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Kesehatan & Lifestyle",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-7.005725099999999,107.6255171"
+  },
+  {
+    "id": 76,
+    "name": "GHAZI MOTOR SPAREPART..",
+    "address": "7PR9+6W6, Jl.padang muko-muko;padang marapalam, Lakitan Utara, Kec. Lengayang, Kabupaten Pesisir Selatan, Sumatera Barat 25663",
+    "coords": {
+      "lat": -1.7094650999999998,
+      "lng": 100.71974519999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-1.7094650999999998,100.71974519999999"
+  },
+  {
+    "id": 77,
+    "name": "Sate Padang Mudo",
+    "address": "Jl. Depati Hamzah, Semabung Lama, Kec. Bukitintan, Kota Pangkal Pinang, Kepulauan Bangka Belitung 33684",
+    "coords": {
+      "lat": -2.1356911,
+      "lng": 106.1243243
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Lainnya",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-2.1356911,106.1243243"
+  },
+  {
+    "id": 78,
+    "name": "Sate Sutan Mudo Pangkalpinang",
+    "address": "V4F5+478, Jl. KH. Abdurahman Siddik, Rw. Bangun, Kec. Taman Sari, Kota Pangkal Pinang, Kepulauan Bangka Belitung 33684",
+    "coords": {
+      "lat": -2.1272253,
+      "lng": 106.1082129
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Lainnya",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-2.1272253,106.1082129"
+  },
+  {
+    "id": 79,
+    "name": "VIER COFFEE AND EATERY",
+    "address": "Jl. Batang Kasang, Alai Parak Kopi, Kec. Padang Utara, Kota Padang, Sumatera Barat 25173",
+    "coords": {
+      "lat": -0.9274079,
+      "lng": 100.3640167
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9274079,100.3640167"
+  },
+  {
+    "id": 80,
+    "name": "PT. Sutan Kasim Aceh",
+    "address": "G86W+F5M, JL. Soekarno-Hatta, Dresa Meunasah Manyet, Ingin Jaya Aceh Besar, Meunasah Manyet, Kec. Ingin Jaya, Kabupaten Aceh Besar, Aceh 23241",
+    "coords": {
+      "lat": 5.5111918,
+      "lng": 95.34541929999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Lainnya",
+    "category": "Jasa, Logistik & Konstruksi",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=5.5111918,95.34541929999999"
+  },
+  {
+    "id": 81,
+    "name": "PT KARYA SUKA ABADI",
+    "address": "Jl. Raya KM 12, Jl. By Pass, Koto Panjang Ikua Koto, Koto Tangah, Padang City, West Sumatra 25586",
+    "coords": {
+      "lat": -0.8987356,
+      "lng": 100.3949112
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.8987356,100.3949112"
+  },
+  {
+    "id": 82,
+    "name": "Mitsubishi Suka Fajar Veteran",
+    "address": "Jl. Veteran No.14 A, Purus, Kec. Padang Bar., Kota Padang, Sumatera Barat 25115",
+    "coords": {
+      "lat": -0.940614,
+      "lng": 100.3548292
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.940614,100.3548292"
+  },
+  {
+    "id": 83,
+    "name": "Mitsubishi PT Suka Fajar Solok",
+    "address": "JL. Pandan ujung Tj. Harapan 27322, Ps. Pandan Air Mati, Kec. Tj. Harapan, Kota Solok, Sumatera Barat 27322",
+    "coords": {
+      "lat": -0.7880132999999999,
+      "lng": 100.6680365
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.7880132999999999,100.6680365"
+  },
+  {
+    "id": 84,
+    "name": "PT Suka Fajar - Payakumbuh",
+    "address": "no.276 Simp.Terminal, Jl. Soekarno - Hatta, Kubu Gadang, Kec. Payakumbuh Bar., Kota Payakumbuh, Sumatera Barat 26223",
+    "coords": {
+      "lat": -0.2459428,
+      "lng": 100.6117752
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.2459428,100.6117752"
+  },
+  {
+    "id": 85,
+    "name": "Grand Suka Hotel Pekanbaru",
+    "address": "Jl. Soekarno - Hatta No.KAV. 148, Delima, Kec. Tampan, Kota Pekanbaru, Riau 28294",
+    "coords": {
+      "lat": 0.49386939999999996,
+      "lng": 101.4187153
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=0.49386939999999996,101.4187153"
+  },
+  {
+    "id": 86,
+    "name": "PT. SUKA FAJAR",
+    "address": "Jl. Soekarno - Hatta No.Kav. 141, Tengkerang Bar., Kec. Marpoyan Damai, Kota Pekanbaru, Riau 28282",
+    "coords": {
+      "lat": 0.494374,
+      "lng": 101.419512
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Jasa, Logistik & Konstruksi",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=0.494374,101.419512"
+  },
+  {
+    "id": 87,
+    "name": "PT Suka Fajar - Teluk Kuantan",
+    "address": "Unnamed Rd,, Pintu Gobang, Kec. Kuantan Tengah, Kabupaten Kuantan Singingi, Riau 29566",
+    "coords": {
+      "lat": -0.5119798,
+      "lng": 101.5032628
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.5119798,101.5032628"
+  },
+  {
+    "id": 88,
+    "name": "PT. Suka Fajar Ltd.",
+    "address": "Jl. DI Panjaitan No.5, Langgini, Kec. Bangkinang, Kabupaten Kampar, Riau 28463",
+    "coords": {
+      "lat": 0.3447204,
+      "lng": 101.0205919
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=0.3447204,101.0205919"
+  },
+  {
+    "id": 89,
+    "name": "Mitsubishi Suka Fajar Jambi",
+    "address": "Jl. Jend. Sudirman No.12, RW.14, Tambak Sari, Kec. Jambi Sel., Kota Jambi, Jambi 33156",
+    "coords": {
+      "lat": -1.6136572999999999,
+      "lng": 103.6256567
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Lainnya",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-1.6136572999999999,103.6256567"
+  },
+  {
+    "id": 90,
+    "name": "Mitsubishi Suka Fajar Muara Bungo",
+    "address": "Jl. Jend. Sudirman No.750, Sungai Kerjan, Kec. Bungo Dani, Kabupaten Bungo, Jambi 37211",
+    "coords": {
+      "lat": -1.4951284999999999,
+      "lng": 102.1102174
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Lainnya",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-1.4951284999999999,102.1102174"
+  },
+  {
+    "id": 91,
+    "name": "Pt. Sutan Kasim",
+    "address": "Tanah Patah, Ratu Agung, Bengkulu City, Bengkulu",
+    "coords": {
+      "lat": -3.8071884999999996,
+      "lng": 102.2805631
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Lainnya",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-3.8071884999999996,102.2805631"
+  },
+  {
+    "id": 92,
+    "name": "Sutan Kasim Batam",
+    "address": "Komp Rafflesia City, Jl. Raja H. Fisabilillah, Tlk. Tering, Kec. Batam Kota, Kota Batam, Kepulauan Riau 29432",
+    "coords": {
+      "lat": 1.1333054,
+      "lng": 104.040464
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=1.1333054,104.040464"
+  },
+  {
+    "id": 93,
+    "name": "Karya Suka Abadi. PT",
+    "address": "Jl. Jend. Basuki Rachmat No.1780, Pahlawan, Kec. Kemuning, Kota Palembang, Sumatera Selatan 30151",
+    "coords": {
+      "lat": -2.9556212,
+      "lng": 104.747333
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Lainnya",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-2.9556212,104.747333"
+  },
+  {
+    "id": 94,
+    "name": "PT. Suka Fajar",
+    "address": "Jl. Letjen Suprapto No.21-C 17, RT.17/RW.3, Tanah Tinggi, Cempaka Putih, Central Jakarta City, Jakarta 10540",
+    "coords": {
+      "lat": -6.172063199999999,
+      "lng": 106.8624514
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.172063199999999,106.8624514"
+  },
+  {
+    "id": 95,
+    "name": "PT. Suka Melaju",
+    "address": "39C2+QR6, Jl. Ir. H. Juanda, Rimbo Kaluang, Kec. Padang Bar., Kota Padang, Sumatera Barat",
+    "coords": {
+      "lat": -0.9280729,
+      "lng": 100.35201699999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa, Logistik & Konstruksi",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9280729,100.35201699999999"
+  },
+  {
+    "id": 96,
+    "name": "8pluscoffee",
+    "address": "PRPM+M89, Jl. RE Martadinata, Gunungsari Ilir, Kec. Balikpapan Tengah, Kota Balikpapan, Kalimantan Timur",
+    "coords": {
+      "lat": -1.2633353,
+      "lng": 116.83336089999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Kalimantan",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-1.2633353,116.83336089999999"
+  },
+  {
+    "id": 97,
+    "name": "PT. Super Tirta Teknologi",
+    "address": "Gudang 88 No. A3A Kawasan Pergudangan Blessindo, Cirarab, Kec. Legok, Kabupaten Tangerang, Banten 15820",
+    "coords": {
+      "lat": -6.3236064999999995,
+      "lng": 106.5643947
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Jasa, Logistik & Konstruksi",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.3236064999999995,106.5643947"
+  },
+  {
+    "id": 98,
+    "name": "sajian pusako",
+    "address": "Blok A1 No F3, Jl. Bojong Menteng Residence, Bojong Menteng, Rawalumbu Subdistrict, Kota Bks, Jawa Barat 17117",
+    "coords": {
+      "lat": -6.295693099999999,
+      "lng": 106.9916791
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.295693099999999,106.9916791"
+  },
+  {
+    "id": 99,
+    "name": "Renus Global Indonesia - Cabang Bekasi",
+    "address": "Jl. Grand Residence Boulevard No.230, Cijengkol, Kec. Setu, Kabupaten Bekasi, Jawa Barat 17320",
+    "coords": {
+      "lat": -6.328904199999999,
+      "lng": 107.0335295
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.328904199999999,107.0335295"
+  },
+  {
+    "id": 100,
+    "name": "PT.Karya Suka Abadi (Dist Goodyear)",
+    "address": "Jl. Asrama No.24, Sei Sikambing C. II, Kec. Medan Helvetia, Kota Medan, Sumatera Utara 20123",
+    "coords": {
+      "lat": 3.5942013,
+      "lng": 98.627454
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Utara",
+    "category": "Jasa, Logistik & Konstruksi",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=3.5942013,98.627454"
+  },
+  {
+    "id": 101,
+    "name": "InfoSumbar Media HQ",
+    "address": "Komp, Jl. Griya Mawar Sembada Indah No.4 Blok G, Kp. Lapai, Kec. Nanggalo, Kota Padang, Sumatera Barat 25142",
+    "coords": {
+      "lat": -0.9053513,
+      "lng": 100.36170249999999
+    },
+    "note": "",
+    "contributor": "HK",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9053513,100.36170249999999"
+  },
+  {
+    "id": 102,
+    "name": "Papan bunga Talenta Florist Payakumbuh",
+    "address": "Gg. Cimpago Jl. Soekarno - Hatta No.32, Tj. Gadang, Kec. Payakumbuh Bar., Kota Payakumbuh, Sumatera Barat 26225",
+    "coords": {
+      "lat": -0.23910859999999998,
+      "lng": 100.6165716
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.23910859999999998,100.6165716"
+  },
+  {
+    "id": 103,
+    "name": "Kayana Cafe",
+    "address": "Jl. Berok Raya No.92, Kurao Pagang, Kec. Nanggalo, Kota Padang, Sumatera Barat 25173",
+    "coords": {
+      "lat": -0.8918457,
+      "lng": 100.3657569
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.8918457,100.3657569"
+  },
+  {
+    "id": 104,
+    "name": "VenuSa Bedsheet",
+    "address": "Jl. Komp. Unand No.07 blok D1/01, Padang Besi, Kec. Lubuk Kilangan, Kota Padang, Sumatera Barat 25157",
+    "coords": {
+      "lat": -0.9485952999999999,
+      "lng": 100.4542439
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Retail & Fashion",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9485952999999999,100.4542439"
+  },
+  {
+    "id": 105,
+    "name": "PT. Mitra Andalas Engineer",
+    "address": "Komp. Anggrek Mas 1, Blok I No.102, Taman Baloi, Kec. Batam Kota, Kota Batam, Kepulauan Riau 29444",
+    "coords": {
+      "lat": 1.1123295,
+      "lng": 104.0298875
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Riau",
+    "category": "Teknologi & Digital",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=1.1123295,104.0298875"
+  },
+  {
+    "id": 106,
+    "name": "Abara hotel",
+    "address": "Jl. Lintas Timur, Darussalam, Kec. Panyabungan, Kabupaten Mandailing Natal, Sumatera Utara 22976",
+    "coords": {
+      "lat": 0.8535623,
+      "lng": 99.5710665
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Utara",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=0.8535623,99.5710665"
+  },
+  {
+    "id": 107,
+    "name": "Sate Sutan Mudo",
+    "address": "Jl. S. Parman No.126, Lolong Belanti, Kec. Padang Utara, Kota Padang, Sumatera Barat 25133",
+    "coords": {
+      "lat": -0.9184730999999999,
+      "lng": 100.3506312
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.9184730999999999,100.3506312"
+  },
+  {
+    "id": 108,
+    "name": "Rumah makan famly",
+    "address": "Jl. Caman Raya No.57, RT.006/RW.003, Jatibening, Kec. Pd. Gede, Kota Bks, Jawa Barat 17412",
+    "coords": {
+      "lat": -6.2626189,
+      "lng": 106.94637349999999
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Jabodetabek & Banten",
+    "category": "Kuliner & F&B",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-6.2626189,106.94637349999999"
+  },
+  {
+    "id": 109,
+    "name": "Kedai lontong bu eli",
+    "address": "Jl. Cendrawasih No.14 blok L, RT.03/RW.16, Parupuk Tabing, Kec. Koto Tangah, Kota Padang, Sumatera Barat 25171",
+    "coords": {
+      "lat": -0.8854561999999999,
+      "lng": 100.3441361
+    },
+    "note": "",
+    "contributor": "cresti kalani",
+    "region": "Sumatera Barat",
+    "category": "Jasa & Usaha Lainnya",
+    "gmapsUrl": "https://www.google.com/maps/search/?api=1&query=-0.8854561999999999,100.3441361"
+  }
+]
