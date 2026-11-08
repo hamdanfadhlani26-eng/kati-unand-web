@@ -74,13 +74,13 @@ export default function AlumniBusinessMap() {
         scrollWheelZoom: true,
       });
 
-      // CartoDB Voyager tiles (crisp & modern light/dark contrast)
+      // OpenStreetMap tiles — gratis, tanpa API key
       L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
           attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-          subdomains: "abcd",
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          subdomains: "abc",
           maxZoom: 19,
         }
       ).addTo(map);
