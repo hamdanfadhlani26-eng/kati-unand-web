@@ -52,10 +52,10 @@ export default function ServicesPage() {
     <div>
       <div className="hero">
         <motion.div className="hero-breadcrumb" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          Beranda / Services
+          Beranda / Produk
         </motion.div>
         <motion.h1 className="hero-title" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}>
-          Temukan Layanan yang{" "}
+          Temukan Produk yang{" "}
           <motion.span style={{ color: "#2563eb", display: "inline-block" }} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.4 }}>
             Kamu Butuhkan
           </motion.span>
@@ -72,7 +72,7 @@ export default function ServicesPage() {
           </span>
           <input
             type="text"
-            placeholder="Cari layanan yang Anda butuhkan..."
+            placeholder="Cari produk yang Anda butuhkan..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{
@@ -125,7 +125,7 @@ export default function ServicesPage() {
         </motion.div>
 
         <motion.p style={{ fontSize: "0.85rem", color: "#888", marginBottom: "1.25rem" }} animate={{ opacity: 1 }} key={filtered.length} initial={{ opacity: 0.5 }} transition={{ duration: 0.2 }}>
-          <span style={{ fontWeight: 700, color: "#2563eb" }}>{filtered.length}</span> layanan ditemukan
+          <span style={{ fontWeight: 700, color: "#2563eb" }}>{filtered.length}</span> produk ditemukan
         </motion.p>
 
         <motion.div layout style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: "1.25rem" }}>
@@ -142,7 +142,7 @@ export default function ServicesPage() {
               <div style={{ display: "flex", justifyContent: "center", marginBottom: "0.6rem" }}>
                 <IconEmpty />
               </div>
-              <p>Tidak ada layanan yang cocok dengan pencarian.</p>
+              <p>Tidak ada produk yang cocok dengan pencarian.</p>
             </motion.div>
           )}
         </AnimatePresence>

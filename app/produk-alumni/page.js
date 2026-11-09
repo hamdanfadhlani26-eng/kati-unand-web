@@ -46,7 +46,7 @@ const KATEGORI_LIST = [
 const TIPE_LIST = ["Semua Tipe", "Produk", "Jasa"];
 
 export default function ProdukAlumniPage() {
-  const [viewMode, setViewMode] = useState("catalog"); // "catalog" | "map"
+  const [viewMode, setViewMode] = useState("map"); // "catalog" | "map"
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -158,7 +158,7 @@ export default function ProdukAlumniPage() {
               marginBottom: "1.25rem",
             }}
           >
-            <span>🛍️</span> Etalase Bisnis & Karya Alumni KATI UNAND
+            <span>🌐</span> Jaringan Bisnis Alumni KATI UNAND
           </motion.div>
 
           <motion.h1
@@ -174,7 +174,7 @@ export default function ProdukAlumniPage() {
               color: "#f8fafc",
             }}
           >
-            Katalog Produk &amp; Layanan{" "}
+            Business Networks{" "}
             <span
               style={{
                 background: "linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #93c5fd 100%)",
@@ -182,7 +182,7 @@ export default function ProdukAlumniPage() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Karya Alumni
+              Alumni KATI UNAND
             </span>
           </motion.h1>
 
@@ -324,7 +324,7 @@ export default function ProdukAlumniPage() {
                   transition: "all 0.2s ease",
                 }}
               >
-                <span>🗺️</span> Peta Usaha Alumni (109 Titik)
+                <span>🌐</span> Peta Usaha Alumni (109 Titik)
               </button>
             </div>
           </motion.div>

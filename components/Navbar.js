@@ -65,7 +65,7 @@ export default function Navbar() {
             gap: "1.25rem",
             alignItems: "center",
           }} className="navbar-desktop-links">
-            {["Beranda:/", "Tentang:/about", "Talent Pool:/talent-pool", "Jaringan Alumni:/profil-alumni", "Produk Alumni:/produk-alumni", "Job Post:/job-post", "Services:/services"].map((item) => {
+            {["Beranda:/", "Tentang:/about", "Talent Pool:/talent-pool", "Jaringan Alumni:/profil-alumni", "Business Networks:/produk-alumni", "Job Post:/job-post", "Produk:/services"].map((item) => {
               const [label, href] = item.split(":");
               return (
                 <a key={href} href={href} style={{
@@ -124,9 +124,9 @@ export default function Navbar() {
               { label: "Tentang", href: "/about" },
               { label: "Talent Pool", href: "/talent-pool" },
               { label: "Jaringan Alumni", href: "/profil-alumni" },
-              { label: "Produk Alumni", href: "/produk-alumni" },
+              { label: "Business Networks", href: "/produk-alumni" },
               { label: "Job Post", href: "/job-post" },
-              { label: "Services", href: "/services" },
+              { label: "Produk", href: "/services" },
             ].map((item) => (
               <a
                 key={item.href}
