@@ -431,7 +431,7 @@ export default function JaringanAlumni() {
                 page="jaringan-alumni"
                 onUnlock={submitEmail}
                 title="Akses Jaringan Alumni"
-                description="Masukkan emailmu untuk menjelajahi jejaring alumni Teknik Industri Unand."
+                description="Masukkan emailmu untuk menjelajahi direktori dan jejaring alumni nasional."
             />
         );
     }
@@ -517,7 +517,7 @@ export default function JaringanAlumni() {
                     >
                         <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#a78bfa", display: "inline-block" }} />
                         <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "#c4b5fd", letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                            Jaringan Alumni IKA KATI UNAND
+                            Direktori & Jaringan Alumni Nasional
                         </span>
                     </div>
 
@@ -533,12 +533,12 @@ export default function JaringanAlumni() {
                     >
                         Temukan Rekan Alumni{" "}
                         <span style={{ background: "linear-gradient(135deg, #a78bfa, #818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                            Teknik Industri Unand
+                            Terverifikasi & Berdaya
                         </span>
                     </h1>
 
                     <p style={{ margin: "0 auto 1.75rem", maxWidth: "600px", color: "#94a3b8", fontSize: "0.95rem", lineHeight: 1.6 }}>
-                        Jejaring resmi alumni Teknik Industri Universitas Andalas yang berkiprah di BUMN, multinasional, kementerian, akademisi, hingga wirausaha di seluruh penjuru Indonesia.
+                        Jejaring profesional alumni perguruan tinggi terkemuka yang berkiprah di BUMN, multinasional, kementerian, akademisi, hingga wirausaha di seluruh penjuru Indonesia.
                     </p>
 
                     {/* Hero Quick Stats */}
@@ -659,7 +659,7 @@ export default function JaringanAlumni() {
                             Menampilkan <strong>{featuredFiltered.length}</strong> profil unggulan
                         </p>
                         <span style={{ fontSize: "0.78rem", color: "#94a3b8", fontStyle: "italic" }}>
-                            *Dikelola langsung oleh Admin IKA KATI
+                            *Dikelola langsung oleh Tim Pengelola Jaringan Alumni
                         </span>
                     </div>
 
@@ -698,10 +698,10 @@ export default function JaringanAlumni() {
                     <div className="directory-header-wrap">
                         <div>
                             <h2 style={{ margin: "0 0 0.35rem", fontSize: "1.4rem", fontWeight: 800, color: "#0f172a" }}>
-                                Direktori Alumni KATI UNAND
+                                Direktori Alumni & Profesional
                             </h2>
                             <p style={{ margin: 0, color: "#64748b", fontSize: "0.88rem" }}>
-                                Cari dan telusuri data jejaring alumni Teknik Industri Universitas Andalas berdasarkan angkatan, instansi, atau wilayah domisili.
+                                Cari dan telusuri data jejaring alumni berdasarkan angkatan, instansi, atau wilayah domisili.
                             </p>
                         </div>
                     </div>
@@ -820,7 +820,7 @@ export default function JaringanAlumni() {
                             {/* Info Box PJ Wilayah / Admin */}
                             <div style={{ background: "#f8fafc", border: "1px dashed #cbd5e1", borderRadius: "12px", padding: "0.85rem 1.25rem", marginTop: "2rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem" }}>
                                 <span style={{ fontSize: "0.82rem", color: "#64748b" }}>
-                                    🔒 <strong>Akses Khusus Pengurus & PJ Wilayah:</strong> Pembaruan atau penambahan database alumni dikoordinasikan melalui Penanggung Jawab (PJ) daerah masing-masing atau Admin KATI.
+                                    🔒 <strong>Akses Khusus Pengurus & PJ Wilayah:</strong> Pembaruan atau penambahan database alumni dikoordinasikan melalui Penanggung Jawab (PJ) daerah masing-masing atau Admin.
                                 </span>
                                 <a href="/admin" style={{ fontSize: "0.82rem", color: "#7c3aed", fontWeight: 700, textDecoration: "none" }}>
                                     Portal PJ Wilayah / Admin →
@@ -841,7 +841,7 @@ export default function JaringanAlumni() {
                             Dashboard Statistik Alumni
                         </h2>
                         <p style={{ margin: 0, color: "#64748b", fontSize: "0.88rem" }}>
-                            Visualisasi distribusi sektor karier, angkatan, dan persebaran wilayah alumni Teknik Industri Unand.
+                            Visualisasi distribusi sektor karier, angkatan, dan persebaran wilayah alumni.
                         </p>
                     </div>
 

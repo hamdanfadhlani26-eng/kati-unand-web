@@ -313,7 +313,7 @@ export default function TalentPool() {
                         <div style={stepIconStyle}>⚠️</div>
                         <h2 style={{ ...stepTitleStyle, color: "#b45309" }}>Email Sudah Terdaftar</h2>
                         <p style={stepDescStyle}>
-                            Email <strong style={{ color: "#12233f" }}>{verifiedEmail}</strong> sudah terdaftar di Talent Pool KATI Unand.
+                            Email <strong style={{ color: "#12233f" }}>{verifiedEmail}</strong> sudah terdaftar di Talent Pool Alumnova.
                         </p>
                         <p style={{ ...stepDescStyle, marginTop: "0.25rem" }}>
                             Ingin mengubah data profilmu? Gunakan halaman Edit Profil.
@@ -551,7 +551,7 @@ export default function TalentPool() {
                             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                                 <input type="checkbox" name="consent" checked={form.consent} onChange={handleChange} id="consent" />
                                 <label htmlFor="consent">
-                                    Saya setuju data ini ditampilkan secara publik di website KATI Unand
+                                    Saya setuju data ini ditampilkan secara publik di platform Alumnova
                                 </label>
                             </div>
 

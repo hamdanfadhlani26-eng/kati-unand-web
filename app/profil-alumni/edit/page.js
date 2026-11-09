@@ -11,7 +11,7 @@ export default function EditAlumniPage() {
                     Pengelolaan Data Alumni
                 </h1>
                 <p style={{ fontSize: "0.92rem", color: "#64748b", lineHeight: 1.6, marginBottom: "1.75rem" }}>
-                    Penambahan dan pengubahan profil alumni pada jaringan IKA KATI UNAND kini dikelola secara terpusat oleh Admin/Pengurus untuk memastikan validitas dan keseragaman data.
+                    Penambahan dan pengubahan profil alumni pada jaringan Alumnova kini dikelola secara terpusat oleh Admin/Pengurus untuk memastikan validitas dan keseragaman data.
                 </p>
                 <Link
                     href="/profil-alumni"

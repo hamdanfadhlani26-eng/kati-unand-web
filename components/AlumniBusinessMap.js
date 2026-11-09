@@ -264,12 +264,12 @@ export default function AlumniBusinessMap() {
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
               <span style={{ fontSize: "1.25rem" }}>🗺️</span>
               <h2 style={{ fontSize: "1.25rem", fontWeight: 800, margin: 0, color: "#f8fafc" }}>
-                Peta Jaringan Usaha Alumni (KATUA Network)
+                Peta Jaringan Usaha Alumni & Profesional
               </h2>
             </div>
             <p style={{ fontSize: "0.85rem", color: "#94a3b8", margin: 0 }}>
               Menampilkan <strong style={{ color: "#38bdf8" }}>{filteredPlaces.length}</strong> dari{" "}
-              {placesData.length} titik usaha alumni Teknik Industri UNAND
+              {placesData.length} titik usaha jaringan alumni nasional
             </p>
           </div>
 
@@ -631,7 +631,7 @@ export default function AlumniBusinessMap() {
                       }}
                     >
                       <span style={{ color: "#64748b" }}>
-                        {place.contributor ? `Oleh: ${place.contributor}` : "KATUA Network"}
+                        {place.contributor ? `Oleh: ${place.contributor}` : "Jejaring Alumni"}
                       </span>
                       <a
                         href={place.gmapsUrl}
@@ -698,7 +698,7 @@ export default function AlumniBusinessMap() {
             <span style={{ fontSize: "1rem" }}>📍</span>
             <div>
               <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#f8fafc" }}>
-                KATUA Network Map
+                Alumni Business Network Map
               </div>
               <div style={{ fontSize: "0.68rem", color: "#94a3b8" }}>
                 {filteredPlaces.length} titik usaha aktif

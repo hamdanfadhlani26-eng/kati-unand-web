@@ -22,9 +22,9 @@ export default function EmailGateScreen({ page, onUnlock, title, description }) 
     };
 
     const defaultDescs = {
-        "job-post": "Masukkan emailmu untuk mengakses semua lowongan kerja eksklusif dari jaringan alumni dan mahasiswa KATI Unand.",
-        "talent-pool": "Masukkan emailmu untuk melihat profil talenta terbaik fresh graduate dari komunitas KATI Unand.",
-        "services": "Masukkan emailmu untuk melihat detail lengkap dan harga layanan dari tim KATI Unand.",
+        "job-post": "Masukkan emailmu untuk mengakses semua lowongan kerja eksklusif dari jaringan alumni dan profesional Alumnova.",
+        "talent-pool": "Masukkan emailmu untuk melihat profil talenta terbaik fresh graduate dari komunitas alumni.",
+        "services": "Masukkan emailmu untuk melihat detail lengkap dan penawaran dari tim Alumnova.",
     };
 
     const displayTitle = title || defaultTitles[page] || "Masukkan Email untuk Melanjutkan";

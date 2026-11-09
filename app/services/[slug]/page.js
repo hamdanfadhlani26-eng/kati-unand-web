@@ -38,7 +38,7 @@ export default function ServiceDetailPage({ params }) {
                 page="services"
                 onUnlock={submitEmail}
                 title={`Akses Detail: ${item.title}`}
-                description={`Masukkan emailmu untuk melihat detail lengkap, harga, dan cara memesan layanan "${item.title}" dari tim KATI Unand.`}
+                description={`Masukkan emailmu untuk melihat detail lengkap, harga, dan cara memesan produk "${item.title}" dari tim Alumnova.`}
             />
         );
     }
@@ -46,7 +46,7 @@ export default function ServiceDetailPage({ params }) {
     return (
         <div style={{ padding: "2rem", maxWidth: "1000px", margin: "0 auto" }}>
             <div style={{ fontSize: "0.85rem", color: "#888", marginBottom: "1.5rem" }}>
-                <a href="/" style={{ color: "#888" }}>Beranda</a> / <a href="/services" style={{ color: "#888" }}>Services</a> / {item.title}
+                <a href="/" style={{ color: "#888" }}>Beranda</a> / <a href="/services" style={{ color: "#888" }}>Produk</a> / {item.title}
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "2rem" }}>

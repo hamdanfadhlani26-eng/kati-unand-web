@@ -394,7 +394,7 @@ export default function AdminPage() {
                     <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>🔐</div>
                     <h1 style={{ margin: "0 0 0.35rem", color: "#f1f5f9", fontSize: "1.4rem", fontWeight: 800 }}>Admin Portal</h1>
                     <p style={{ margin: "0 0 1.75rem", color: "#94a3b8", fontSize: "0.85rem", lineHeight: 1.5 }}>
-                        Portal Pengelola KATI Unand &amp; Penanggung Jawab (PJ) Daerah
+                        Portal Pengelola Alumnova &amp; Penanggung Jawab (PJ) Daerah
                     </p>
 
                     <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
@@ -444,7 +444,7 @@ export default function AdminPage() {
                     <span style={{ fontSize: "1.35rem" }}>🛡️</span>
                     <div>
                         <div style={{ color: "#f1f5f9", fontWeight: 800, fontSize: "1.02rem" }}>
-                            {isPjDaerah ? "Portal PJ Wilayah / Daerah" : "Super Admin Panel"} — KATI Unand
+                            {isPjDaerah ? "Portal PJ Wilayah / Daerah" : "Super Admin Panel"} — Alumnova Portal
                         </div>
                         <div style={{ fontSize: "0.75rem", color: isPjDaerah ? "#38bdf8" : "#94a3b8", fontWeight: 600 }}>
                             {isPjDaerah ? "📍 Akses Khusus: Update Direktori & Database Alumni Daerah" : "👑 Akses Penuh: Seluruh Fitur & Database"}

@@ -24,7 +24,7 @@ const AlumniBusinessMap = dynamic(
         }}
       >
         <div style={{ fontSize: "2.5rem" }}>🗺️</div>
-        <div style={{ fontSize: "1rem", fontWeight: 600 }}>Memuat Peta Interaktif KATUA Network...</div>
+        <div style={{ fontSize: "1rem", fontWeight: 600 }}>Memuat Peta Interaktif Jaringan Bisnis Alumni...</div>
       </div>
     ),
   }
@@ -96,7 +96,7 @@ export default function ProdukAlumniPage() {
       ? "62" + cleanPhone.slice(1)
       : cleanPhone;
 
-    const text = `Halo ${ownerName ? `Kak ${ownerName}` : "Admin"}, saya melihat produk/jasa "${productName}" di platform Alumnova KATI UNAND. Boleh minta info lebih lanjut atau cara pemesanannya?`;
+    const text = `Halo ${ownerName ? `Kak ${ownerName}` : "Admin"}, saya melihat produk/jasa "${productName}" di platform Alumnova. Boleh minta info lebih lanjut atau cara pemesanannya?`;
 
     return `https://wa.me/${targetPhone}?text=${encodeURIComponent(text)}`;
   }
@@ -105,7 +105,7 @@ export default function ProdukAlumniPage() {
     if (navigator.clipboard) {
       const url = typeof window !== "undefined" ? window.location.href : "";
       navigator.clipboard.writeText(
-        `Lihat "${product.nama_produk}" oleh ${product.nama_owner} di Alumnova KATI UNAND: ${url}`
+        `Lihat "${product.nama_produk}" oleh ${product.nama_owner} di Alumnova: ${url}`
       );
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
@@ -158,7 +158,7 @@ export default function ProdukAlumniPage() {
               marginBottom: "1.25rem",
             }}
           >
-            <span>🌐</span> Jaringan Bisnis Alumni KATI UNAND
+            <span>🌐</span> Jaringan Bisnis & Usaha Alumni
           </motion.div>
 
           <motion.h1
@@ -182,7 +182,7 @@ export default function ProdukAlumniPage() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Alumni KATI UNAND
+              Alumni & Kolaborasi
             </span>
           </motion.h1>
 
@@ -198,7 +198,7 @@ export default function ProdukAlumniPage() {
               lineHeight: 1.6,
             }}
           >
-            Dukung pertumbuhan usaha, inovasi mandiri, dan jasa profesional sesama alumni Teknik Industri Universitas Andalas. Dari alumni, oleh alumni, untuk kemajuan bersama.
+            Dukung pertumbuhan usaha, inovasi mandiri, dan jasa profesional sesama rekan alumni dan profesional terverifikasi. Dari alumni, oleh alumni, untuk kemajuan bersama.
           </motion.p>
 
           {/* Quick Stats Banner */}
@@ -227,7 +227,7 @@ export default function ProdukAlumniPage() {
               </span>
             </div>
             <a
-              href={`https://wa.me/${WA_ADMIN}?text=${encodeURIComponent("Halo Admin Alumnova, saya alumni KATI UNAND dan ingin mendaftarkan produk/jasa saya di website Alumnova.")}`}
+              href={`https://wa.me/${WA_ADMIN}?text=${encodeURIComponent("Halo Admin Alumnova, saya ingin mendaftarkan produk/jasa saya di website Alumnova.")}`}
               target="_blank"
               rel="noreferrer"
               style={{
@@ -587,10 +587,10 @@ export default function ProdukAlumniPage() {
               Punya Usaha, Produk, atau Jasa Sendiri?
             </h2>
             <p style={{ color: "#94a3b8", fontSize: "0.95rem", lineHeight: 1.6, margin: "0 0 2rem" }}>
-              Daftarkan produk dan layanan bisnis Anda ke katalog resmi Alumnova KATI UNAND. Dapatkan eksposur langsung ke jejaring ribuan alumni dan mahasiswa Teknik Industri.
+              Daftarkan produk dan layanan bisnis Anda ke katalog resmi Alumnova. Dapatkan eksposur langsung ke jejaring ribuan alumni, mahasiswa, dan profesional.
             </p>
             <a
-              href={`https://wa.me/${WA_ADMIN}?text=${encodeURIComponent("Halo Admin Alumnova, saya alumni KATI UNAND dan ingin mendaftarkan produk/jasa saya di website Alumnova.")}`}
+              href={`https://wa.me/${WA_ADMIN}?text=${encodeURIComponent("Halo Admin Alumnova, saya ingin mendaftarkan produk/jasa saya di website Alumnova.")}`}
               target="_blank"
               rel="noreferrer"
               style={{
@@ -821,10 +821,10 @@ export default function ProdukAlumniPage() {
                     </div>
                     <div>
                       <div style={{ fontWeight: 700, color: "#f8fafc", fontSize: "0.95rem" }}>
-                        {activeModal.nama_owner || "Alumni KATI Unand"}
+                        {activeModal.nama_owner || "Alumni Terdaftar"}
                       </div>
                       <div style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
-                        {activeModal.angkatan ? `Alumni TI ${activeModal.angkatan}` : "Alumni TI Unand"}
+                        {activeModal.angkatan ? `Alumni ${activeModal.angkatan}` : "Alumni & Komunitas"}
                       </div>
                     </div>
                   </div>
