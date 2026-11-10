@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 
 /* ── Initiators data ── */
 const INITIATORS = [
+  { name: "Muchdian Muchlish, ST, M.Tech.Mgt", short: "Muchdian", angkatan: "Angkatan 1998", file: "muchdian.png" },
   { name: "Medy Yolanda Sari, S.T.", short: "Medi", angkatan: "Angkatan 2000", file: "medi.png" },
   { name: "Rodi Afriniko, S.T., M.E.", short: "Rodi", angkatan: "Angkatan 2005", file: "rodi.png" },
   { name: "Cresti Kalani, S.T., CPSp.", short: "Cresti", angkatan: "Angkatan 2007", file: "cresti.png" },
@@ -326,7 +327,7 @@ export default function AboutPage() {
           </div>
         </FadeIn>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.5rem" }}>
           {INITIATORS.map((person, i) => (
             <FadeIn key={person.short} delay={i * 0.07}>
               <div style={{
@@ -337,12 +338,32 @@ export default function AboutPage() {
                 boxShadow: "0 2px 8px rgba(15,23,42,0.04)",
               }}>
                 {/* Foto */}
-                <div style={{ width: "100%", aspectRatio: "3/4", overflow: "hidden", background: "#f1f5f9" }}>
+                <div style={{ width: "100%", aspectRatio: "3/4", overflow: "hidden", background: "#f1f5f9", position: "relative" }}>
                   <img
                     src={`/initiators/${person.file}`}
                     alt={person.short}
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                      const fallback = e.currentTarget.nextElementSibling;
+                      if (fallback) fallback.style.display = "flex";
+                    }}
                     style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
                   />
+                  <div
+                    style={{
+                      display: "none",
+                      width: "100%",
+                      height: "100%",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: "linear-gradient(135deg, #1e3a8a, #2563eb)",
+                      color: "#fff",
+                      fontSize: "2.75rem",
+                      fontWeight: 800,
+                    }}
+                  >
+                    {person.short.charAt(0)}
+                  </div>
                 </div>
                 {/* Info */}
                 <div style={{ padding: "1rem 1.1rem 1.2rem" }}>
