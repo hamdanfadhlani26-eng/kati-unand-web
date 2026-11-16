@@ -60,6 +60,11 @@ export default function AdminPage() {
     const [saving, setSaving] = useState(false);
     const [photoUploading, setPhotoUploading] = useState(false);
     const [toast, setToast] = useState("");
+    const [popupNotice, setPopupNotice] = useState(null); // { type: 'success' | 'error', title: string, message: string }
+
+    function showPopup(title, message, type = "success") {
+        setPopupNotice({ title, message, type });
+    }
 
     function handleLogin(e) {
         e.preventDefault();
@@ -134,12 +139,12 @@ export default function AdminPage() {
             try {
                 await fetch(`/api/alumni-directory?id=${id || ""}&nama=${encodeURIComponent(targetName || "")}`, { method: "DELETE" });
                 setData((prev) => prev.filter((r) => r.id !== id && r.nama_lengkap !== targetName));
-                showToast("✅ Data alumni berhasil dihapus.");
+                showPopup("Berhasil Dihapus! 🗑️", `Data alumni "${targetName || id}" berhasil dihapus dari direktori database.`, "success");
                 setDeletingId(null);
                 setConfirmDelete(null);
                 return;
             } catch (e) {
-                showToast("❌ Gagal menghapus: " + e.message);
+                showPopup("Gagal Menghapus ❌", e.message, "error");
                 setDeletingId(null);
                 return;
             }
@@ -149,12 +154,12 @@ export default function AdminPage() {
             try {
                 await fetch(`/api/alumni-products?id=${id}`, { method: "DELETE" });
                 setData((prev) => prev.filter((r) => r.id !== id));
-                showToast("✅ Produk berhasil dihapus.");
+                showPopup("Berhasil Dihapus! 🗑️", `Produk "${targetName || id}" berhasil dihapus dari sistem.`, "success");
                 setDeletingId(null);
                 setConfirmDelete(null);
                 return;
             } catch (e) {
-                showToast("❌ Gagal menghapus: " + e.message);
+                showPopup("Gagal Menghapus ❌", e.message, "error");
                 setDeletingId(null);
                 return;
             }
@@ -163,9 +168,9 @@ export default function AdminPage() {
         const { error } = await supabase.from(activeTab).delete().eq("id", id);
         if (!error) {
             setData((prev) => prev.filter((r) => r.id !== id));
-            showToast("✅ Data berhasil dihapus.");
+            showPopup("Berhasil Dihapus! 🗑️", "Data berhasil dihapus dari sistem.", "success");
         } else {
-            showToast("❌ Gagal menghapus: " + error.message);
+            showPopup("Gagal Menghapus ❌", error.message, "error");
         }
         setDeletingId(null);
         setConfirmDelete(null);
@@ -185,14 +190,15 @@ export default function AdminPage() {
                 });
                 const json = await res.json();
                 if (json.success) {
-                    setData((prev) => prev.map((r) => (r.id === editingData.id || r.nama_lengkap === editingData.nama_lengkap ? { ...r, ...updates } : r)));
-                    showToast("✅ Data alumni berhasil diperbarui.");
+                    const finalRow = json.data || updates;
+                    setData((prev) => prev.map((r) => (r.id === editingData.id || r.nama_lengkap === editingData.nama_lengkap ? { ...r, ...finalRow } : r)));
+                    showPopup("Edit Berhasil! ✅", `Data alumni "${finalRow.nama_lengkap || editingData.nama_lengkap}" berhasil diperbarui dan tersimpan permanen ke database Supabase.`, "success");
                     setEditingData(null);
                 } else {
-                    showToast("❌ Gagal menyimpan: " + (json.error || "Unknown error"));
+                    showPopup("Gagal Menyimpan ❌", json.error || "Gagal menyimpan perubahan.", "error");
                 }
             } catch (err) {
-                showToast("❌ Gagal menyimpan: " + err.message);
+                showPopup("Gagal Menyimpan ❌", err.message, "error");
             }
             setSaving(false);
             return;
@@ -207,14 +213,15 @@ export default function AdminPage() {
                 });
                 const json = await res.json();
                 if (json.success) {
-                    setData((prev) => prev.map((r) => (r.id === editingData.id ? { ...r, ...updates } : r)));
-                    showToast("✅ Produk berhasil diperbarui.");
+                    const finalRow = json.data || updates;
+                    setData((prev) => prev.map((r) => (r.id === editingData.id ? { ...r, ...finalRow } : r)));
+                    showPopup("Edit Berhasil! ✅", `Produk "${finalRow.nama_produk || editingData.nama_produk}" berhasil diperbarui dan tersimpan permanen.`, "success");
                     setEditingData(null);
                 } else {
-                    showToast("❌ Gagal menyimpan: " + (json.message || "Unknown error"));
+                    showPopup("Gagal Menyimpan ❌", json.message || "Gagal memperbarui produk.", "error");
                 }
             } catch (err) {
-                showToast("❌ Gagal menyimpan: " + err.message);
+                showPopup("Gagal Menyimpan ❌", err.message, "error");
             }
             setSaving(false);
             return;
@@ -227,10 +234,10 @@ export default function AdminPage() {
         const { error } = await supabase.from(activeTab).update(updates).eq("id", editingData.id);
         if (!error) {
             setData((prev) => prev.map((r) => (r.id === editingData.id ? { ...r, ...updates } : r)));
-            showToast("✅ Data berhasil diubah.");
+            showPopup("Edit Berhasil! ✅", "Data berhasil diubah dan tersimpan.", "success");
             setEditingData(null);
         } else {
-            showToast("❌ Gagal menyimpan: " + error.message);
+            showPopup("Gagal Menyimpan ❌", error.message, "error");
         }
         setSaving(false);
     }
@@ -243,14 +250,14 @@ export default function AdminPage() {
         const fileName = `admin_${Date.now()}.${ext}`;
         const { error } = await supabase.storage.from("Photo").upload(fileName, file, { upsert: true });
         if (error) {
-            showToast("❌ Upload foto gagal: " + error.message);
+            showPopup("Upload Foto Gagal ❌", error.message, "error");
             setPhotoUploading(false);
             return;
         }
         const { data: pub } = supabase.storage.from("Photo").getPublicUrl(fileName);
         setter({ ...currentData, [fieldKey]: pub.publicUrl });
         setPhotoUploading(false);
-        showToast("📸 Foto berhasil diupload!");
+        showPopup("Foto Berhasil Diupload! 📸", "File foto telah berhasil diupload ke server penyimpanan.", "success");
     }
 
     async function handleSaveAdd(e) {
@@ -268,13 +275,13 @@ export default function AdminPage() {
                 const json = await res.json();
                 if (json.success && json.data) {
                     setData((prev) => [json.data, ...prev]);
-                    showToast("✅ Data alumni baru berhasil ditambahkan!");
+                    showPopup("Berhasil Ditambahkan! 🎉", `Alumni "${newRow.nama_lengkap}" berhasil ditambahkan ke direktori database.`, "success");
                     setAddingData(null);
                 } else {
-                    showToast("❌ Gagal menambah: " + (json.error || "Unknown error"));
+                    showPopup("Gagal Menambahkan ❌", json.error || "Gagal menambah data alumni.", "error");
                 }
             } catch (err) {
-                showToast("❌ Gagal menambah: " + err.message);
+                showPopup("Gagal Menambahkan ❌", err.message, "error");
             }
             setSaving(false);
             return;
@@ -290,13 +297,13 @@ export default function AdminPage() {
                 const json = await res.json();
                 if (json.success && json.data) {
                     setData((prev) => [json.data, ...prev]);
-                    showToast("✅ Produk alumni berhasil ditambahkan!");
+                    showPopup("Berhasil Ditambahkan! 🎉", `Produk "${newRow.nama_produk}" berhasil ditambahkan dan langsung aktif di katalog!`, "success");
                     setAddingData(null);
                 } else {
-                    showToast("❌ Gagal menambah: " + (json.message || "Unknown error"));
+                    showPopup("Gagal Menambahkan ❌", json.message || "Gagal menambah produk.", "error");
                 }
             } catch (err) {
-                showToast("❌ Gagal menambah: " + err.message);
+                showPopup("Gagal Menambahkan ❌", err.message, "error");
             }
             setSaving(false);
             return;
@@ -311,10 +318,10 @@ export default function AdminPage() {
         const { data: inserted, error } = await supabase.from(activeTab).insert([newRow]).select();
         if (!error && inserted) {
             setData((prev) => [inserted[0], ...prev]);
-            showToast("✅ Data berhasil ditambahkan.");
+            showPopup("Berhasil Ditambahkan! 🎉", "Data baru berhasil ditambahkan.", "success");
             setAddingData(null);
         } else {
-            showToast("❌ Gagal menambah: " + (error?.message || "Unknown error"));
+            showPopup("Gagal Menambahkan ❌", error?.message || "Unknown error", "error");
         }
         setSaving(false);
     }
@@ -364,6 +371,12 @@ export default function AdminPage() {
     function showToast(msg) {
         setToast(msg);
         setTimeout(() => setToast(""), 3500);
+
+        // Juga trigger popup notice agar selalu terlihat jelas oleh pengguna
+        const isError = msg.includes("❌") || msg.toLowerCase().includes("gagal");
+        const title = isError ? "Terjadi Kesalahan ❌" : "Berhasil! ✅";
+        const cleanMsg = msg.replace(/^[✅❌📸]\s*/, "");
+        showPopup(title, cleanMsg, isError ? "error" : "success");
     }
 
     // Tabs yang ditampilkan sesuai role
@@ -814,6 +827,112 @@ export default function AdminPage() {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal Popup Alert (Sukses / Gagal) */}
+            {popupNotice && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(15, 23, 42, 0.75)",
+                        backdropFilter: "blur(8px)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 99999,
+                        padding: "1rem",
+                    }}
+                    onClick={() => setPopupNotice(null)}
+                >
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                            background: popupNotice.type === "error"
+                                ? "linear-gradient(145deg, #1e1b2e 0%, #2b1317 100%)"
+                                : "linear-gradient(145deg, #0f172a 0%, #0d281e 100%)",
+                            border: popupNotice.type === "error"
+                                ? "1px solid rgba(239, 68, 68, 0.5)"
+                                : "1px solid rgba(16, 185, 129, 0.5)",
+                            borderRadius: "20px",
+                            padding: "2rem",
+                            maxWidth: "440px",
+                            width: "100%",
+                            textAlign: "center",
+                            boxShadow: popupNotice.type === "error"
+                                ? "0 25px 60px rgba(239, 68, 68, 0.3)"
+                                : "0 25px 60px rgba(16, 185, 129, 0.3)",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            gap: "1.1rem",
+                        }}
+                    >
+                        <div
+                            style={{
+                                width: "64px",
+                                height: "64px",
+                                borderRadius: "50%",
+                                background: popupNotice.type === "error"
+                                    ? "rgba(239, 68, 68, 0.2)"
+                                    : "rgba(16, 185, 129, 0.2)",
+                                border: popupNotice.type === "error"
+                                    ? "2px solid rgba(239, 68, 68, 0.4)"
+                                    : "2px solid rgba(16, 185, 129, 0.4)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "2rem",
+                            }}
+                        >
+                            {popupNotice.type === "error" ? "❌" : "✅"}
+                        </div>
+
+                        <div>
+                            <h3
+                                style={{
+                                    fontSize: "1.25rem",
+                                    fontWeight: 800,
+                                    color: "#f8fafc",
+                                    margin: "0 0 0.5rem 0",
+                                }}
+                            >
+                                {popupNotice.title}
+                            </h3>
+                            <p
+                                style={{
+                                    fontSize: "0.92rem",
+                                    color: "#94a3b8",
+                                    margin: 0,
+                                    lineHeight: 1.5,
+                                }}
+                            >
+                                {popupNotice.message}
+                            </p>
+                        </div>
+
+                        <button
+                            onClick={() => setPopupNotice(null)}
+                            style={{
+                                marginTop: "0.5rem",
+                                width: "100%",
+                                padding: "0.8rem",
+                                background: popupNotice.type === "error"
+                                    ? "linear-gradient(135deg, #ef4444, #dc2626)"
+                                    : "linear-gradient(135deg, #10b981, #059669)",
+                                color: "#ffffff",
+                                border: "none",
+                                borderRadius: "12px",
+                                fontWeight: 700,
+                                fontSize: "0.95rem",
+                                cursor: "pointer",
+                                boxShadow: "0 4px 14px rgba(0,0,0,0.3)",
+                            }}
+                        >
+                            OK, Mengerti
+                        </button>
                     </div>
                 </div>
             )}

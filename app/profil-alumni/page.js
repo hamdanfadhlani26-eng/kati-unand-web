@@ -146,12 +146,21 @@ export default function JaringanAlumni() {
     const [deleteTarget, setDeleteTarget] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
 
-    // --- Toast Notification ---
+    // --- Toast & Modal Popup Notification ---
     const [toast, setToast] = useState(null);
+    const [popupNotice, setPopupNotice] = useState(null);
+
+    const showPopup = (title, message, type = "success") => {
+        setPopupNotice({ title, message, type });
+    };
 
     const showToast = (message, type = "success") => {
         setToast({ message, type });
         setTimeout(() => setToast(null), 3500);
+
+        const isError = type === "error" || message.toLowerCase().includes("gagal");
+        const title = isError ? "Terjadi Kesalahan ❌" : "Berhasil! ✅";
+        showPopup(title, message, isError ? "error" : "success");
     };
 
     useEffect(() => {
@@ -438,6 +447,112 @@ export default function JaringanAlumni() {
 
     return (
         <div style={{ minHeight: "100vh", background: "#f8faff" }}>
+            {/* Modal Popup Alert (Sukses / Gagal) */}
+            {popupNotice && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(15, 23, 42, 0.75)",
+                        backdropFilter: "blur(8px)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 99999,
+                        padding: "1rem",
+                    }}
+                    onClick={() => setPopupNotice(null)}
+                >
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                            background: popupNotice.type === "error"
+                                ? "linear-gradient(145deg, #1e1b2e 0%, #2b1317 100%)"
+                                : "linear-gradient(145deg, #0f172a 0%, #0d281e 100%)",
+                            border: popupNotice.type === "error"
+                                ? "1px solid rgba(239, 68, 68, 0.5)"
+                                : "1px solid rgba(16, 185, 129, 0.5)",
+                            borderRadius: "20px",
+                            padding: "2rem",
+                            maxWidth: "440px",
+                            width: "100%",
+                            textAlign: "center",
+                            boxShadow: popupNotice.type === "error"
+                                ? "0 25px 60px rgba(239, 68, 68, 0.3)"
+                                : "0 25px 60px rgba(16, 185, 129, 0.3)",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            gap: "1.1rem",
+                        }}
+                    >
+                        <div
+                            style={{
+                                width: "64px",
+                                height: "64px",
+                                borderRadius: "50%",
+                                background: popupNotice.type === "error"
+                                    ? "rgba(239, 68, 68, 0.2)"
+                                    : "rgba(16, 185, 129, 0.2)",
+                                border: popupNotice.type === "error"
+                                    ? "2px solid rgba(239, 68, 68, 0.4)"
+                                    : "2px solid rgba(16, 185, 129, 0.4)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "2rem",
+                            }}
+                        >
+                            {popupNotice.type === "error" ? "❌" : "✅"}
+                        </div>
+
+                        <div>
+                            <h3
+                                style={{
+                                    fontSize: "1.25rem",
+                                    fontWeight: 800,
+                                    color: "#f8fafc",
+                                    margin: "0 0 0.5rem 0",
+                                }}
+                            >
+                                {popupNotice.title}
+                            </h3>
+                            <p
+                                style={{
+                                    fontSize: "0.92rem",
+                                    color: "#94a3b8",
+                                    margin: 0,
+                                    lineHeight: 1.5,
+                                }}
+                            >
+                                {popupNotice.message}
+                            </p>
+                        </div>
+
+                        <button
+                            onClick={() => setPopupNotice(null)}
+                            style={{
+                                marginTop: "0.5rem",
+                                width: "100%",
+                                padding: "0.8rem",
+                                background: popupNotice.type === "error"
+                                    ? "linear-gradient(135deg, #ef4444, #dc2626)"
+                                    : "linear-gradient(135deg, #10b981, #059669)",
+                                color: "#ffffff",
+                                border: "none",
+                                borderRadius: "12px",
+                                fontWeight: 700,
+                                fontSize: "0.95rem",
+                                cursor: "pointer",
+                                boxShadow: "0 4px 14px rgba(0,0,0,0.3)",
+                            }}
+                        >
+                            OK, Mengerti
+                        </button>
+                    </div>
+                </div>
+            )}
+
             {/* Floating Toast Notification */}
             {toast && (
                 <div
