@@ -22,7 +22,7 @@ function writeAlumniData(data) {
     fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
     return true;
   } catch (err) {
-    console.error("Error writing alumni database JSON:", err);
+    // Expected on Vercel (read-only filesystem)
     return false;
   }
 }
@@ -36,20 +36,26 @@ export async function GET() {
       .order('angkatan', { ascending: false });
 
     if (!supaErr && supaData && supaData.length > 0) {
-      return NextResponse.json({ success: true, data: supaData });
+      return NextResponse.json({ success: true, data: supaData, source: 'supabase' });
     }
-  } catch (e) {}
+  } catch (e) {
+    console.warn("Supabase fetch failed, falling back to local JSON:", e);
+  }
 
   const localData = readAlumniData();
-  return NextResponse.json({ success: true, data: localData });
+  return NextResponse.json({ success: true, data: localData, source: 'local' });
 }
 
 // POST: Tambah alumni baru
 export async function POST(request) {
   try {
     const body = await request.json();
-    const newEntry = {
-      id: body.id || Date.now(),
+
+    if (!body.nama_lengkap || !String(body.nama_lengkap).trim()) {
+      return NextResponse.json({ success: false, error: 'Nama lengkap wajib diisi' }, { status: 400 });
+    }
+
+    const insertData = {
       angkatan: String(body.angkatan || '').trim(),
       nama_lengkap: String(body.nama_lengkap || '').trim(),
       negara: String(body.negara || 'Indonesia').trim(),
@@ -62,22 +68,34 @@ export async function POST(request) {
       linkedin_url: String(body.linkedin_url || '').trim(),
       instagram_url: String(body.instagram_url || '').trim(),
       email: String(body.email || '').trim(),
-      created_at: new Date().toISOString()
     };
 
-    if (!newEntry.nama_lengkap) {
-      return NextResponse.json({ success: false, error: 'Nama lengkap wajib diisi' }, { status: 400 });
+    let savedEntry = null;
+
+    // 1. Simpan ke Supabase sebagai primary source
+    try {
+      const { data: supaRes, error: supaErr } = await supabase
+        .from('alumni_database')
+        .insert([insertData])
+        .select();
+
+      if (!supaErr && supaRes && supaRes.length > 0) {
+        savedEntry = supaRes[0];
+      } else if (supaErr) {
+        console.error("Supabase insert error:", supaErr);
+      }
+    } catch (e) {
+      console.error("Supabase insert exception:", e);
     }
 
+    const finalItem = savedEntry || { id: Date.now(), ...insertData, created_at: new Date().toISOString() };
+
+    // 2. Fallback update local JSON jika bisa ditulis (misal di localhost)
     const localData = readAlumniData();
-    localData.unshift(newEntry);
+    localData.unshift(finalItem);
     writeAlumniData(localData);
 
-    try {
-      await supabase.from('alumni_database').insert([newEntry]);
-    } catch (e) {}
-
-    return NextResponse.json({ success: true, data: newEntry });
+    return NextResponse.json({ success: true, data: finalItem });
   } catch (err) {
     console.error("POST alumni error:", err);
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
@@ -94,37 +112,70 @@ export async function PUT(request) {
       return NextResponse.json({ success: false, error: 'ID atau nama alumni diperlukan' }, { status: 400 });
     }
 
-    const localData = readAlumniData();
-    const index = localData.findIndex(a => String(a.id) === String(targetId) || (a.nama_lengkap && a.nama_lengkap.toLowerCase() === (body.old_nama || body.nama_lengkap).toLowerCase()));
+    // Bangun payload update tanpa kolom 'id' dan 'created_at' (Postgres melarang update identity column)
+    const updateData = {};
+    const allowedFields = [
+      'angkatan', 'nama_lengkap', 'negara', 'provinsi', 'kota',
+      'jenis_pekerjaan', 'bidang_pekerjaan', 'nama_perusahaan',
+      'jabatan', 'linkedin_url', 'instagram_url', 'email'
+    ];
+    for (const key of allowedFields) {
+      if (body[key] !== undefined) {
+        updateData[key] = String(body[key] ?? '').trim();
+      }
+    }
 
-    let updatedRecord = null;
+    let supaUpdated = null;
+
+    // 1. Update ke Supabase
+    try {
+      if (targetId) {
+        const { data, error } = await supabase
+          .from('alumni_database')
+          .update(updateData)
+          .eq('id', targetId)
+          .select();
+
+        if (!error && data && data.length > 0) {
+          supaUpdated = data[0];
+        } else if (error) {
+          console.error("Supabase update error by ID:", error);
+        }
+      }
+
+      // Jika gagal by ID atau tidak ada ID, coba by nama
+      if (!supaUpdated && (body.old_nama || body.nama_lengkap)) {
+        const searchName = body.old_nama || body.nama_lengkap;
+        const { data, error } = await supabase
+          .from('alumni_database')
+          .update(updateData)
+          .eq('nama_lengkap', searchName)
+          .select();
+
+        if (!error && data && data.length > 0) {
+          supaUpdated = data[0];
+        }
+      }
+    } catch (e) {
+      console.error("Supabase update exception:", e);
+    }
+
+    // 2. Fallback update local JSON jika bisa ditulis (misal di localhost)
+    const localData = readAlumniData();
+    const index = localData.findIndex(a =>
+      (targetId && String(a.id) === String(targetId)) ||
+      (a.nama_lengkap && a.nama_lengkap.toLowerCase() === (body.old_nama || body.nama_lengkap || '').toLowerCase())
+    );
+
+    let localUpdated = null;
     if (index !== -1) {
-      localData[index] = {
-        ...localData[index],
-        angkatan: String(body.angkatan ?? localData[index].angkatan ?? '').trim(),
-        nama_lengkap: String(body.nama_lengkap ?? localData[index].nama_lengkap ?? '').trim(),
-        negara: String(body.negara ?? localData[index].negara ?? 'Indonesia').trim(),
-        provinsi: String(body.provinsi ?? localData[index].provinsi ?? '').trim(),
-        kota: String(body.kota ?? localData[index].kota ?? '').trim(),
-        jenis_pekerjaan: String(body.jenis_pekerjaan ?? localData[index].jenis_pekerjaan ?? 'Lainnya').trim(),
-        bidang_pekerjaan: String(body.bidang_pekerjaan ?? localData[index].bidang_pekerjaan ?? '').trim(),
-        nama_perusahaan: String(body.nama_perusahaan ?? localData[index].nama_perusahaan ?? '').trim(),
-        jabatan: String(body.jabatan ?? localData[index].jabatan ?? '').trim(),
-        linkedin_url: String(body.linkedin_url ?? localData[index].linkedin_url ?? '').trim(),
-        instagram_url: String(body.instagram_url ?? localData[index].instagram_url ?? '').trim(),
-        email: String(body.email ?? localData[index].email ?? '').trim(),
-      };
-      updatedRecord = localData[index];
+      localData[index] = { ...localData[index], ...updateData };
+      localUpdated = localData[index];
       writeAlumniData(localData);
     }
 
-    try {
-      if (targetId) {
-        await supabase.from('alumni_database').update(body).eq('id', targetId);
-      }
-    } catch (e) {}
-
-    return NextResponse.json({ success: true, data: updatedRecord || body });
+    const result = supaUpdated || localUpdated || { id: targetId, ...updateData };
+    return NextResponse.json({ success: true, data: result });
   } catch (err) {
     console.error("PUT alumni error:", err);
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
@@ -142,6 +193,20 @@ export async function DELETE(request) {
       return NextResponse.json({ success: false, error: 'ID atau nama alumni diperlukan' }, { status: 400 });
     }
 
+    // 1. Hapus di Supabase
+    try {
+      if (id) {
+        const { error } = await supabase.from('alumni_database').delete().eq('id', id);
+        if (error) console.error("Supabase delete by ID error:", error);
+      } else if (nama) {
+        const { error } = await supabase.from('alumni_database').delete().eq('nama_lengkap', nama);
+        if (error) console.error("Supabase delete by name error:", error);
+      }
+    } catch (e) {
+      console.error("Supabase delete exception:", e);
+    }
+
+    // 2. Hapus di local JSON jika bisa
     const localData = readAlumniData();
     const filtered = localData.filter(a => {
       if (id && String(a.id) === String(id)) return false;
@@ -149,14 +214,6 @@ export async function DELETE(request) {
       return true;
     });
     writeAlumniData(filtered);
-
-    try {
-      if (id) {
-        await supabase.from('alumni_database').delete().eq('id', id);
-      } else if (nama) {
-        await supabase.from('alumni_database').delete().eq('nama_lengkap', nama);
-      }
-    } catch (e) {}
 
     return NextResponse.json({ success: true, message: 'Data alumni berhasil dihapus' });
   } catch (err) {

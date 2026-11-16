@@ -13,7 +13,6 @@ const INITIATORS = [
   { name: "Ivan, S.T., MBA.", short: "Ivan", angkatan: "Angkatan 2007", file: "ivan.png" },
   { name: "Muhammad Hamdan Fadhlani, S.T.", short: "Hamdan", angkatan: "Angkatan 2022", file: "hamdan.png" },
 ];
-
 const PRINCIPLES = [
   {
     label: "Connection",

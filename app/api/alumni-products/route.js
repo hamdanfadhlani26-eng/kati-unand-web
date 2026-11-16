@@ -22,7 +22,7 @@ function writeLocalProducts(data) {
     fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
     return true;
   } catch (err) {
-    console.error("Error writing alumni_products.json:", err);
+    // Expected on Vercel (read-only filesystem)
     return false;
   }
 }
@@ -30,7 +30,6 @@ function writeLocalProducts(data) {
 // GET: Ambil seluruh data produk & jasa alumni
 export async function GET() {
   try {
-    // Coba ambil dari Supabase terlebih dahulu jika tabel sudah dibuat
     const { data: supaData, error: supaErr } = await supabase
       .from('alumni_products')
       .select('*')
@@ -40,7 +39,7 @@ export async function GET() {
       return NextResponse.json({ success: true, data: supaData, source: 'supabase' });
     }
   } catch (e) {
-    // Supabase belum siap, fallback ke local JSON
+    console.warn("Supabase fetch products error, fallback to local:", e);
   }
 
   const localData = readLocalProducts();
@@ -56,8 +55,7 @@ export async function POST(request) {
       return NextResponse.json({ success: false, message: 'Nama produk wajib diisi' }, { status: 400 });
     }
 
-    const newEntry = {
-      id: body.id || Date.now(),
+    const payload = {
       nama_produk: String(body.nama_produk || '').trim(),
       tipe: String(body.tipe || 'Produk').trim(),
       kategori: String(body.kategori || 'Lainnya').trim(),
@@ -70,45 +68,34 @@ export async function POST(request) {
       whatsapp: String(body.whatsapp || '').trim(),
       instagram: String(body.instagram || '').trim(),
       website_url: String(body.website_url || '').trim(),
-      created_at: new Date().toISOString()
     };
 
-    // Simpan ke Supabase jika ada tabel
     let supaSaved = null;
     try {
       const { data: supaRes, error: supaErr } = await supabase
         .from('alumni_products')
-        .insert([{
-          nama_produk: newEntry.nama_produk,
-          tipe: newEntry.tipe,
-          kategori: newEntry.kategori,
-          nama_owner: newEntry.nama_owner,
-          angkatan: newEntry.angkatan,
-          deskripsi: newEntry.deskripsi,
-          harga: newEntry.harga,
-          lokasi: newEntry.lokasi,
-          foto_url: newEntry.foto_url,
-          whatsapp: newEntry.whatsapp,
-          instagram: newEntry.instagram,
-          website_url: newEntry.website_url,
-        }])
+        .insert([payload])
         .select();
 
       if (!supaErr && supaRes && supaRes.length > 0) {
         supaSaved = supaRes[0];
+      } else if (supaErr) {
+        console.error("Supabase insert product error:", supaErr);
       }
     } catch (e) {
-      // Ignored if table not created
+      console.error("Supabase insert product exception:", e);
     }
 
-    // Selalu simpan ke local file
+    const itemToSave = supaSaved || { id: Date.now(), ...payload, created_at: new Date().toISOString() };
+
+    // Fallback simpan ke local file jika bisa (e.g. dev environment)
     const localData = readLocalProducts();
-    const itemToSave = supaSaved || newEntry;
     localData.unshift(itemToSave);
     writeLocalProducts(localData);
 
     return NextResponse.json({ success: true, data: itemToSave });
   } catch (err) {
+    console.error("POST product error:", err);
     return NextResponse.json({ success: false, message: err.message }, { status: 500 });
   }
 }
@@ -123,37 +110,49 @@ export async function PUT(request) {
       return NextResponse.json({ success: false, message: 'ID produk dibutuhkan' }, { status: 400 });
     }
 
-    const updates = {
-      nama_produk: String(body.nama_produk || '').trim(),
-      tipe: String(body.tipe || 'Produk').trim(),
-      kategori: String(body.kategori || 'Lainnya').trim(),
-      nama_owner: String(body.nama_owner || '').trim(),
-      angkatan: String(body.angkatan || '').trim(),
-      deskripsi: String(body.deskripsi || '').trim(),
-      harga: String(body.harga || '').trim(),
-      lokasi: String(body.lokasi || '').trim(),
-      foto_url: String(body.foto_url || '').trim(),
-      whatsapp: String(body.whatsapp || '').trim(),
-      instagram: String(body.instagram || '').trim(),
-      website_url: String(body.website_url || '').trim(),
-    };
-
-    // Update di Supabase jika ada
-    try {
-      await supabase.from('alumni_products').update(updates).eq('id', id);
-    } catch (e) {}
-
-    // Update di local storage
-    const localData = readLocalProducts();
-    const index = localData.findIndex((item) => String(item.id) === String(id));
-    if (index !== -1) {
-      localData[index] = { ...localData[index], ...updates };
-      writeLocalProducts(localData);
-      return NextResponse.json({ success: true, data: localData[index] });
+    const updates = {};
+    const allowedFields = [
+      'nama_produk', 'tipe', 'kategori', 'nama_owner', 'angkatan',
+      'deskripsi', 'harga', 'lokasi', 'foto_url', 'whatsapp',
+      'instagram', 'website_url'
+    ];
+    for (const key of allowedFields) {
+      if (body[key] !== undefined) {
+        updates[key] = String(body[key] ?? '').trim();
+      }
     }
 
-    return NextResponse.json({ success: true, data: { id, ...updates } });
+    let supaUpdated = null;
+    try {
+      const { data, error } = await supabase
+        .from('alumni_products')
+        .update(updates)
+        .eq('id', id)
+        .select();
+
+      if (!error && data && data.length > 0) {
+        supaUpdated = data[0];
+      } else if (error) {
+        console.error("Supabase update product error:", error);
+      }
+    } catch (e) {
+      console.error("Supabase update product exception:", e);
+    }
+
+    // Update di local storage jika bisa
+    const localData = readLocalProducts();
+    const index = localData.findIndex((item) => String(item.id) === String(id));
+    let localUpdated = null;
+    if (index !== -1) {
+      localData[index] = { ...localData[index], ...updates };
+      localUpdated = localData[index];
+      writeLocalProducts(localData);
+    }
+
+    const result = supaUpdated || localUpdated || { id, ...updates };
+    return NextResponse.json({ success: true, data: result });
   } catch (err) {
+    console.error("PUT product error:", err);
     return NextResponse.json({ success: false, message: err.message }, { status: 500 });
   }
 }
@@ -168,18 +167,22 @@ export async function DELETE(request) {
       return NextResponse.json({ success: false, message: 'ID dibutuhkan' }, { status: 400 });
     }
 
-    // Hapus di Supabase jika ada
+    // 1. Hapus di Supabase
     try {
-      await supabase.from('alumni_products').delete().eq('id', id);
-    } catch (e) {}
+      const { error } = await supabase.from('alumni_products').delete().eq('id', id);
+      if (error) console.error("Supabase delete product error:", error);
+    } catch (e) {
+      console.error("Supabase delete product exception:", e);
+    }
 
-    // Hapus di local JSON
+    // 2. Hapus di local JSON jika bisa
     const localData = readLocalProducts();
     const filtered = localData.filter((item) => String(item.id) !== String(id));
     writeLocalProducts(filtered);
 
     return NextResponse.json({ success: true, message: 'Produk berhasil dihapus' });
   } catch (err) {
+    console.error("DELETE product error:", err);
     return NextResponse.json({ success: false, message: err.message }, { status: 500 });
   }
 }
