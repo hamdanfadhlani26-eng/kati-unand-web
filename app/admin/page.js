@@ -5,12 +5,111 @@ import { supabase } from "@/lib/supabase";
 
 // ── Password Akses Admin ───────────────────────────────────────────────────
 const SUPER_ADMIN_PASSWORD = "katiunand2025"; // Akses penuh ke seluruh fitur & tab
-const PJ_DAERAH_PASSWORD = "admin2";         // Akses khusus PJ Wilayah / Direktori Alumni
+
+// ── 5 Akun Korwil Daerah (Akses Khusus Direktori Alumni) ──────────────────────
+const KORWIL_ACCOUNTS = {
+    // 1. Korwil Batam
+    "korwilbatam": {
+        id: "korwil_batam",
+        name: "Korwil Batam",
+        region: "Batam & Kepulauan Riau",
+        provinces: ["Kepulauan Riau", "Riau"],
+        cities: ["Batam", "Tanjung Pinang", "Bintan", "Karimun"],
+    },
+    "batam2025": {
+        id: "korwil_batam",
+        name: "Korwil Batam",
+        region: "Batam & Kepulauan Riau",
+        provinces: ["Kepulauan Riau", "Riau"],
+        cities: ["Batam", "Tanjung Pinang", "Bintan", "Karimun"],
+    },
+    "admin2": { // tetap didukung untuk backward compatibility
+        id: "korwil_batam",
+        name: "Korwil Batam",
+        region: "Batam & Kepulauan Riau",
+        provinces: ["Kepulauan Riau", "Riau"],
+        cities: ["Batam", "Tanjung Pinang", "Bintan", "Karimun"],
+    },
+
+    // 2. Korwil Sumut Aceh
+    "korwilsumutaceh": {
+        id: "korwil_sumut_aceh",
+        name: "Korwil Sumut - Aceh",
+        region: "Sumatera Utara & Aceh",
+        provinces: ["Sumatera Utara", "Aceh"],
+        cities: ["Medan", "Banda Aceh", "Deli Serdang", "Lhokseumawe", "Binjai", "Pematangsiantar"],
+    },
+    "sumutaceh2025": {
+        id: "korwil_sumut_aceh",
+        name: "Korwil Sumut - Aceh",
+        region: "Sumatera Utara & Aceh",
+        provinces: ["Sumatera Utara", "Aceh"],
+        cities: ["Medan", "Banda Aceh", "Deli Serdang", "Lhokseumawe", "Binjai", "Pematangsiantar"],
+    },
+
+    // 3. Korwil Sumbar
+    "korwilsumbar": {
+        id: "korwil_sumbar",
+        name: "Korwil Sumatera Barat",
+        region: "Sumatera Barat",
+        provinces: ["Sumatera Barat"],
+        cities: ["Padang", "Bukittinggi", "Payakumbuh", "Pariaman", "Solok", "Agam", "Lima Puluh Kota", "Tanah Datar", "Pesisir Selatan", "Pasaman"],
+    },
+    "sumbar2025": {
+        id: "korwil_sumbar",
+        name: "Korwil Sumatera Barat",
+        region: "Sumatera Barat",
+        provinces: ["Sumatera Barat"],
+        cities: ["Padang", "Bukittinggi", "Payakumbuh", "Pariaman", "Solok", "Agam", "Lima Puluh Kota", "Tanah Datar", "Pesisir Selatan", "Pasaman"],
+    },
+
+    // 4. Korwil Jabodetabek
+    "korwiljabodetabek": {
+        id: "korwil_jabodetabek",
+        name: "Korwil Jabodetabek",
+        region: "Jabodetabek, Jawa Barat & Banten",
+        provinces: ["Jakarta", "DKI Jakarta", "Jawa Barat", "Banten"],
+        cities: ["Jakarta", "Bogor", "Depok", "Tangerang", "Bekasi", "Tangerang Selatan", "Bandung", "Cilegon", "Serang"],
+    },
+    "jabodetabek2025": {
+        id: "korwil_jabodetabek",
+        name: "Korwil Jabodetabek",
+        region: "Jabodetabek, Jawa Barat & Banten",
+        provinces: ["Jakarta", "DKI Jakarta", "Jawa Barat", "Banten"],
+        cities: ["Jakarta", "Bogor", "Depok", "Tangerang", "Bekasi", "Tangerang Selatan", "Bandung", "Cilegon", "Serang"],
+    },
+
+    // 5. Indonesia Timur (Kalimantan, Sulawesi, NTB, Bali, NTT, Papua)
+    "korwilindonesiatimur": {
+        id: "korwil_indonesia_timur",
+        name: "Korwil Indonesia Timur",
+        region: "Kalimantan, Sulawesi, NTB, Bali, NTT, Maluku, Papua",
+        provinces: [
+            "Kalimantan Timur", "Kalimantan Barat", "Kalimantan Selatan", "Kalimantan Tengah", "Kalimantan Utara",
+            "Sulawesi Selatan", "Sulawesi Utara", "Sulawesi Tengah", "Sulawesi Tenggara", "Sulawesi Barat", "Gorontalo",
+            "Bali", "Nusa Tenggara Barat", "NTB", "Nusa Tenggara Timur", "NTT",
+            "Maluku", "Maluku Utara", "Papua", "Papua Barat", "Papua Selatan", "Papua Tengah", "Papua Pegunungan", "Papua Barat Daya"
+        ],
+        cities: ["Makassar", "Balikpapan", "Samarinda", "Banjarmasin", "Pontianak", "Manado", "Palu", "Kendari", "Denpasar", "Mataram", "Kupang", "Jayapura", "Sorong", "Ambon"],
+    },
+    "idtimur2025": {
+        id: "korwil_indonesia_timur",
+        name: "Korwil Indonesia Timur",
+        region: "Kalimantan, Sulawesi, NTB, Bali, NTT, Maluku, Papua",
+        provinces: [
+            "Kalimantan Timur", "Kalimantan Barat", "Kalimantan Selatan", "Kalimantan Tengah", "Kalimantan Utara",
+            "Sulawesi Selatan", "Sulawesi Utara", "Sulawesi Tengah", "Sulawesi Tenggara", "Sulawesi Barat", "Gorontalo",
+            "Bali", "Nusa Tenggara Barat", "NTB", "Nusa Tenggara Timur", "NTT",
+            "Maluku", "Maluku Utara", "Papua", "Papua Barat", "Papua Selatan", "Papua Tengah", "Papua Pegunungan", "Papua Barat Daya"
+        ],
+        cities: ["Makassar", "Balikpapan", "Samarinda", "Banjarmasin", "Pontianak", "Manado", "Palu", "Kendari", "Denpasar", "Mataram", "Kupang", "Jayapura", "Sorong", "Ambon"],
+    },
+};
 
 const ALL_TABS = [
     { key: "talent_pool",     label: "Talent Pool",       icon: "👤", nameField: "nama",         roles: ["super_admin"] },
     { key: "alumni_profiles", label: "Jaringan Unggulan", icon: "🎓", nameField: "nama",         roles: ["super_admin"] },
-    { key: "alumni_database", label: "Direktori Alumni",  icon: "🗂️", nameField: "nama_lengkap", roles: ["super_admin", "pj_daerah"] },
+    { key: "alumni_database", label: "Direktori Alumni",  icon: "🗂️", nameField: "nama_lengkap", roles: ["super_admin", "pj_daerah", "korwil"] },
     { key: "alumni_products", label: "Produk Alumni",     icon: "🛍️", nameField: "nama_produk",  roles: ["super_admin"] },
     { key: "job_posts",       label: "Job Post",          icon: "💼", nameField: "judul_posisi", roles: ["super_admin"] },
     { key: "email_gate_log",  label: "Email Gate Log",    icon: "📧", nameField: "email",        roles: ["super_admin"] },
@@ -45,7 +144,9 @@ const BIDANG_PEKERJAAN_OPTIONS = [
 
 export default function AdminPage() {
     const [authed, setAuthed] = useState(false);
-    const [adminRole, setAdminRole] = useState(null); // 'super_admin' | 'pj_daerah'
+    const [adminRole, setAdminRole] = useState(null); // 'super_admin' | 'korwil'
+    const [korwilInfo, setKorwilInfo] = useState(null); // { id, name, region, provinces, cities }
+    const [filterRegionOnly, setFilterRegionOnly] = useState(false);
     const [pwInput, setPwInput] = useState("");
     const [pwError, setPwError] = useState("");
 
@@ -69,18 +170,25 @@ export default function AdminPage() {
     function handleLogin(e) {
         e.preventDefault();
         const trimmed = pwInput.trim();
+        const lower = trimmed.toLowerCase();
+
         if (trimmed === SUPER_ADMIN_PASSWORD) {
             setAuthed(true);
             setAdminRole("super_admin");
+            setKorwilInfo(null);
+            setFilterRegionOnly(false);
             setActiveTab("talent_pool");
             setPwError("");
-        } else if (trimmed === PJ_DAERAH_PASSWORD) {
+        } else if (KORWIL_ACCOUNTS[lower]) {
+            const korwil = KORWIL_ACCOUNTS[lower];
             setAuthed(true);
-            setAdminRole("pj_daerah");
+            setAdminRole("korwil");
+            setKorwilInfo(korwil);
+            setFilterRegionOnly(false);
             setActiveTab("alumni_database");
             setPwError("");
         } else {
-            setPwError("Password salah. Silakan masukkan password Super Admin atau PJ Daerah.");
+            setPwError("Password salah. Silakan masukkan password Super Admin atau Akun Korwil Daerah.");
         }
     }
 
@@ -337,8 +445,8 @@ export default function AdminPage() {
                 jabatan: "",
                 jenis_pekerjaan: "BUMN / Anak Usaha Danantara / BUMD",
                 bidang_pekerjaan: "",
-                provinsi: "",
-                kota: "",
+                provinsi: korwilInfo?.provinces?.[0] || "",
+                kota: korwilInfo?.cities?.[0] || "",
                 negara: "Indonesia",
                 linkedin_url: "",
                 instagram_url: "",
@@ -393,7 +501,15 @@ export default function AdminPage() {
             const matchCity = String(row.kota || "").toLowerCase().includes(term);
             const matchProv = String(row.provinsi || "").toLowerCase().includes(term);
             const matchYear = String(row.angkatan || "").toLowerCase().includes(term);
-            return matchName || matchCompany || matchRole || matchCity || matchProv || matchYear;
+            const matchesSearch = matchName || matchCompany || matchRole || matchCity || matchProv || matchYear;
+
+            if (filterRegionOnly && korwilInfo) {
+                const matchProvKorwil = korwilInfo.provinces?.some((p) => String(row.provinsi || "").toLowerCase().includes(p.toLowerCase()));
+                const matchCityKorwil = korwilInfo.cities?.some((c) => String(row.kota || "").toLowerCase().includes(c.toLowerCase()));
+                return matchesSearch && (matchProvKorwil || matchCityKorwil);
+            }
+
+            return matchesSearch;
         }
         const val = String(row[nameField] || "").toLowerCase();
         return val.includes(search.toLowerCase());
@@ -438,8 +554,8 @@ export default function AdminPage() {
 
                     <div style={{ marginTop: "1.75rem", paddingTop: "1.25rem", borderTop: "1px solid rgba(255,255,255,0.06)", fontSize: "0.78rem", color: "#64748b", textAlign: "left", lineHeight: 1.5 }}>
                         💡 <strong>Informasi Akses:</strong><br />
-                        • <strong>Super Admin:</strong> Mengelola seluruh data &amp; tab.<br />
-                        • <strong>PJ Daerah:</strong> Akses khusus kelola data alumni di wilayahnya.
+                        • <strong>Super Admin:</strong> Mengelola seluruh data &amp; tab portal.<br />
+                        • <strong>Akun Korwil:</strong> Akses khusus kelola direktori alumni wilayah (Batam, Sumut-Aceh, Sumbar, Jabodetabek, Indonesia Timur).
                     </div>
                 </div>
             </div>
@@ -447,7 +563,7 @@ export default function AdminPage() {
     }
 
     // ── Dashboard ─────────────────────────────────────────────────────────────
-    const isPjDaerah = adminRole === "pj_daerah";
+    const isPjDaerah = adminRole === "korwil" || adminRole === "pj_daerah";
 
     return (
         <div style={{ minHeight: "100vh", background: "#0f172a" }}>
@@ -457,14 +573,18 @@ export default function AdminPage() {
                     <span style={{ fontSize: "1.35rem" }}>🛡️</span>
                     <div>
                         <div style={{ color: "#f1f5f9", fontWeight: 800, fontSize: "1.02rem" }}>
-                            {isPjDaerah ? "Portal PJ Wilayah / Daerah" : "Super Admin Panel"} — Alumnova Portal
+                            {korwilInfo ? `Portal ${korwilInfo.name}` : isPjDaerah ? "Portal PJ Wilayah / Daerah" : "Super Admin Panel"} — Alumnova Portal
                         </div>
-                        <div style={{ fontSize: "0.75rem", color: isPjDaerah ? "#38bdf8" : "#94a3b8", fontWeight: 600 }}>
-                            {isPjDaerah ? "📍 Akses Khusus: Update Direktori & Database Alumni Daerah" : "👑 Akses Penuh: Seluruh Fitur & Database"}
+                        <div style={{ fontSize: "0.75rem", color: (korwilInfo || isPjDaerah) ? "#38bdf8" : "#94a3b8", fontWeight: 600 }}>
+                            {korwilInfo
+                                ? `📍 Wilayah Kerja: ${korwilInfo.region} • Akses Khusus Direktori Alumni`
+                                : isPjDaerah
+                                    ? "📍 Akses Khusus: Update Direktori & Database Alumni Daerah"
+                                    : "👑 Akses Penuh: Seluruh Fitur & Database"}
                         </div>
                     </div>
                 </div>
-                <button onClick={() => { setAuthed(false); setAdminRole(null); }} style={{ background: "rgba(239,68,68,0.15)", color: "#f87171", border: "1px solid rgba(239,68,68,0.3)", borderRadius: "8px", padding: "0.45rem 1rem", fontSize: "0.82rem", fontWeight: 700, cursor: "pointer" }}>
+                <button onClick={() => { setAuthed(false); setAdminRole(null); setKorwilInfo(null); setFilterRegionOnly(false); setPwInput(""); }} style={{ background: "rgba(239,68,68,0.15)", color: "#f87171", border: "1px solid rgba(239,68,68,0.3)", borderRadius: "8px", padding: "0.45rem 1rem", fontSize: "0.82rem", fontWeight: 700, cursor: "pointer" }}>
                     Keluar
                 </button>
             </div>
@@ -504,10 +624,33 @@ export default function AdminPage() {
                         </h2>
                         <p style={{ margin: "0.2rem 0 0", color: "#64748b", fontSize: "0.82rem" }}>
                             {loading ? "Memuat data..." : `${filtered.length} dari total ${data.length} data`}
-                            {activeTab === "alumni_database" && isPjDaerah && " • PJ dapat mencari kota/provinsi untuk kelola alumni daerah Anda"}
+                            {activeTab === "alumni_database" && (korwilInfo ? ` • Korwil dapat mengelola alumni ${korwilInfo.name}` : isPjDaerah ? " • PJ dapat mencari kota/provinsi untuk kelola alumni daerah Anda" : "")}
                         </p>
                     </div>
                     <div style={{ display: "flex", gap: "0.65rem", alignItems: "center", flexWrap: "wrap" }}>
+                        {korwilInfo && (
+                            <button
+                                type="button"
+                                onClick={() => setFilterRegionOnly(!filterRegionOnly)}
+                                style={{
+                                    padding: "0.55rem 0.95rem",
+                                    background: filterRegionOnly ? "rgba(16, 185, 129, 0.25)" : "rgba(255, 255, 255, 0.06)",
+                                    border: filterRegionOnly ? "1px solid #10b981" : "1px solid rgba(255, 255, 255, 0.12)",
+                                    color: filterRegionOnly ? "#34d399" : "#94a3b8",
+                                    borderRadius: "10px",
+                                    fontSize: "0.8rem",
+                                    fontWeight: 700,
+                                    cursor: "pointer",
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    gap: "0.4rem",
+                                    transition: "all 0.15s ease",
+                                }}
+                            >
+                                <span>📍</span>
+                                <span>{filterRegionOnly ? `Wilayah: ${korwilInfo.name} (Aktif)` : `Filter Wilayah ${korwilInfo.name}`}</span>
+                            </button>
+                        )}
                         <input
                             type="text"
                             value={search}
