@@ -515,6 +515,67 @@ export default function AdminPage() {
         return val.includes(search.toLowerCase());
     });
 
+    function exportToExcel() {
+        if (!filtered || filtered.length === 0) {
+            showPopup("Tidak Ada Data", "Tidak ada data alumni untuk diunduh.", "error");
+            return;
+        }
+
+        const headers = [
+            "No",
+            "Angkatan",
+            "Nama Lengkap",
+            "Negara",
+            "Provinsi",
+            "Kota",
+            "Jenis Pekerjaan",
+            "Bidang Pekerjaan",
+            "Nama Perusahaan",
+            "Jabatan",
+            "LinkedIn URL",
+            "Instagram URL",
+            "Email"
+        ];
+
+        const escapeCsv = (val) => {
+            if (val === null || val === undefined) return '""';
+            return `"${String(val).replace(/"/g, '""')}"`;
+        };
+
+        const rows = filtered.map((item, idx) => [
+            idx + 1,
+            escapeCsv(item.angkatan),
+            escapeCsv(item.nama_lengkap),
+            escapeCsv(item.negara || "Indonesia"),
+            escapeCsv(item.provinsi),
+            escapeCsv(item.kota),
+            escapeCsv(item.jenis_pekerjaan),
+            escapeCsv(item.bidang_pekerjaan),
+            escapeCsv(item.nama_perusahaan),
+            escapeCsv(item.jabatan),
+            escapeCsv(item.linkedin_url),
+            escapeCsv(item.instagram_url),
+            escapeCsv(item.email)
+        ]);
+
+        const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(r => r.join(","))].join("\r\n");
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        const dateStr = new Date().toISOString().split("T")[0];
+        const fileName = korwilInfo
+            ? `Database_Alumni_${korwilInfo.name.replace(/\s+/g, '_')}_${dateStr}.csv`
+            : `Database_Alumni_Alumnova_${dateStr}.csv`;
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        showPopup("Unduhan Berhasil! 📥", `File "${fileName}" (${filtered.length} data) berhasil diunduh dan siap dibuka di Microsoft Excel.`, "success");
+    }
+
     // ── Login Screen ──────────────────────────────────────────────────────────
     if (!authed) {
         return (
@@ -663,6 +724,24 @@ export default function AdminPage() {
                                 outline: "none", fontFamily: "var(--font-body), sans-serif",
                             }}
                         />
+                        {activeTab === "alumni_database" && (
+                            <button
+                                type="button"
+                                onClick={exportToExcel}
+                                style={{
+                                    padding: "0.6rem 1.15rem",
+                                    background: "linear-gradient(135deg, #0284c7, #0369a1)",
+                                    color: "#fff", border: "none", borderRadius: "10px",
+                                    fontWeight: 700, fontSize: "0.88rem", cursor: "pointer",
+                                    fontFamily: "var(--font-body), sans-serif",
+                                    display: "flex", alignItems: "center", gap: "0.45rem",
+                                    whiteSpace: "nowrap",
+                                    boxShadow: "0 4px 14px rgba(2,132,199,0.3)",
+                                }}
+                            >
+                                <span>📥</span> Unduh Excel (CSV)
+                            </button>
+                        )}
                         {activeTab !== "email_gate_log" && (
                             <button
                                 onClick={openAddModal}
