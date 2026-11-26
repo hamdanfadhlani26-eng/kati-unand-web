@@ -53,7 +53,20 @@ export default function ProdukAlumniPage() {
   const [selectedKategori, setSelectedKategori] = useState("Semua");
   const [selectedTipe, setSelectedTipe] = useState("Semua Tipe");
   const [activeModal, setActiveModal] = useState(null);
+  const [highlightedId, setHighlightedId] = useState(null);
   const [copied, setCopied] = useState(false);
+
+  // Switch to catalog immediately if deep link is present in URL
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const targetId = params.get("id") || params.get("product");
+      if (targetId) {
+        setViewMode("catalog");
+        setHighlightedId(targetId);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     async function loadProducts() {
@@ -71,6 +84,74 @@ export default function ProdukAlumniPage() {
     }
     loadProducts();
   }, []);
+
+  // When products load, check if deep link product exists and auto-open modal
+  useEffect(() => {
+    if (typeof window === "undefined" || products.length === 0) return;
+    const params = new URLSearchParams(window.location.search);
+    const targetId = params.get("id") || params.get("product");
+    if (targetId) {
+      const target = products.find((p) => String(p.id) === String(targetId));
+      if (target) {
+        setViewMode("catalog");
+        setActiveModal(target);
+        setHighlightedId(target.id);
+        // Reset search/filter to ensure the item is visible in catalog
+        setSearch("");
+        setSelectedKategori("Semua");
+        setSelectedTipe("Semua Tipe");
+
+        setTimeout(() => {
+          const el = document.getElementById(`product-${target.id}`);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 350);
+      }
+    }
+  }, [products]);
+
+  // Sync modal state with browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const targetId = params.get("id") || params.get("product");
+      if (targetId && products.length > 0) {
+        const found = products.find((p) => String(p.id) === String(targetId));
+        if (found) {
+          setViewMode("catalog");
+          setActiveModal(found);
+          setHighlightedId(found.id);
+          return;
+        }
+      }
+      setActiveModal(null);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [products]);
+
+  function openModal(product) {
+    setActiveModal(product);
+    setHighlightedId(product.id);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.set("id", product.id);
+      window.history.replaceState({}, "", url.toString());
+    }
+  }
+
+  function closeModal() {
+    setActiveModal(null);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("id");
+      url.searchParams.delete("product");
+      const newQuery = url.searchParams.toString();
+      const newUrl = url.pathname + (newQuery ? `?${newQuery}` : "");
+      window.history.replaceState({}, "", newUrl);
+    }
+  }
 
   // Filter logic
   const filteredProducts = products.filter((item) => {
@@ -102,11 +183,34 @@ export default function ProdukAlumniPage() {
   }
 
   function handleShare(product) {
-    if (navigator.clipboard) {
-      const url = typeof window !== "undefined" ? window.location.href : "";
-      navigator.clipboard.writeText(
-        `Lihat "${product.nama_produk}" oleh ${product.nama_owner} di Alumnova: ${url}`
-      );
+    if (!product) return;
+    const origin =
+      typeof window !== "undefined" && window.location.origin
+        ? window.location.origin
+        : "https://alumnova.vercel.app";
+    const shareUrl = `${origin}/produk-alumni?id=${product.id}`;
+    const shareText = `Lihat "${product.nama_produk}" oleh ${product.nama_owner || "Alumni & Komunitas"} di Alumnova: ${shareUrl}`;
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title: `${product.nama_produk} - Alumnova`,
+          text: `Lihat "${product.nama_produk}" oleh ${product.nama_owner || "Alumni & Komunitas"} di Alumnova:`,
+          url: shareUrl,
+        })
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2500);
+        })
+        .catch((err) => {
+          if (err.name !== "AbortError" && navigator.clipboard) {
+            navigator.clipboard.writeText(shareText);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2500);
+          }
+        });
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareText);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     }
@@ -559,7 +663,9 @@ export default function ProdukAlumniPage() {
               <ProductCard
                 key={item.id || idx}
                 product={item}
-                onOpenModal={() => setActiveModal(item)}
+                isHighlighted={String(item.id) === String(highlightedId)}
+                onOpenModal={() => openModal(item)}
+                onShare={handleShare}
                 getWhatsAppUrl={getWhatsAppUrl}
               />
             ))}
@@ -620,7 +726,7 @@ export default function ProdukAlumniPage() {
       <AnimatePresence>
         {activeModal && (
           <div
-            onClick={() => setActiveModal(null)}
+            onClick={closeModal}
             style={{
               position: "fixed",
               inset: 0,
@@ -679,7 +785,7 @@ export default function ProdukAlumniPage() {
                   <span style={{ fontSize: "0.82rem", color: "#94a3b8" }}>{activeModal.kategori}</span>
                 </div>
                 <button
-                  onClick={() => setActiveModal(null)}
+                  onClick={closeModal}
                   style={{
                     background: "rgba(255,255,255,0.05)",
                     border: "none",
@@ -906,15 +1012,16 @@ export default function ProdukAlumniPage() {
                       gap: "0.4rem",
                       padding: "0.45rem 0.9rem",
                       borderRadius: "8px",
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                      color: "#cbd5e1",
+                      background: copied ? "rgba(34,197,94,0.18)" : "rgba(255,255,255,0.05)",
+                      border: `1px solid ${copied ? "rgba(34,197,94,0.4)" : "rgba(255,255,255,0.1)"}`,
+                      color: copied ? "#4ade80" : "#cbd5e1",
                       fontSize: "0.82rem",
                       fontWeight: 600,
                       cursor: "pointer",
+                      transition: "all 0.2s ease",
                     }}
                   >
-                    <span>🔗</span> {copied ? "Tautan Tersalin!" : "Bagikan"}
+                    <span>{copied ? "✅" : "🔗"}</span> {copied ? "Tautan Berhasil Disalin!" : "Bagikan"}
                   </button>
                 </div>
 
@@ -946,6 +1053,40 @@ export default function ProdukAlumniPage() {
         )}
       </AnimatePresence>
 
+      {/* ── TOAST NOTIFICATION ── */}
+      <AnimatePresence>
+        {copied && (
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.92 }}
+            transition={{ duration: 0.2 }}
+            style={{
+              position: "fixed",
+              bottom: "2rem",
+              left: "50%",
+              transform: "translateX(-50%)",
+              zIndex: 2500,
+              background: "rgba(15, 23, 42, 0.95)",
+              border: "1px solid rgba(56, 189, 248, 0.4)",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.6), 0 0 16px rgba(56,189,248,0.25)",
+              color: "#f8fafc",
+              padding: "0.75rem 1.4rem",
+              borderRadius: "999px",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              fontSize: "0.88rem",
+              fontWeight: 600,
+              backdropFilter: "blur(10px)",
+              pointerEvents: "none",
+            }}
+          >
+            <span style={{ fontSize: "1.1rem" }}>✅</span> Tautan produk berhasil disalin!
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <style jsx global>{`
         @keyframes pulse {
           0%, 100% { opacity: 1; }
@@ -960,31 +1101,42 @@ export default function ProdukAlumniPage() {
 }
 
 // ── PRODUCT CARD COMPONENT ──
-function ProductCard({ product, onOpenModal, getWhatsAppUrl }) {
+function ProductCard({ product, onOpenModal, onShare, isHighlighted, getWhatsAppUrl }) {
   const isJasa = product.tipe === "Jasa";
 
   return (
     <div
+      id={`product-${product.id}`}
       style={{
         background: "#101827",
-        border: "1px solid rgba(255,255,255,0.07)",
+        border: isHighlighted
+          ? "2px solid #38bdf8"
+          : "1px solid rgba(255,255,255,0.07)",
+        boxShadow: isHighlighted
+          ? "0 0 25px rgba(56, 189, 248, 0.4), 0 10px 30px rgba(0,0,0,0.5)"
+          : "none",
         borderRadius: "16px",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         transition: "transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease",
         cursor: "pointer",
+        position: "relative",
       }}
       onClick={onOpenModal}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "translateY(-4px)";
-        e.currentTarget.style.borderColor = "rgba(59,130,246,0.35)";
-        e.currentTarget.style.boxShadow = "0 12px 30px rgba(0,0,0,0.35)";
+        if (!isHighlighted) e.currentTarget.style.borderColor = "rgba(59,130,246,0.35)";
+        e.currentTarget.style.boxShadow = isHighlighted
+          ? "0 0 30px rgba(56, 189, 248, 0.5), 0 12px 30px rgba(0,0,0,0.4)"
+          : "0 12px 30px rgba(0,0,0,0.35)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
-        e.currentTarget.style.boxShadow = "none";
+        if (!isHighlighted) e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
+        e.currentTarget.style.boxShadow = isHighlighted
+          ? "0 0 25px rgba(56, 189, 248, 0.4), 0 10px 30px rgba(0,0,0,0.5)"
+          : "none";
       }}
     >
       {/* Image Container with Badges */}
@@ -1125,15 +1277,16 @@ function ProductCard({ product, onOpenModal, getWhatsAppUrl }) {
         </p>
 
         {/* Card Action Buttons */}
-        <div style={{ display: "flex", gap: "0.5rem", marginTop: "auto" }}>
+        <div style={{ display: "flex", gap: "0.45rem", marginTop: "auto" }}>
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
               onOpenModal();
             }}
             style={{
               flex: 1,
-              padding: "0.6rem",
+              padding: "0.6rem 0.5rem",
               background: "rgba(255,255,255,0.05)",
               border: "1px solid rgba(255,255,255,0.1)",
               borderRadius: "8px",
@@ -1146,6 +1299,30 @@ function ProductCard({ product, onOpenModal, getWhatsAppUrl }) {
           >
             Detail
           </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onShare(product);
+            }}
+            title="Bagikan Tautan Produk"
+            style={{
+              padding: "0.6rem 0.75rem",
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: "8px",
+              color: "#38bdf8",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "all 0.2s",
+            }}
+          >
+            <span>🔗</span>
+          </button>
           <a
             href={getWhatsAppUrl(product.whatsapp, product.nama_produk, product.nama_owner)}
             target="_blank"
@@ -1153,7 +1330,7 @@ function ProductCard({ product, onOpenModal, getWhatsAppUrl }) {
             onClick={(e) => e.stopPropagation()}
             style={{
               flex: 1,
-              padding: "0.6rem",
+              padding: "0.6rem 0.5rem",
               background: "linear-gradient(135deg, #16a34a, #15803d)",
               border: "none",
               borderRadius: "8px",
